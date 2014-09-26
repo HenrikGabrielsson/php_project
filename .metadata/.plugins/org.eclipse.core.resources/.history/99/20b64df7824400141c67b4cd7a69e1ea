@@ -1,0 +1,3 @@
+<?php
+
+require_once("poll_control.php");

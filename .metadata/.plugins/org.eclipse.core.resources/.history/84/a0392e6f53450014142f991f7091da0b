@@ -1,0 +1,10 @@
+<?php
+
+require_once("controller/navigationController.php");
+require_once("view/htmlView.php");
+
+$navController = new \controller\NavigationController();
+$html = new \view\htmlView.php();
+
+$body = $navController->doGetRightPage();
+
