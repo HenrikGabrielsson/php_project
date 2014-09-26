@@ -1,12 +1,15 @@
 <?php
 
-require_once("controller/navigationController.php");
-require_once("view/htmlView.php");
+require_once("controller/NavigationController.php");
+require_once("view/HTMLView.php");
 
+
+$htmlView  = new \view\HtmlView();
 $navController = new \controller\NavigationController();
-$htmlView = new \view\htmlView.php();
 
-$htmlContent = $navController->doGetRightPage();
+$navController->doControl();
+$body = $navController->getBody();
+$title $navController->getTitle();
 
-$htmlView->showPage($htmlContent);
+$htmlView->showHTML($title, $body);
 
