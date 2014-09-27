@@ -19,7 +19,17 @@ class HTMLView
             </head>
             
             <body>
-                '.$body.'
+                <div id="container">
+                    <div id="header">
+                    
+                    </div>
+                    
+                    <div id="content">
+                    '.$body.'
+                    </div>
+                    <div id="footer">
+                    </div>
+                </div>
             </body>
         </html>
         ';
