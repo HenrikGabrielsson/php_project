@@ -1,0 +1,2713 @@
+commit 4bcafa8d1a4d6c12ca508bdfd557dc40b2a0b7bf
+Author: Henrik Gabrielsson <hg222aa@student.lnu.se>
+Date:   Mon Sep 29 11:09:43 2014 +0200
+
+    mer db
+
+diff --git a/.metadata/.log b/.metadata/.log
+new file mode 100644
+index 0000000..5098b26
+--- /dev/null
++++ b/.metadata/.log
+@@ -0,0 +1,9 @@
++!SESSION 2014-09-29 10:11:51.292 -----------------------------------------------
++eclipse.buildId=unknown
++java.version=1.7.0_67
++java.vendor=Oracle Corporation
++BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=sv_SE
++Command-line arguments:  -os win32 -ws win32 -arch x86
++
++!ENTRY org.eclipse.core.resources 2 10035 2014-09-29 10:11:55.770
++!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
+diff --git a/.metadata/.plugins/com.aptana.core.io/connections.19 b/.metadata/.plugins/com.aptana.core.io/connections.19
+deleted file mode 100644
+index 46f1522..0000000
+--- a/.metadata/.plugins/com.aptana.core.io/connections.19
++++ /dev/null
+@@ -1,2 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<connections/>
+\ No newline at end of file
+diff --git a/.metadata/.plugins/com.aptana.core.io/connections.30 b/.metadata/.plugins/com.aptana.core.io/connections.30
+new file mode 100644
+index 0000000..46f1522
+--- /dev/null
++++ b/.metadata/.plugins/com.aptana.core.io/connections.30
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<connections/>
+\ No newline at end of file
+diff --git a/.metadata/.plugins/com.aptana.editor.php/-698444358 b/.metadata/.plugins/com.aptana.editor.php/-698444358
+index a329d9a..0ef7e7c 100644
+Binary files a/.metadata/.plugins/com.aptana.editor.php/-698444358 and b/.metadata/.plugins/com.aptana.editor.php/-698444358 differ
+diff --git a/.metadata/.plugins/com.aptana.syncing.core/defaultConnection.19 b/.metadata/.plugins/com.aptana.syncing.core/defaultConnection.19
+deleted file mode 100644
+index e66bed3..0000000
+--- a/.metadata/.plugins/com.aptana.syncing.core/defaultConnection.19
++++ /dev/null
+@@ -1,7 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<connection>
+-<connection>
+-<name>Default</name>
+-<source>file:/C:/Users/Loklok</source>
+-</connection>
+-</connection>
+\ No newline at end of file
+diff --git a/.metadata/.plugins/com.aptana.syncing.core/defaultConnection.30 b/.metadata/.plugins/com.aptana.syncing.core/defaultConnection.30
+new file mode 100644
+index 0000000..e66bed3
+--- /dev/null
++++ b/.metadata/.plugins/com.aptana.syncing.core/defaultConnection.30
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<connection>
++<connection>
++<name>Default</name>
++<source>file:/C:/Users/Loklok</source>
++</connection>
++</connection>
+\ No newline at end of file
+diff --git a/.metadata/.plugins/com.aptana.syncing.core/sites.19 b/.metadata/.plugins/com.aptana.syncing.core/sites.19
+deleted file mode 100644
+index dc24d7a..0000000
+--- a/.metadata/.plugins/com.aptana.syncing.core/sites.19
++++ /dev/null
+@@ -1,2 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<sites/>
+\ No newline at end of file
+diff --git a/.metadata/.plugins/com.aptana.syncing.core/sites.30 b/.metadata/.plugins/com.aptana.syncing.core/sites.30
+new file mode 100644
+index 0000000..dc24d7a
+--- /dev/null
++++ b/.metadata/.plugins/com.aptana.syncing.core/sites.30
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<sites/>
+\ No newline at end of file
+diff --git a/.metadata/.plugins/com.aptana.webserver.core/webservers.18 b/.metadata/.plugins/com.aptana.webserver.core/webservers.18
+deleted file mode 100644
+index 30ebbdb..0000000
+--- a/.metadata/.plugins/com.aptana.webserver.core/webservers.18
++++ /dev/null
+@@ -1,2 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<servers/>
+\ No newline at end of file
+diff --git a/.metadata/.plugins/com.aptana.webserver.core/webservers.29 b/.metadata/.plugins/com.aptana.webserver.core/webservers.29
+new file mode 100644
+index 0000000..30ebbdb
+--- /dev/null
++++ b/.metadata/.plugins/com.aptana.webserver.core/webservers.29
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<servers/>
+\ No newline at end of file
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/10/10858205b547001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/10/10858205b547001416e9b684e496cc1f
+new file mode 100644
+index 0000000..9a100fd
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/10/10858205b547001416e9b684e496cc1f
+@@ -0,0 +1,33 @@
++<?php
++
++namespace model\repository;
++
++require_once("./model/repo/Repository.php");
++require_once("./model/User.php");
++
++class UserRepo extends \model\repository\Repository
++{
++
++	//hämta en användare
++	public function getUserById($id)
++	{		
++		$this->connect();
++		
++		//skapar en sql sats och parametrar som ska skickas med.
++		$sql = 'SELECT * FROM user WHERE userID = ? ';
++		$params = array($id);
++		
++		//
++		$query = $this->dbConnection->prepare($sql);
++		$query->execute($params);
++		
++		$result = $query->fetch();
++		
++		if($result)
++		
++	}
++	
++}
++
++
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/12/60c2e7eab447001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/12/60c2e7eab447001416e9b684e496cc1f
+new file mode 100644
+index 0000000..26f8a0e
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/12/60c2e7eab447001416e9b684e496cc1f
+@@ -0,0 +1,36 @@
++<?php
++
++namespace model\repository;
++
++require_once("./model/repo/Repository.php");
++require_once("./model/User.php");
++
++class UserRepo extends \model\repository\Repository
++{
++    //konstruktorn
++    public function __construct()
++    {
++        $this->connect();
++    }
++	
++	//hämta en användare
++	public function getUserById($id)
++	{		
++		$this->connect();
++		
++		$sql = 'SELECT * FROM user WHERE userID = ? ';
++		$params = array($id);
++		
++		$query = $this->dbConnection->prepare($sql);
++		$query->execute($params);
++		
++		$result = $query->fetch();
++		
++		if($result)
++		
++	}
++	
++}
++
++
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/12/f0e881fd514700141192e080de53a013 b/.metadata/.plugins/org.eclipse.core.resources/.history/12/f0e881fd514700141192e080de53a013
+deleted file mode 100644
+index d2684cb..0000000
+--- a/.metadata/.plugins/org.eclipse.core.resources/.history/12/f0e881fd514700141192e080de53a013
++++ /dev/null
+@@ -1,32 +0,0 @@
+-<?php
+-
+-namespace model\repository;
+-
+-require_once("./model/repo/Repository.php");
+-
+-class UserRepo extends \model\repository\Repository
+-{
+-    private $id;            //unikt id
+-    private $userName;      //användarnamn
+-    private $email;         //email-address
+-    private $password;      //lösenord(hashat)
+-    private $salt;          //lösenord-salt
+-    private $dateAdded;     //datum som kontot skapades
+-    private $admin;         //false = vanlig användare, true = admin
+-    
+-    //konstruktorn
+-    public function __construct()
+-    {
+-        $this->connect();
+-    }
+-	
+-	//hämta en användare
+-	public function getUserById($id)
+-	{
+-		
+-	}
+-	
+-}
+-
+-
+-
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/14/c06024ebb547001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/14/c06024ebb547001416e9b684e496cc1f
+new file mode 100644
+index 0000000..7eb2880
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/14/c06024ebb547001416e9b684e496cc1f
+@@ -0,0 +1,39 @@
++<?php
++
++namespace model\repository;
++
++require_once("./model/repo/Repository.php");
++require_once("./model/User.php");
++
++class UserRepo extends \model\repository\Repository
++{
++
++	//hämta en användare
++	public function getUserById($id)
++	{		
++		$this->connect();
++		
++		//skapar en sql sats och parametrar som ska skickas med.
++		$sql = 'SELECT * FROM user WHERE userID = ? ';
++		$params = array($id);
++		
++		//förbered frågan och kör den sedan (med params)
++		$query = $this->dbConnection->prepare($sql);
++		$query->execute($params);
++		
++		//hämtar användaren (kommer som en array om den hittades, annars FALSE)
++		$result = $query->fetch();
++		if($result)
++		{
++			foreach($result as $i=>$j)
++			{
++				echo $i . '<br />';
++			}
++		}
++		
++	}
++	
++}
++
++
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/17/b0191e62b547001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/17/b0191e62b547001416e9b684e496cc1f
+new file mode 100644
+index 0000000..179d761
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/17/b0191e62b547001416e9b684e496cc1f
+@@ -0,0 +1,39 @@
++<?php
++
++namespace model\repository;
++
++require_once("./model/repo/Repository.php");
++require_once("./model/User.php");
++
++class UserRepo extends \model\repository\Repository
++{
++
++	//hämta en användare
++	public function getUserById($id)
++	{		
++		$this->connect();
++		
++		//skapar en sql sats och parametrar som ska skickas med.
++		$sql = 'SELECT * FROM user WHERE userID = ? ';
++		$params = array($id);
++		
++		//förbered frågan och kör den sedan (med params)
++		$query = $this->dbConnection->prepare($sql);
++		$query->execute($params);
++		
++		//hämtar användaren (kommer som en array om den hittades, annars FALSE)
++		$result = $query->fetch();
++		if($result)
++		{
++			foreach($result as $i)
++			{
++				echo $i . '\';
++			}
++		}
++		
++	}
++	
++}
++
++
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/19/f06c02a0304400141900e335fe34e51f b/.metadata/.plugins/org.eclipse.core.resources/.history/19/f06c02a0304400141900e335fe34e51f
+deleted file mode 100644
+index a4abe2d..0000000
+--- a/.metadata/.plugins/org.eclipse.core.resources/.history/19/f06c02a0304400141900e335fe34e51f
++++ /dev/null
+@@ -1,2 +0,0 @@
+-<?php
+-
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/1a/40f23b9bb447001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/1a/40f23b9bb447001416e9b684e496cc1f
+new file mode 100644
+index 0000000..8113b8c
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/1a/40f23b9bb447001416e9b684e496cc1f
+@@ -0,0 +1,35 @@
++<?php
++
++namespace model\repository;
++
++require_once("./model/repo/Repository.php");
++require_once("./model/User.php");
++
++class UserRepo extends \model\repository\Repository
++{
++
++    
++    //konstruktorn
++    public function __construct()
++    {
++        $this->connect();
++    }
++	
++	//hämta en användare
++	public function getUserById($id)
++	{		
++		$this->connect();
++		
++		$sql = 'SELECT * FROM user WHERE userID = ? ';
++		$params = array($id);
++		
++		$query = $this->dbConnection->prepare($sql);
++		$query->execute($params);
++		
++		$user = ($query->fetch());die();
++	}
++	
++}
++
++
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/1b/e01b9bceb247001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/1b/e01b9bceb247001416e9b684e496cc1f
+new file mode 100644
+index 0000000..563c6d7
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/1b/e01b9bceb247001416e9b684e496cc1f
+@@ -0,0 +1,33 @@
++<?php
++
++namespace model\repository;
++
++abstract class Repository 
++{
++    private $userName = "henrikgabrielss";
++    private $password = "tCiSetWtDead";
++    private $connectionString = "mysql:host=henrikgabrielsson.se.mysql;dbname=henrikgabrielss";
++    
++    protected $dbConnection; 
++	protected $currentTable;
++
++    public function connect()
++    {
++        //kollar ifall det inte redan finns en anslutning till databasen så skapas den här
++        if($this->dbConnection === NULL)
++        {
++            try
++            {
++                $this->dbConnection  = new \PDO($this->connectionString, $this->userName, $this->password);
++            }
++            catch(Exception $e)
++            {
++                throw new Exception("Problems with the database connection.");
++            }
++        }
++    }
++    
++    
++}
++
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/1f/f0a7d95fb547001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/1f/f0a7d95fb547001416e9b684e496cc1f
+new file mode 100644
+index 0000000..6e34726
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/1f/f0a7d95fb547001416e9b684e496cc1f
+@@ -0,0 +1,39 @@
++<?php
++
++namespace model\repository;
++
++require_once("./model/repo/Repository.php");
++require_once("./model/User.php");
++
++class UserRepo extends \model\repository\Repository
++{
++
++	//hämta en användare
++	public function getUserById($id)
++	{		
++		$this->connect();
++		
++		//skapar en sql sats och parametrar som ska skickas med.
++		$sql = 'SELECT * FROM user WHERE userID = ? ';
++		$params = array($id);
++		
++		//förbered frågan och kör den sedan (med params)
++		$query = $this->dbConnection->prepare($sql);
++		$query->execute($params);
++		
++		//hämtar användaren (kommer som en array om den hittades, annars FALSE)
++		$result = $query->fetch();
++		if($result)
++		{
++			foreach($result as $i)
++			{
++				
++			}
++		}
++		
++	}
++	
++}
++
++
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/21/10682914b847001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/21/10682914b847001416e9b684e496cc1f
+new file mode 100644
+index 0000000..5f65d0f
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/21/10682914b847001416e9b684e496cc1f
+@@ -0,0 +1,56 @@
++<?php
++
++namespace model\repository;
++
++require_once("./model/repo/Repository.php");
++require_once("./model/User.php");
++
++class UserRepo extends \model\repository\Repository
++{
++	//fältnamn i databasen
++	private $id = "userID";            
++    private $userName = "userName";     
++    private $email = "email";         
++    private $password = "pasword";      
++    private $salt = "salt";          
++    private $dateAdded = "dateAdded";     
++    private $admin = "status";
++
++	//hämta en användare
++	public function getUserById($id)
++	{		
++		$this->connect();
++		
++		//skapar en sql sats och parametrar som ska skickas med.
++		$sql = 'SELECT * FROM user WHERE userID = ? ';
++		$params = array($id);
++		
++		//förbered frågan och kör den sedan (med params)
++		$query = $this->dbConnection->prepare($sql);
++		$query->execute($params);
++		
++		$user;
++		//hämtar användaren (kommer som en array om den hittades, annars FALSE)
++		$result = $query->fetch();
++		if($result)
++		{
++			$user = new \model\User
++			(
++				$result[$this->id],
++				$result[$this->userName],
++				$result[$this->email],
++				$result[$this->password],
++				$result[$this->salt],
++				$result[$this->dateAdded],
++				$result[$this->admin]		
++			);
++		}
++		
++		return $user;
++		
++	}
++	
++}
++
++
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/26/e01d4a84b547001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/26/e01d4a84b547001416e9b684e496cc1f
+new file mode 100644
+index 0000000..fba2ed9
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/26/e01d4a84b547001416e9b684e496cc1f
+@@ -0,0 +1,39 @@
++<?php
++
++namespace model\repository;
++
++require_once("./model/repo/Repository.php");
++require_once("./model/User.php");
++
++class UserRepo extends \model\repository\Repository
++{
++
++	//hämta en användare
++	public function getUserById($id)
++	{		
++		$this->connect();
++		
++		//skapar en sql sats och parametrar som ska skickas med.
++		$sql = 'SELECT * FROM user WHERE userID = ? ';
++		$params = array($id);
++		
++		//förbered frågan och kör den sedan (med params)
++		$query = $this->dbConnection->prepare($sql);
++		$query->execute($params);
++		
++		//hämtar användaren (kommer som en array om den hittades, annars FALSE)
++		$result = $query->fetch();
++		if($result)
++		{
++			foreach($result as $i)
++			{
++				echo $i . '\n';
++			}
++		}
++		
++	}
++	
++}
++
++
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/27/70b70238524700141192e080de53a013 b/.metadata/.plugins/org.eclipse.core.resources/.history/27/70b70238524700141192e080de53a013
+deleted file mode 100644
+index dd4d590..0000000
+--- a/.metadata/.plugins/org.eclipse.core.resources/.history/27/70b70238524700141192e080de53a013
++++ /dev/null
+@@ -1,30 +0,0 @@
+-<?php
+-
+-namespace model\repository;
+-
+-require_once("./model/repo/Repository.php");
+-require_once("./model/user.php");
+-
+-class UserRepo extends \model\repository\Repository
+-{
+-
+-    
+-    //konstruktorn
+-    public function __construct()
+-    {
+-        $this->connect();
+-    }
+-	
+-	//hämta en användare
+-	public function getUserById($id)
+-	{
+-		
+-		$this->connect();
+-		
+-		
+-	}
+-	
+-}
+-
+-
+-
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/32/c06e7b85b147001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/32/c06e7b85b147001416e9b684e496cc1f
+new file mode 100644
+index 0000000..276d48c
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/32/c06e7b85b147001416e9b684e496cc1f
+@@ -0,0 +1,33 @@
++<?php
++
++namespace model\repository;
++
++abstract class Repository 
++{
++    private $userName = "henrikgabrielss";
++    private $password = "tCiSetWtDead";
++    private $connectionString = "mysql:host=henrikgabrielsson.se.mysql;dbname=henrikgabrielss";
++    private $dbConnection;
++    
++	protected $currentTable;
++
++    public function connect()
++    {
++        //kollar ifall det inte redan finns en anslutning till databasen så skapas den här
++        if($this->dbConnection === NULL)
++        {
++            try
++            {
++                $this->dbConnection  = new \PDO($this->connectionString, $this->userName, $this->password);
++            }
++            catch(Exception $e)
++            {
++                throw new Exception("Problems with the database connection.");
++            }
++        }
++    }
++    
++    
++}
++
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/32/f00bc452b547001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/32/f00bc452b547001416e9b684e496cc1f
+new file mode 100644
+index 0000000..f32eca5
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/32/f00bc452b547001416e9b684e496cc1f
+@@ -0,0 +1,36 @@
++<?php
++
++namespace model\repository;
++
++require_once("./model/repo/Repository.php");
++require_once("./model/User.php");
++
++class UserRepo extends \model\repository\Repository
++{
++
++	//hämta en användare
++	public function getUserById($id)
++	{		
++		$this->connect();
++		
++		//skapar en sql sats och parametrar som ska skickas med.
++		$sql = 'SELECT * FROM user WHERE userID = ? ';
++		$params = array($id);
++		
++		//förbered frågan och kör den sedan (med params)
++		$query = $this->dbConnection->prepare($sql);
++		$query->execute($params);
++		
++		//hämtar användaren (kommer som en array om den hittades, annars FALSE)
++		$result = $query->fetch();
++		if($result)
++		{
++			foreach($result)
++		}
++		
++	}
++	
++}
++
++
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/33/701e9f1fb247001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/33/701e9f1fb247001416e9b684e496cc1f
+new file mode 100644
+index 0000000..7669562
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/33/701e9f1fb247001416e9b684e496cc1f
+@@ -0,0 +1,18 @@
++<?php
++
++require_once("controller/NavigationController.php");
++require_once("view/HTMLView.php");
++require_once("model/repo/UserRepo.php");
++
++$htmlView  = new \view\HtmlView();
++$navController = new \controller\NavigationController();
++
++$navController->doControl();
++$body = $navController->getBody();
++$title = $navController->getTitle();
++
++$test = new \model\repository\UserRepo();
++$test->getUserById(1);
++
++$htmlView->showHTML($title, $body);
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/37/80284a45b847001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/37/80284a45b847001416e9b684e496cc1f
+new file mode 100644
+index 0000000..281abaa
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/37/80284a45b847001416e9b684e496cc1f
+@@ -0,0 +1,25 @@
++<?php
++
++class User
++{
++	
++    private $id;            //unikt id
++    private $userName;      //användarnamn
++    private $email;         //email-address
++    private $password;      //lösenord(hashat)
++    private $salt;          //lösenord-salt
++    private $dateAdded;     //datum som kontot skapades
++    private $admin;         //false = vanlig användare, true = admin
++    
++    public function __construct($id, $userName, $email, $password, $salt, $dateAdded, $admin)
++	{
++		$this->id = $id;
++		$this->userName = $userName;
++		$this->email = $email;
++		$this->password = $password;
++		$this->salt = $salt;
++		$this->dateAdded = $dateAdded;
++		$this->admin = $admin;
++		
++	}
++}
+\ No newline at end of file
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/38/80320742b847001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/38/80320742b847001416e9b684e496cc1f
+new file mode 100644
+index 0000000..510ee7f
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/38/80320742b847001416e9b684e496cc1f
+@@ -0,0 +1,31 @@
++<?php
++
++class User
++{
++	
++    private $id;            //unikt id
++    private $userName;      //användarnamn
++    private $email;         //email-address
++    private $password;      //lösenord(hashat)
++    private $salt;          //lösenord-salt
++    private $dateAdded;     //datum som kontot skapades
++    private $admin;         //false = vanlig användare, true = admin
++    
++    public function __construct($id, $userName, $email, $password, $salt, $dateAdded, $admin)
++	{
++		$this->id = $id;
++		$this->userName = $userName;
++		$this->email = $email;
++		$this->password = $password;
++		$this->salt = $salt;
++		$this->dateAdded = $dateAdded;
++		$this->admin = $admin;
++		
++	}
++	
++	public function explain()
++	{
++		return "hello, my name is ".$this->userName." and my email is ".$this->email;
++	}
++    
++}
+\ No newline at end of file
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/39/d0c9e53ab847001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/39/d0c9e53ab847001416e9b684e496cc1f
+new file mode 100644
+index 0000000..e1f72e6
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/39/d0c9e53ab847001416e9b684e496cc1f
+@@ -0,0 +1,20 @@
++<?php
++
++require_once("controller/NavigationController.php");
++require_once("view/HTMLView.php");
++require_once("model/repo/UserRepo.php");
++require_once("model/User.php");
++
++$htmlView  = new \view\HtmlView();
++$navController = new \controller\NavigationController();
++
++$navController->doControl();
++$body = $navController->getBody();
++$title = $navController->getTitle();
++
++$test = new \model\repository\UserRepo();
++$user = $test->getUserById(1);
++echo $user->explain();
++
++$htmlView->showHTML($title, $body);
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/4/902da9d3b547001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/4/902da9d3b547001416e9b684e496cc1f
+new file mode 100644
+index 0000000..ee68cdb
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/4/902da9d3b547001416e9b684e496cc1f
+@@ -0,0 +1,39 @@
++<?php
++
++namespace model\repository;
++
++require_once("./model/repo/Repository.php");
++require_once("./model/User.php");
++
++class UserRepo extends \model\repository\Repository
++{
++
++	//hämta en användare
++	public function getUserById($id)
++	{		
++		$this->connect();
++		
++		//skapar en sql sats och parametrar som ska skickas med.
++		$sql = 'SELECT * FROM user WHERE userID = ? ';
++		$params = array($id);
++		
++		//förbered frågan och kör den sedan (med params)
++		$query = $this->dbConnection->prepare($sql);
++		$query->execute($params);
++		
++		//hämtar användaren (kommer som en array om den hittades, annars FALSE)
++		$result = $query->fetch();
++		if($result)
++		{
++			foreach($result as $i)
++			{
++				echo $i . '<br />';
++			}
++		}
++		
++	}
++	
++}
++
++
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/40/b0d6717db647001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/40/b0d6717db647001416e9b684e496cc1f
+new file mode 100644
+index 0000000..6134793
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/40/b0d6717db647001416e9b684e496cc1f
+@@ -0,0 +1,47 @@
++<?php
++
++namespace model\repository;
++
++require_once("./model/repo/Repository.php");
++require_once("./model/User.php");
++
++class UserRepo extends \model\repository\Repository
++{
++	//fältnamn i databasen
++	private $id = "userID";            
++    private $userName = ;     
++    private $email;         
++    private $password;      
++    private $salt;          
++    private $dateAdded;     
++    private $admin = "";
++
++	//hämta en användare
++	public function getUserById($id)
++	{		
++		$this->connect();
++		
++		//skapar en sql sats och parametrar som ska skickas med.
++		$sql = 'SELECT * FROM user WHERE userID = ? ';
++		$params = array($id);
++		
++		//förbered frågan och kör den sedan (med params)
++		$query = $this->dbConnection->prepare($sql);
++		$query->execute($params);
++		
++		//hämtar användaren (kommer som en array om den hittades, annars FALSE)
++		$result = $query->fetch();
++		if($result)
++		{
++			$user = new \model\User
++			(
++					
++			);
++		}
++		
++	}
++	
++}
++
++
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/41/20e5fd17b747001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/41/20e5fd17b747001416e9b684e496cc1f
+new file mode 100644
+index 0000000..c6bb23f
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/41/20e5fd17b747001416e9b684e496cc1f
+@@ -0,0 +1,49 @@
++<?php
++
++namespace model\repository;
++
++require_once("./model/repo/Repository.php");
++require_once("./model/User.php");
++
++class UserRepo extends \model\repository\Repository
++{
++	//fältnamn i databasen
++	private $id = "userID";            
++    private $userName = "userName";     
++    private $email = "email";         
++    private $password = "pasword";      
++    private $salt = "salt";          
++    private $dateAdded = "dateAdded";     
++    private $admin = "status";
++
++	//hämta en användare
++	public function getUserById($id)
++	{		
++		$this->connect();
++		
++		//skapar en sql sats och parametrar som ska skickas med.
++		$sql = 'SELECT * FROM user WHERE userID = ? ';
++		$params = array($id);
++		
++		//förbered frågan och kör den sedan (med params)
++		$query = $this->dbConnection->prepare($sql);
++		$query->execute($params);
++		
++		//hämtar användaren (kommer som en array om den hittades, annars FALSE)
++		$result = $query->fetch();
++		if($result)
++		{
++			$user = new \model\User
++			(
++				result[$this->id],
++				result[$this->userName],
++						
++			);
++		}
++		
++	}
++	
++}
++
++
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/42/700ef318524700141192e080de53a013 b/.metadata/.plugins/org.eclipse.core.resources/.history/42/700ef318524700141192e080de53a013
+deleted file mode 100644
+index 306470e..0000000
+--- a/.metadata/.plugins/org.eclipse.core.resources/.history/42/700ef318524700141192e080de53a013
++++ /dev/null
+@@ -1,27 +0,0 @@
+-<?php
+-
+-namespace model\repository;
+-
+-require_once("./model/repo/Repository.php");
+-require_once("./model/User.php");
+-
+-class UserRepo extends \model\repository\Repository
+-{
+-
+-    
+-    //konstruktorn
+-    public function __construct()
+-    {
+-        $this->connect();
+-    }
+-	
+-	//hämta en användare
+-	public function getUserById($id)
+-	{
+-			
+-	}
+-	
+-}
+-
+-
+-
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/43/a0565459514700141192e080de53a013 b/.metadata/.plugins/org.eclipse.core.resources/.history/43/a0565459514700141192e080de53a013
+deleted file mode 100644
+index 43a4def..0000000
+--- a/.metadata/.plugins/org.eclipse.core.resources/.history/43/a0565459514700141192e080de53a013
++++ /dev/null
+@@ -1,31 +0,0 @@
+-<?php
+-
+-namespace model\repository;
+-
+-require_once("./model/repo/Repository.php");
+-
+-class UserRepo extends \model\repository\Repository
+-{
+-    private $id;            //unikt id
+-    private $userName;      //användarnamn
+-    private $email;         //email-address
+-    private $password;      //lösenord(hashat)
+-    private $salt;          //lösenord-salt
+-    private $dateAdded;     //datum som kontot skapades
+-    private $admin;         //false = vanlig användare, true = admin
+-    
+-    //konstruktorn
+-    public function __construct()
+-    {
+-        $this->connect();
+-    }
+-	
+-	public function add()
+-	{
+-		
+-	}
+-	
+-}
+-
+-
+-
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/47/50a34db2b647001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/47/50a34db2b647001416e9b684e496cc1f
+new file mode 100644
+index 0000000..fcf01f1
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/47/50a34db2b647001416e9b684e496cc1f
+@@ -0,0 +1,26 @@
++<?php
++
++class User
++{
++	
++    private $id;            //unikt id
++    private $userName;      //användarnamn
++    private $email;         //email-address
++    private $password;      //lösenord(hashat)
++    private $salt;          //lösenord-salt
++    private $dateAdded;     //datum som kontot skapades
++    private $admin = false;         //false = vanlig användare, true = admin
++    
++    public function __construct($id, $userName, $email, $password, $salt, $dateAdded, $admin)
++	{
++		$this->id = $id;
++		$this->userName = $userName;
++		$this->email = $email;
++		$this->password = $password;
++		$this->salt = $salt;
++		$this->dateAdded = $dateAdded;
++		$this->admin = $admin;
++		
++	}
++    
++}
+\ No newline at end of file
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/5/501d196cb747001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/5/501d196cb747001416e9b684e496cc1f
+new file mode 100644
+index 0000000..ebe7300
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/5/501d196cb747001416e9b684e496cc1f
+@@ -0,0 +1,53 @@
++<?php
++
++namespace model\repository;
++
++require_once("./model/repo/Repository.php");
++require_once("./model/User.php");
++
++class UserRepo extends \model\repository\Repository
++{
++	//fältnamn i databasen
++	private $id = "userID";            
++    private $userName = "userName";     
++    private $email = "email";         
++    private $password = "pasword";      
++    private $salt = "salt";          
++    private $dateAdded = "dateAdded";     
++    private $admin = "status";
++
++	//hämta en användare
++	public function getUserById($id)
++	{		
++		$this->connect();
++		
++		//skapar en sql sats och parametrar som ska skickas med.
++		$sql = 'SELECT * FROM user WHERE userID = ? ';
++		$params = array($id);
++		
++		//förbered frågan och kör den sedan (med params)
++		$query = $this->dbConnection->prepare($sql);
++		$query->execute($params);
++		
++		//hämtar användaren (kommer som en array om den hittades, annars FALSE)
++		$result = $query->fetch();
++		if($result)
++		{
++			$user = new \model\User
++			(
++				result[$this->id],
++				result[$this->userName],
++				result[$this->email],
++				result[$this->password],
++				result[$this->salt],
++				result[$this->dateAdded],
++				result[$this->admin]		
++			);
++		}
++		
++	}
++	
++}
++
++
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/50/409f5c35b647001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/50/409f5c35b647001416e9b684e496cc1f
+new file mode 100644
+index 0000000..c233ff6
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/50/409f5c35b647001416e9b684e496cc1f
+@@ -0,0 +1,38 @@
++<?php
++
++namespace model\repository;
++
++require_once("./model/repo/Repository.php");
++require_once("./model/User.php");
++
++class UserRepo extends \model\repository\Repository
++{
++
++	//hämta en användare
++	public function getUserById($id)
++	{		
++		$this->connect();
++		
++		//skapar en sql sats och parametrar som ska skickas med.
++		$sql = 'SELECT * FROM user WHERE userID = ? ';
++		$params = array($id);
++		
++		//förbered frågan och kör den sedan (med params)
++		$query = $this->dbConnection->prepare($sql);
++		$query->execute($params);
++		
++		//hämtar användaren (kommer som en array om den hittades, annars FALSE)
++		$result = $query->fetch();
++		if($result)
++		{
++			$user = new User
++			(
++			);
++		}
++		
++	}
++	
++}
++
++
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/50/609d1e93b447001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/50/609d1e93b447001416e9b684e496cc1f
+new file mode 100644
+index 0000000..03b9d1a
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/50/609d1e93b447001416e9b684e496cc1f
+@@ -0,0 +1,35 @@
++<?php
++
++namespace model\repository;
++
++require_once("./model/repo/Repository.php");
++require_once("./model/User.php");
++
++class UserRepo extends \model\repository\Repository
++{
++
++    
++    //konstruktorn
++    public function __construct()
++    {
++        $this->connect();
++    }
++	
++	//hämta en användare
++	public function getUserById($id)
++	{		
++		$this->connect();
++		
++		$sql = 'SELECT * FROM user WHERE userID = ? ';
++		$params = array($id);
++		
++		$query = $this->dbConnection->prepare($sql);
++		$query->execute($params);
++		
++		var_dump($query->fetch());die();
++	}
++	
++}
++
++
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/51/108c1e95b447001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/51/108c1e95b447001416e9b684e496cc1f
+new file mode 100644
+index 0000000..e243d2a
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/51/108c1e95b447001416e9b684e496cc1f
+@@ -0,0 +1,35 @@
++<?php
++
++namespace model\repository;
++
++require_once("./model/repo/Repository.php");
++require_once("./model/User.php");
++
++class UserRepo extends \model\repository\Repository
++{
++
++    
++    //konstruktorn
++    public function __construct()
++    {
++        $this->connect();
++    }
++	
++	//hämta en användare
++	public function getUserById($id)
++	{		
++		$this->connect();
++		
++		$sql = 'SELECT * FROM user WHERE userID = ? ';
++		$params = array($id);
++		
++		$query = $this->dbConnection->prepare($sql);
++		$query->execute($params);
++		
++		($query->fetch());die();
++	}
++	
++}
++
++
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/54/f0d25de0b747001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/54/f0d25de0b747001416e9b684e496cc1f
+new file mode 100644
+index 0000000..1dbeaea
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/54/f0d25de0b747001416e9b684e496cc1f
+@@ -0,0 +1,53 @@
++<?php
++
++namespace model\repository;
++
++require_once("./model/repo/Repository.php");
++require_once("./model/User.php");
++
++class UserRepo extends \model\repository\Repository
++{
++	//fältnamn i databasen
++	private $id = "userID";            
++    private $userName = "userName";     
++    private $email = "email";         
++    private $password = "pasword";      
++    private $salt = "salt";          
++    private $dateAdded = "dateAdded";     
++    private $admin = "status";
++
++	//hämta en användare
++	public function getUserById($id)
++	{		
++		$this->connect();
++		
++		//skapar en sql sats och parametrar som ska skickas med.
++		$sql = 'SELECT * FROM user WHERE userID = ? ';
++		$params = array($id);
++		
++		//förbered frågan och kör den sedan (med params)
++		$query = $this->dbConnection->prepare($sql);
++		$query->execute($params);
++		
++		//hämtar användaren (kommer som en array om den hittades, annars FALSE)
++		$result = $query->fetch();
++		if($result)
++		{
++			$user = new \model\User
++			(
++				$result[$this->id],
++				$result[$this->userName],
++				$result[$this->email],
++				$result[$this->password],
++				$result[$this->salt],
++				$result[$this->dateAdded],
++				$result[$this->admin]		
++			);
++		}
++		
++	}
++	
++}
++
++
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/5a/3053d10d524700141192e080de53a013 b/.metadata/.plugins/org.eclipse.core.resources/.history/5a/3053d10d524700141192e080de53a013
+deleted file mode 100644
+index 9787756..0000000
+--- a/.metadata/.plugins/org.eclipse.core.resources/.history/5a/3053d10d524700141192e080de53a013
++++ /dev/null
+@@ -1,26 +0,0 @@
+-<?php
+-
+-namespace model\repository;
+-
+-require_once("./model/repo/Repository.php");
+-
+-class UserRepo extends \model\repository\Repository
+-{
+-
+-    
+-    //konstruktorn
+-    public function __construct()
+-    {
+-        $this->connect();
+-    }
+-	
+-	//hämta en användare
+-	public function getUserById($id)
+-	{
+-		
+-	}
+-	
+-}
+-
+-
+-
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/5a/7080d94db547001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/5a/7080d94db547001416e9b684e496cc1f
+new file mode 100644
+index 0000000..93f39db
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/5a/7080d94db547001416e9b684e496cc1f
+@@ -0,0 +1,36 @@
++<?php
++
++namespace model\repository;
++
++require_once("./model/repo/Repository.php");
++require_once("./model/User.php");
++
++class UserRepo extends \model\repository\Repository
++{
++
++	//hämta en användare
++	public function getUserById($id)
++	{		
++		$this->connect();
++		
++		//skapar en sql sats och parametrar som ska skickas med.
++		$sql = 'SELECT * FROM user WHERE userID = ? ';
++		$params = array($id);
++		
++		//förbered frågan och kör den sedan (med params)
++		$query = $this->dbConnection->prepare($sql);
++		$query->execute($params);
++		
++		//hämtar användaren (kommer som en array om den hittades, annars FALSE)
++		$result = $query->fetch();
++		if($result)
++		{
++			
++		}
++		
++	}
++	
++}
++
++
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/5b/b09fb638b647001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/5b/b09fb638b647001416e9b684e496cc1f
+new file mode 100644
+index 0000000..6f37b0b
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/5b/b09fb638b647001416e9b684e496cc1f
+@@ -0,0 +1,39 @@
++<?php
++
++namespace model\repository;
++
++require_once("./model/repo/Repository.php");
++require_once("./model/User.php");
++
++class UserRepo extends \model\repository\Repository
++{
++
++	//hämta en användare
++	public function getUserById($id)
++	{		
++		$this->connect();
++		
++		//skapar en sql sats och parametrar som ska skickas med.
++		$sql = 'SELECT * FROM user WHERE userID = ? ';
++		$params = array($id);
++		
++		//förbered frågan och kör den sedan (med params)
++		$query = $this->dbConnection->prepare($sql);
++		$query->execute($params);
++		
++		//hämtar användaren (kommer som en array om den hittades, annars FALSE)
++		$result = $query->fetch();
++		if($result)
++		{
++			$user = new \model\User
++			(
++			
++			);
++		}
++		
++	}
++	
++}
++
++
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/69/b013ad5b514700141192e080de53a013 b/.metadata/.plugins/org.eclipse.core.resources/.history/69/b013ad5b514700141192e080de53a013
+deleted file mode 100644
+index 12b0d87..0000000
+--- a/.metadata/.plugins/org.eclipse.core.resources/.history/69/b013ad5b514700141192e080de53a013
++++ /dev/null
+@@ -1,32 +0,0 @@
+-<?php
+-
+-namespace model\repository;
+-
+-require_once("./model/repo/Repository.php");
+-
+-class UserRepo extends \model\repository\Repository
+-{
+-    private $id;            //unikt id
+-    private $userName;      //användarnamn
+-    private $email;         //email-address
+-    private $password;      //lösenord(hashat)
+-    private $salt;          //lösenord-salt
+-    private $dateAdded;     //datum som kontot skapades
+-    private $admin;         //false = vanlig användare, true = admin
+-    
+-    //konstruktorn
+-    public function __construct()
+-    {
+-        $this->connect();
+-    }
+-	
+-	//hämta en användare
+-	public function getUserByID()
+-	{
+-		
+-	}
+-	
+-}
+-
+-
+-
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/6a/f0545d9e504700141192e080de53a013 b/.metadata/.plugins/org.eclipse.core.resources/.history/6a/f0545d9e504700141192e080de53a013
+deleted file mode 100644
+index 47e141e..0000000
+--- a/.metadata/.plugins/org.eclipse.core.resources/.history/6a/f0545d9e504700141192e080de53a013
++++ /dev/null
+@@ -1,26 +0,0 @@
+-<?php
+-
+-namespace model\repository;
+-
+-require_once("./model/repo/Repository.php");
+-
+-class UserRepo extends \model\repository\Repository
+-{
+-    private $id;            //unikt id
+-    private $userName;      //användarnamn
+-    private $email;         //email-address
+-    private $password;      //lösenord(hashat)
+-    private $salt;          //lösenord-salt
+-    private $dateAdded;     //datum som kontot skapades
+-    private $admin;         //false = vanlig användare, true = admin
+-    
+-    public function __construct()
+-    {
+-        
+-    }
+-	
+-	
+-}
+-
+-
+-
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/6b/20b71e87b447001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/6b/20b71e87b447001416e9b684e496cc1f
+new file mode 100644
+index 0000000..76fc0ee
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/6b/20b71e87b447001416e9b684e496cc1f
+@@ -0,0 +1,35 @@
++<?php
++
++namespace model\repository;
++
++require_once("./model/repo/Repository.php");
++require_once("./model/User.php");
++
++class UserRepo extends \model\repository\Repository
++{
++
++    
++    //konstruktorn
++    public function __construct()
++    {
++        $this->connect();
++    }
++	
++	//hämta en användare
++	public function getUserById($id)
++	{		
++		$this->connect();
++		
++		$sql = 'SELECT * FROM user WHERE "userID" = ? ';
++		$params = array($id);
++		
++		$query = $this->dbConnection->prepare($sql);
++		$query->execute($params);
++		
++		var_dump($query->fetch());die();
++	}
++	
++}
++
++
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/6b/702d672b524700141192e080de53a013 b/.metadata/.plugins/org.eclipse.core.resources/.history/6b/702d672b524700141192e080de53a013
+deleted file mode 100644
+index af553cd..0000000
+--- a/.metadata/.plugins/org.eclipse.core.resources/.history/6b/702d672b524700141192e080de53a013
++++ /dev/null
+@@ -1,28 +0,0 @@
+-<?php
+-
+-namespace model\repository;
+-
+-require_once("./model/repo/Repository.php");
+-require_once("./model/user.php");
+-
+-class UserRepo extends \model\repository\Repository
+-{
+-
+-    
+-    //konstruktorn
+-    public function __construct()
+-    {
+-        $this->connect();
+-    }
+-	
+-	//hämta en användare
+-	public function getUserById($id)
+-	{
+-		
+-		
+-	}
+-	
+-}
+-
+-
+-
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/6d/e07cc3beb647001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/6d/e07cc3beb647001416e9b684e496cc1f
+new file mode 100644
+index 0000000..e03b14b
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/6d/e07cc3beb647001416e9b684e496cc1f
+@@ -0,0 +1,47 @@
++<?php
++
++namespace model\repository;
++
++require_once("./model/repo/Repository.php");
++require_once("./model/User.php");
++
++class UserRepo extends \model\repository\Repository
++{
++	//fältnamn i databasen
++	private $id = "userID";            
++    private $userName = "userName";     
++    private $email = "email";         
++    private $password = "pasword";      
++    private $salt = "salt";          
++    private $dateAdded = "dateAdded";     
++    private $admin = "status";
++
++	//hämta en användare
++	public function getUserById($id)
++	{		
++		$this->connect();
++		
++		//skapar en sql sats och parametrar som ska skickas med.
++		$sql = 'SELECT * FROM user WHERE userID = ? ';
++		$params = array($id);
++		
++		//förbered frågan och kör den sedan (med params)
++		$query = $this->dbConnection->prepare($sql);
++		$query->execute($params);
++		
++		//hämtar användaren (kommer som en array om den hittades, annars FALSE)
++		$result = $query->fetch();
++		if($result)
++		{
++			$user = new \model\User
++			(
++					
++			);
++		}
++		
++	}
++	
++}
++
++
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/72/20a52eedb447001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/72/20a52eedb447001416e9b684e496cc1f
+new file mode 100644
+index 0000000..1da2add
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/72/20a52eedb447001416e9b684e496cc1f
+@@ -0,0 +1,37 @@
++<?php
++
++namespace model\repository;
++
++require_once("./model/repo/Repository.php");
++require_once("./model/User.php");
++
++class UserRepo extends \model\repository\Repository
++{
++    //konstruktorn
++    public function __construct()
++    {
++        $this->connect();
++    }
++	
++	//hämta en användare
++	public function getUserById($id)
++	{		
++		$this->connect();
++		
++		
++		$sql = 'SELECT * FROM user WHERE userID = ? ';
++		$params = array($id);
++		
++		$query = $this->dbConnection->prepare($sql);
++		$query->execute($params);
++		
++		$result = $query->fetch();
++		
++		if($result)
++		
++	}
++	
++}
++
++
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/73/d036c6c5b247001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/73/d036c6c5b247001416e9b684e496cc1f
+new file mode 100644
+index 0000000..8d52c1f
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/73/d036c6c5b247001416e9b684e496cc1f
+@@ -0,0 +1,34 @@
++<?php
++
++namespace model\repository;
++
++abstract class Repository 
++{
++    private $userName = "henrikgabrielss";
++    private $password = "tCiSetWtDead";
++    private $connectionString = "mysql:host=henrikgabrielsson.se.mysql;dbname=henrikgabrielss";
++    
++    protected $dbConnection; 
++	protected $currentTable;
++
++    public function connect()
++    {
++        //kollar ifall det inte redan finns en anslutning till databasen så skapas den här
++        if($this->dbConnection === NULL)
++        {
++            try
++            {
++            	var_dump($_SERVER);die();
++                $this->dbConnection  = new \PDO($this->connectionString, $this->userName, $this->password);
++            }
++            catch(Exception $e)
++            {
++                throw new Exception("Problems with the database connection.");
++            }
++        }
++    }
++    
++    
++}
++
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/75/9029ae5f514700141192e080de53a013 b/.metadata/.plugins/org.eclipse.core.resources/.history/75/9029ae5f514700141192e080de53a013
+deleted file mode 100644
+index 5ab32b0..0000000
+--- a/.metadata/.plugins/org.eclipse.core.resources/.history/75/9029ae5f514700141192e080de53a013
++++ /dev/null
+@@ -1,32 +0,0 @@
+-<?php
+-
+-namespace model\repository;
+-
+-require_once("./model/repo/Repository.php");
+-
+-class UserRepo extends \model\repository\Repository
+-{
+-    private $id;            //unikt id
+-    private $userName;      //användarnamn
+-    private $email;         //email-address
+-    private $password;      //lösenord(hashat)
+-    private $salt;          //lösenord-salt
+-    private $dateAdded;     //datum som kontot skapades
+-    private $admin;         //false = vanlig användare, true = admin
+-    
+-    //konstruktorn
+-    public function __construct()
+-    {
+-        $this->connect();
+-    }
+-	
+-	//hämta en användare
+-	public function getUserById()
+-	{
+-		
+-	}
+-	
+-}
+-
+-
+-
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/76/a0ea390d514700141192e080de53a013 b/.metadata/.plugins/org.eclipse.core.resources/.history/76/a0ea390d514700141192e080de53a013
+deleted file mode 100644
+index e56b766..0000000
+--- a/.metadata/.plugins/org.eclipse.core.resources/.history/76/a0ea390d514700141192e080de53a013
++++ /dev/null
+@@ -1,25 +0,0 @@
+-<?php
+-
+-namespace model\repository;
+-
+-require_once("./model/repo/Repository.php");
+-
+-class UserRepo extends \model\repository\Repository
+-{
+-    private $id;            //unikt id
+-    private $userName;      //användarnamn
+-    private $email;         //email-address
+-    private $password;      //lösenord(hashat)
+-    private $salt;          //lösenord-salt
+-    private $dateAdded;     //datum som kontot skapades
+-    private $admin;         //false = vanlig användare, true = admin
+-    
+-    public function __construct()
+-    {
+-        
+-    }
+-	
+-}
+-
+-
+-
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/77/906f6a23b847001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/77/906f6a23b847001416e9b684e496cc1f
+new file mode 100644
+index 0000000..aa49375
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/77/906f6a23b847001416e9b684e496cc1f
+@@ -0,0 +1,56 @@
++<?php
++
++namespace model\repository;
++
++require_once("./model/repo/Repository.php");
++require_once("./model/User.php");
++
++class UserRepo extends \model\repository\Repository
++{
++	//fältnamn i databasen
++	private $id = "userID";            
++    private $userName = "userName";     
++    private $email = "email";         
++    private $password = "pasword";      
++    private $salt = "salt";          
++    private $dateAdded = "dateAdded";     
++    private $admin = "status";
++
++	//hämta en användare
++	public function getUserById($id)
++	{		
++		$this->connect();
++		
++		//skapar en sql sats och parametrar som ska skickas med.
++		$sql = 'SELECT * FROM user WHERE userID = ? ';
++		$params = array($id);
++		
++		//förbered frågan och kör den sedan (med params)
++		$query = $this->dbConnection->prepare($sql);
++		$query->execute($params);
++		
++		$user;
++		//hämtar användaren (kommer som en array om den hittades, annars FALSE)
++		$result = $query->fetch();
++		if($result)
++		{
++			$user = new User
++			(
++				$result[$this->id],
++				$result[$this->userName],
++				$result[$this->email],
++				$result[$this->password],
++				$result[$this->salt],
++				$result[$this->dateAdded],
++				$result[$this->admin]		
++			);
++		}
++		
++		return $user;
++		
++	}
++	
++}
++
++
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/77/b0cb1fc6b647001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/77/b0cb1fc6b647001416e9b684e496cc1f
+new file mode 100644
+index 0000000..6a77f5a
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/77/b0cb1fc6b647001416e9b684e496cc1f
+@@ -0,0 +1,47 @@
++<?php
++
++namespace model\repository;
++
++require_once("./model/repo/Repository.php");
++require_once("./model/User.php");
++
++class UserRepo extends \model\repository\Repository
++{
++	//fältnamn i databasen
++	private $id = "userID";            
++    private $userName = "userName";     
++    private $email = "email";         
++    private $password = "pasword";      
++    private $salt = "salt";          
++    private $dateAdded = "dateAdded";     
++    private $admin = "status";
++
++	//hämta en användare
++	public function getUserById($id)
++	{		
++		$this->connect();
++		
++		//skapar en sql sats och parametrar som ska skickas med.
++		$sql = 'SELECT * FROM user WHERE userID = ? ';
++		$params = array($id);
++		
++		//förbered frågan och kör den sedan (med params)
++		$query = $this->dbConnection->prepare($sql);
++		$query->execute($params);
++		
++		//hämtar användaren (kommer som en array om den hittades, annars FALSE)
++		$result = $query->fetch();
++		if($result)
++		{
++			$user = new \model\User
++			(
++				$id = ' '		
++			);
++		}
++		
++	}
++	
++}
++
++
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/78/0028ca39b547001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/78/0028ca39b547001416e9b684e496cc1f
+new file mode 100644
+index 0000000..bd9aaa8
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/78/0028ca39b547001416e9b684e496cc1f
+@@ -0,0 +1,18 @@
++<?php
++
++require_once("controller/NavigationController.php");
++require_once("view/HTMLView.php");
++require_once("model/repo/UserRepo.php");
++
++$htmlView  = new \view\HtmlView();
++$navController = new \controller\NavigationController();
++
++$navController->doControl();
++$body = $navController->getBody();
++$title = $navController->getTitle();
++
++$test = new \model\repository\UserRepo();
++echo $test->getUserById(1);
++
++$htmlView->showHTML($title, $body);
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/79/30173df3b447001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/79/30173df3b447001416e9b684e496cc1f
+new file mode 100644
+index 0000000..d74e2da
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/79/30173df3b447001416e9b684e496cc1f
+@@ -0,0 +1,36 @@
++<?php
++
++namespace model\repository;
++
++require_once("./model/repo/Repository.php");
++require_once("./model/User.php");
++
++class UserRepo extends \model\repository\Repository
++{
++    //konstruktorn
++    public function __construct()
++    {
++    }
++	
++	//hämta en användare
++	public function getUserById($id)
++	{		
++		$this->connect();
++		
++		
++		$sql = 'SELECT * FROM user WHERE userID = ? ';
++		$params = array($id);
++		
++		$query = $this->dbConnection->prepare($sql);
++		$query->execute($params);
++		
++		$result = $query->fetch();
++		
++		if($result)
++		
++	}
++	
++}
++
++
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/79/a007e600b747001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/79/a007e600b747001416e9b684e496cc1f
+new file mode 100644
+index 0000000..2bb3873
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/79/a007e600b747001416e9b684e496cc1f
+@@ -0,0 +1,48 @@
++<?php
++
++namespace model\repository;
++
++require_once("./model/repo/Repository.php");
++require_once("./model/User.php");
++
++class UserRepo extends \model\repository\Repository
++{
++	//fältnamn i databasen
++	private $id = "userID";            
++    private $userName = "userName";     
++    private $email = "email";         
++    private $password = "pasword";      
++    private $salt = "salt";          
++    private $dateAdded = "dateAdded";     
++    private $admin = "status";
++
++	//hämta en användare
++	public function getUserById($id)
++	{		
++		$this->connect();
++		
++		//skapar en sql sats och parametrar som ska skickas med.
++		$sql = 'SELECT * FROM user WHERE userID = ? ';
++		$params = array($id);
++		
++		//förbered frågan och kör den sedan (med params)
++		$query = $this->dbConnection->prepare($sql);
++		$query->execute($params);
++		
++		//hämtar användaren (kommer som en array om den hittades, annars FALSE)
++		$result = $query->fetch();
++		if($result)
++		{
++			$user = new \model\User
++			(
++				result[$this->id],
++						
++			);
++		}
++		
++	}
++	
++}
++
++
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/7a/90e15dd0304400141900e335fe34e51f b/.metadata/.plugins/org.eclipse.core.resources/.history/7a/90e15dd0304400141900e335fe34e51f
+deleted file mode 100644
+index b2c2e82..0000000
+--- a/.metadata/.plugins/org.eclipse.core.resources/.history/7a/90e15dd0304400141900e335fe34e51f
++++ /dev/null
+@@ -1,3 +0,0 @@
+-<?php
+-
+-require_once();
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/7b/40378c16b847001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/7b/40378c16b847001416e9b684e496cc1f
+new file mode 100644
+index 0000000..d9fa9c2
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/7b/40378c16b847001416e9b684e496cc1f
+@@ -0,0 +1,57 @@
++<?php
++
++namespace model\repository;
++
++require_once("./model/repo/Repository.php");
++require_once("./model/User.php");
++
++class UserRepo extends \model\repository\Repository
++{
++	//fältnamn i databasen
++	private $id = "userID";            
++    private $userName = "userName";     
++    private $email = "email";         
++    private $password = "pasword";      
++    private $salt = "salt";          
++    private $dateAdded = "dateAdded";     
++    private $admin = "status";
++
++	//hämta en användare
++	public function getUserById($id)
++	{		
++		$this->connect();
++		
++		//skapar en sql sats och parametrar som ska skickas med.
++		$sql = 'SELECT * FROM user WHERE userID = ? ';
++		$params = array($id);
++		
++		//förbered frågan och kör den sedan (med params)
++		$query = $this->dbConnection->prepare($sql);
++		$query->execute($params);
++		
++		$user;
++		//hämtar användaren (kommer som en array om den hittades, annars FALSE)
++		$result = $query->fetch();
++		if($result)
++		{
++			$user = new 
++			User
++			(
++				$result[$this->id],
++				$result[$this->userName],
++				$result[$this->email],
++				$result[$this->password],
++				$result[$this->salt],
++				$result[$this->dateAdded],
++				$result[$this->admin]		
++			);
++		}
++		
++		return $user;
++		
++	}
++	
++}
++
++
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/7b/603e3183b647001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/7b/603e3183b647001416e9b684e496cc1f
+new file mode 100644
+index 0000000..5294d9f
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/7b/603e3183b647001416e9b684e496cc1f
+@@ -0,0 +1,47 @@
++<?php
++
++namespace model\repository;
++
++require_once("./model/repo/Repository.php");
++require_once("./model/User.php");
++
++class UserRepo extends \model\repository\Repository
++{
++	//fältnamn i databasen
++	private $id = "userID";            
++    private $userName = "";     
++    private $email;         
++    private $password;      
++    private $salt;          
++    private $dateAdded;     
++    private $admin = "";
++
++	//hämta en användare
++	public function getUserById($id)
++	{		
++		$this->connect();
++		
++		//skapar en sql sats och parametrar som ska skickas med.
++		$sql = 'SELECT * FROM user WHERE userID = ? ';
++		$params = array($id);
++		
++		//förbered frågan och kör den sedan (med params)
++		$query = $this->dbConnection->prepare($sql);
++		$query->execute($params);
++		
++		//hämtar användaren (kommer som en array om den hittades, annars FALSE)
++		$result = $query->fetch();
++		if($result)
++		{
++			$user = new \model\User
++			(
++					
++			);
++		}
++		
++	}
++	
++}
++
++
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/7d/30a8b33ab647001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/7d/30a8b33ab647001416e9b684e496cc1f
+new file mode 100644
+index 0000000..d348b8f
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/7d/30a8b33ab647001416e9b684e496cc1f
+@@ -0,0 +1,39 @@
++<?php
++
++namespace model\repository;
++
++require_once("./model/repo/Repository.php");
++require_once("./model/User.php");
++
++class UserRepo extends \model\repository\Repository
++{
++
++	//hämta en användare
++	public function getUserById($id)
++	{		
++		$this->connect();
++		
++		//skapar en sql sats och parametrar som ska skickas med.
++		$sql = 'SELECT * FROM user WHERE userID = ? ';
++		$params = array($id);
++		
++		//förbered frågan och kör den sedan (med params)
++		$query = $this->dbConnection->prepare($sql);
++		$query->execute($params);
++		
++		//hämtar användaren (kommer som en array om den hittades, annars FALSE)
++		$result = $query->fetch();
++		if($result)
++		{
++			$user = new \model\User
++			(
++				
++			);
++		}
++		
++	}
++	
++}
++
++
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/7e/5094bfa1b447001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/7e/5094bfa1b447001416e9b684e496cc1f
+new file mode 100644
+index 0000000..e243d2a
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/7e/5094bfa1b447001416e9b684e496cc1f
+@@ -0,0 +1,35 @@
++<?php
++
++namespace model\repository;
++
++require_once("./model/repo/Repository.php");
++require_once("./model/User.php");
++
++class UserRepo extends \model\repository\Repository
++{
++
++    
++    //konstruktorn
++    public function __construct()
++    {
++        $this->connect();
++    }
++	
++	//hämta en användare
++	public function getUserById($id)
++	{		
++		$this->connect();
++		
++		$sql = 'SELECT * FROM user WHERE userID = ? ';
++		$params = array($id);
++		
++		$query = $this->dbConnection->prepare($sql);
++		$query->execute($params);
++		
++		($query->fetch());die();
++	}
++	
++}
++
++
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/7f/b06998fab647001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/7f/b06998fab647001416e9b684e496cc1f
+new file mode 100644
+index 0000000..308a425
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/7f/b06998fab647001416e9b684e496cc1f
+@@ -0,0 +1,47 @@
++<?php
++
++namespace model\repository;
++
++require_once("./model/repo/Repository.php");
++require_once("./model/User.php");
++
++class UserRepo extends \model\repository\Repository
++{
++	//fältnamn i databasen
++	private $id = "userID";            
++    private $userName = "userName";     
++    private $email = "email";         
++    private $password = "pasword";      
++    private $salt = "salt";          
++    private $dateAdded = "dateAdded";     
++    private $admin = "status";
++
++	//hämta en användare
++	public function getUserById($id)
++	{		
++		$this->connect();
++		
++		//skapar en sql sats och parametrar som ska skickas med.
++		$sql = 'SELECT * FROM user WHERE userID = ? ';
++		$params = array($id);
++		
++		//förbered frågan och kör den sedan (med params)
++		$query = $this->dbConnection->prepare($sql);
++		$query->execute($params);
++		
++		//hämtar användaren (kommer som en array om den hittades, annars FALSE)
++		$result = $query->fetch();
++		if($result)
++		{
++			$user = new \model\User
++			(
++				$id = 		
++			);
++		}
++		
++	}
++	
++}
++
++
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/86/6031f8c5b447001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/86/6031f8c5b447001416e9b684e496cc1f
+new file mode 100644
+index 0000000..e11d662
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/86/6031f8c5b447001416e9b684e496cc1f
+@@ -0,0 +1,35 @@
++<?php
++
++namespace model\repository;
++
++require_once("./model/repo/Repository.php");
++require_once("./model/User.php");
++
++class UserRepo extends \model\repository\Repository
++{
++
++    
++    //konstruktorn
++    public function __construct()
++    {
++        $this->connect();
++    }
++	
++	//hämta en användare
++	public function getUserById($id)
++	{		
++		$this->connect();
++		
++		$sql = 'SELECT * FROM user WHERE userID = ? ';
++		$params = array($id);
++		
++		$query = $this->dbConnection->prepare($sql);
++		$query->execute($params);
++		
++		$result = $query->fetch();
++	}
++	
++}
++
++
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/8a/c01e4f3fb547001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/8a/c01e4f3fb547001416e9b684e496cc1f
+new file mode 100644
+index 0000000..ca572e0
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/8a/c01e4f3fb547001416e9b684e496cc1f
+@@ -0,0 +1,17 @@
++<?php
++
++require_once("controller/NavigationController.php");
++require_once("view/HTMLView.php");
++require_once("model/repo/UserRepo.php");
++
++$htmlView  = new \view\HtmlView();
++$navController = new \controller\NavigationController();
++
++$navController->doControl();
++$body = $navController->getBody();
++$title = $navController->getTitle();
++
++$test = new \model\repository\UserRepo();
++
++$htmlView->showHTML($title, $body);
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/8c/00000900b547001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/8c/00000900b547001416e9b684e496cc1f
+new file mode 100644
+index 0000000..f77bec3
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/8c/00000900b547001416e9b684e496cc1f
+@@ -0,0 +1,32 @@
++<?php
++
++namespace model\repository;
++
++require_once("./model/repo/Repository.php");
++require_once("./model/User.php");
++
++class UserRepo extends \model\repository\Repository
++{
++
++	//hämta en användare
++	public function getUserById($id)
++	{		
++		$this->connect();
++		
++		//skapar en sql sats och parametrar som ska skickas med.
++		$sql = 'SELECT * FROM user WHERE userID = ? ';
++		$params = array($id);
++		
++		$query = $this->dbConnection->prepare($sql);
++		$query->execute($params);
++		
++		$result = $query->fetch();
++		
++		if($result)
++		
++	}
++	
++}
++
++
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/91/e04e944cb847001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/91/e04e944cb847001416e9b684e496cc1f
+new file mode 100644
+index 0000000..40a06c8
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/91/e04e944cb847001416e9b684e496cc1f
+@@ -0,0 +1,56 @@
++<?php
++
++namespace model\repository;
++
++require_once("./model/repo/Repository.php");
++require_once("./model/User.php");
++
++class UserRepo extends \model\repository\Repository
++{
++	//fältnamn i databasen
++	private $id = "userID";            
++    private $userName = "userName";     
++    private $email = "email";         
++    private $password = "pasword";      
++    private $salt = "salt";          
++    private $dateAdded = "dateAdded";     
++    private $admin = "status";
++
++	//hämta en användare
++	public function getUserById($id)
++	{		
++		$this->connect();
++		
++		//skapar en sql sats och parametrar som ska skickas med.
++		$sql = 'SELECT * FROM user WHERE userID = ? ';
++		$params = array($id);
++		
++		//förbered frågan och kör den sedan (med params)
++		$query = $this->dbConnection->prepare($sql);
++		$query->execute($params);
++		
++		$user;
++		//hämtar användaren (kommer som en array om den hittades, annars FALSE)
++		$result = $query->fetch();
++		if($result)
++		{
++			$user = new \User
++			(
++				$result[$this->id],
++				$result[$this->userName],
++				$result[$this->email],
++				$result[$this->password],
++				$result[$this->salt],
++				$result[$this->dateAdded],
++				$result[$this->admin]		
++			);
++		}
++		
++		return $user;
++		
++	}
++	
++}
++
++
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/92/50773d9b504700141192e080de53a013 b/.metadata/.plugins/org.eclipse.core.resources/.history/92/50773d9b504700141192e080de53a013
+deleted file mode 100644
+index 94b00ed..0000000
+--- a/.metadata/.plugins/org.eclipse.core.resources/.history/92/50773d9b504700141192e080de53a013
++++ /dev/null
+@@ -1,24 +0,0 @@
+-<?php
+-
+-namespace model\repository;
+-
+-require_once("./model/repo/Repository.php");
+-
+-class UserRepo extends \model\repository\Repository
+-{
+-    private $id;            //unikt id
+-    private $userName;      //användarnamn
+-    private $email;         //email-address
+-    private $password;      //lösenord(hashat)
+-    private $salt;          //lösenord-salt
+-    private $dateAdded;     //datum som kontot skapades
+-    private $admin;         //false = vanlig användare, true = admin
+-    
+-    public function __construct()
+-    {
+-        
+-    }
+-}
+-
+-
+-
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/92/c0ba8a93b647001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/92/c0ba8a93b647001416e9b684e496cc1f
+new file mode 100644
+index 0000000..e84c1ae
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/92/c0ba8a93b647001416e9b684e496cc1f
+@@ -0,0 +1,47 @@
++<?php
++
++namespace model\repository;
++
++require_once("./model/repo/Repository.php");
++require_once("./model/User.php");
++
++class UserRepo extends \model\repository\Repository
++{
++	//fältnamn i databasen
++	private $id = "userID";            
++    private $userName = "userName";     
++    private $email;         
++    private $password;      
++    private $salt;          
++    private $dateAdded;     
++    private $admin = "";
++
++	//hämta en användare
++	public function getUserById($id)
++	{		
++		$this->connect();
++		
++		//skapar en sql sats och parametrar som ska skickas med.
++		$sql = 'SELECT * FROM user WHERE userID = ? ';
++		$params = array($id);
++		
++		//förbered frågan och kör den sedan (med params)
++		$query = $this->dbConnection->prepare($sql);
++		$query->execute($params);
++		
++		//hämtar användaren (kommer som en array om den hittades, annars FALSE)
++		$result = $query->fetch();
++		if($result)
++		{
++			$user = new \model\User
++			(
++					
++			);
++		}
++		
++	}
++	
++}
++
++
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/97/003e4b16b547001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/97/003e4b16b547001416e9b684e496cc1f
+new file mode 100644
+index 0000000..88c9e6d
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/97/003e4b16b547001416e9b684e496cc1f
+@@ -0,0 +1,33 @@
++<?php
++
++namespace model\repository;
++
++require_once("./model/repo/Repository.php");
++require_once("./model/User.php");
++
++class UserRepo extends \model\repository\Repository
++{
++
++	//hämta en användare
++	public function getUserById($id)
++	{		
++		$this->connect();
++		
++		//skapar en sql sats och parametrar som ska skickas med.
++		$sql = 'SELECT * FROM user WHERE userID = ? ';
++		$params = array($id);
++		
++		//förbered frågan och kör den sedan (med params);
++		$query = $this->dbConnection->prepare($sql);
++		$query->execute($params);
++		
++		$result = $query->fetch();
++		
++		if($result)
++		
++	}
++	
++}
++
++
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/97/40cb71e8b247001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/97/40cb71e8b247001416e9b684e496cc1f
+new file mode 100644
+index 0000000..75651f4
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/97/40cb71e8b247001416e9b684e496cc1f
+@@ -0,0 +1,34 @@
++<?php
++
++namespace model\repository;
++
++abstract class Repository 
++{
++    private $userName = "henrikgabrielss";
++    private $password = "tCiSetWtDead";
++    private $connectionString = "mysql:host=henrikgabrielsson.se.mysql;dbname=henrikgabrielss";
++    
++    protected $dbConnection; 
++	protected $currentTable;
++
++    public function connect()
++    {
++        //kollar ifall det inte redan finns en anslutning till databasen så skapas den här
++        if($this->dbConnection === NULL)
++        {
++            try
++            {
++                $this->dbConnection  = new \PDO($this->connectionString, $this->userName, $this->password);
++				var_dump($this->dbConnection);die();
++            }
++            catch(Exception $e)
++            {
++                throw new Exception("Problems with the database connection.");
++            }
++        }
++    }
++    
++    
++}
++
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/99/20b64df7824400141c67b4cd7a69e1ea b/.metadata/.plugins/org.eclipse.core.resources/.history/99/20b64df7824400141c67b4cd7a69e1ea
+deleted file mode 100644
+index dc060f1..0000000
+--- a/.metadata/.plugins/org.eclipse.core.resources/.history/99/20b64df7824400141c67b4cd7a69e1ea
++++ /dev/null
+@@ -1,3 +0,0 @@
+-<?php
+-
+-require_once("poll_control.php");
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/a/50b41a85b547001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/a/50b41a85b547001416e9b684e496cc1f
+new file mode 100644
+index 0000000..79f30d3
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/a/50b41a85b547001416e9b684e496cc1f
+@@ -0,0 +1,39 @@
++<?php
++
++namespace model\repository;
++
++require_once("./model/repo/Repository.php");
++require_once("./model/User.php");
++
++class UserRepo extends \model\repository\Repository
++{
++
++	//hämta en användare
++	public function getUserById($id)
++	{		
++		$this->connect();
++		
++		//skapar en sql sats och parametrar som ska skickas med.
++		$sql = 'SELECT * FROM user WHERE userID = ? ';
++		$params = array($id);
++		
++		//förbered frågan och kör den sedan (med params)
++		$query = $this->dbConnection->prepare($sql);
++		$query->execute($params);
++		
++		//hämtar användaren (kommer som en array om den hittades, annars FALSE)
++		$result = $query->fetch();
++		if($result)
++		{
++			foreach($result as $i)
++			{
++				echo $i . '<br />'
++			}
++		}
++		
++	}
++	
++}
++
++
++
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/a1/e056bd31524700141192e080de53a013 b/.metadata/.plugins/org.eclipse.core.resources/.history/a1/e056bd31524700141192e080de53a013
+deleted file mode 100644
+index 6fa31fa..0000000
+--- a/.metadata/.plugins/org.eclipse.core.resources/.history/a1/e056bd31524700141192e080de53a013
++++ /dev/null
+@@ -1,29 +0,0 @@
+-<?php
+-
+-namespace model\repository;
+-
+-require_once("./model/repo/Repository.php");
+-require_once("./model/user.php");
+-
+-class UserRepo extends \model\repository\Repository
+-{
+-
+-    
+-    //konstruktorn
+-    public function __construct()
+-    {
+-        $this->connect();
+-    }
+-	
+-	//hämta en användare
+-	public function getUserById($id)
+-	{
+-		
+-		$this->connect()
+-		
+-	}
+-	
+-}
+-
+-
+-
+diff --git a/.metadata/.plugins/org.eclipse.core.resources/.history/a4/807dfce3b747001416e9b684e496cc1f b/.metadata/.plugins/org.eclipse.core.resources/.history/a4/807dfce3b747001416e9b684e496cc1f
+new file mode 100644
+index 0000000..965d66f
+--- /dev/null
++++ b/.metadata/.plugins/org.eclipse.core.resources/.history/a4/807dfce3b747001416e9b684e496cc1f
+@@ -0,0 +1,55 @@
++<?php
++
++namespace model\repository;
++
++require_once("./model/repo/Repository.php");
++require_once("./model/User.php");
++
++class UserRepo extends \model\repository\Repository
++{
++	//fältnamn i databasen
++	private $id = "userID";            
++    private $userName = "userName";     
++    private $email = "email";         
++    private $password = "pasword";      
++    private $salt = "salt";          
++    private $dateAdded = "dateAdded";     
++    private $admin = "status";
++
++	//hämta en användare
++	public function getUserById($id)
++	{		
++		$this->connect();
++		
++		//skapar en sql sats och parametrar som ska skickas med.
++		$sql = 'SELECT * FROM user WHERE userID = ? ';
++		$params = array($id);
++		
++		//förbered frågan och kör den sedan (med params)
++		$query = $this->dbConnection->prepare($sql);
++		$query->execute($params);
++		
++		//hämtar användaren (kommer som en array om den hittades, a

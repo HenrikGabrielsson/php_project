@@ -16,17 +16,25 @@ class HTMLView
             <head>
                 <title>'.$title.'</title>
                 <meta charset="utf-8" />
+                <link href="style/style.css" rel="stylesheet" type="text/css">
             </head>
             
             <body>
                 <div id="container">
                     <div id="header">
-                    
+                        <div id="logo">
+                        </div>
+                        
+                        <div id="loginBox">
+                        </div>
+                        
                     </div>
-                    
+
                     <div id="content">
                     '.$body.'
                     </div>
+                    
+                    
                     <div id="footer">
                     </div>
                 </div>

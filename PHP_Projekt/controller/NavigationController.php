@@ -3,6 +3,7 @@
 namespace controller;
 
 require_once("view/NavigationView.php");
+require_once("controller/HomeController.php");
 
 class NavigationController
 {
@@ -19,6 +20,21 @@ class NavigationController
     //kollar url och anropar sedan en lämplig 
     public function doControl()
     {
+        switch ($this->navView->getPageController())
+        {
+            case "poll":
+                $this->currentController = new \controller\PollController();
+                break;
+            case "user":
+                $this->currentController = new \controller\UserController();
+                break;
+            case "category":
+                $this->currentController = new \controller\CategoryController();
+                break;
+            default:
+                $this->currentController = new \controller\HomeController();
+        }
+        
         
     }
     

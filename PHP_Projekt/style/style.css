@@ -1,0 +1,35 @@
+html {
+    height:100%;
+}
+body {
+    background:linear-gradient(#DDDDDD, #FFFFFF);
+    height:100%;
+}
+
+#container {
+    min-width:600px;
+    width:80%;
+    margin:auto;
+    overflow:auto;
+}
+
+#header {
+    min-width:600px;
+    width:100%;
+    min-height:150px;
+}
+
+#content {
+    width:100%;
+    min-height:600px;
+    float:right;
+}
+
+
+#footer {
+    float:right;
+    min-width:600px;
+    width:100%;
+    min-height:150px;
+}
+

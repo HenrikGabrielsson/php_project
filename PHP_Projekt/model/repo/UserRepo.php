@@ -19,19 +19,23 @@ class UserRepo extends \model\repository\Repository
 	//hämta en användare
 	public function getUserById($id)
 	{		
-		$this->connect();
 		
 		//skapar en sql sats och parametrar som ska skickas med.
 		$sql = 'SELECT * FROM user WHERE userID = ? ';
 		$params = array($id);
 		
+		$this->connect();
+		
 		//förbered frågan och kör den sedan (med params)
 		$query = $this->dbConnection->prepare($sql);
 		$query->execute($params);
 		
-		$user;
+		
 		//hämtar användaren (kommer som en array om den hittades, annars FALSE)
 		$result = $query->fetch();
+		
+		//lägger in datan i ett User-objekt och returnerar
+		$user;
 		if($result)
 		{
 			$user = new \model\User
