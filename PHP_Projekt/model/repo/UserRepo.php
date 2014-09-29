@@ -11,7 +11,7 @@ class UserRepo extends \model\repository\Repository
 	private $id = "userID";            
     private $userName = "userName";     
     private $email = "email";         
-    private $password = "pasword";      
+    private $password = "password";      
     private $salt = "salt";          
     private $dateAdded = "dateAdded";     
     private $admin = "status";
@@ -54,6 +54,48 @@ class UserRepo extends \model\repository\Repository
 		
 	}
 	
+	public function add(\model\User $user)
+	{
+		
+		$sql = "INSERT INTO user(".$this->userName.",".$this->email.",".$this->dateAdded.",".$this->admin.",".$this->password.",".$this->salt.")VALUES(?,?,?,?,?,?)";
+		$params = array($user->getUserName(), $user->getEmail(), date("Y-m-d"), $user->getAdmin(), $user->getPassword(), $user->getSalt());
+		
+		$this->connect();
+		
+		$query = $this->dbConnection->prepare($sql);
+		$result = $query->execute($params);
+				
+		return $result;		
+	}
+	
+	public function delete($id)
+	{
+		$sql = "DELETE FROM user WHERE ".$this->id." = ?";
+		$params = array($id);
+		
+		$this->connect();
+		
+		$query = $this->dbConnection->prepare($sql);
+		$result = $query->execute($params);
+		
+		return $result;
+		
+	}
+	
+	public function update(\model\User $user)
+	{
+		$sql = "UPDATE user SET 
+		".$this->userName."=?, ".$this->email ."=?, ".$this->password."=?,".$this->salt."=?,".$this->admin."=? 
+		WHERE ".$this->id ."=?";
+		$params = array($user->getUserName(), $user->getEmail(), $user->getPassword(), $user->getSalt(), $user->getAdmin(), $user->getId());
+		
+		$this->connect();
+		
+		$query = $this->dbConnection->prepare($sql);
+		$result = $query->execute($params);
+		
+		return $result;
+	}
 }
 
 
