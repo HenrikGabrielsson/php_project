@@ -1,5 +1,7 @@
 <?php
 
+namespace model;
+
 class User
 {
 	
@@ -9,7 +11,7 @@ class User
     private $password;      //lösenord(hashat)
     private $salt;          //lösenord-salt
     private $dateAdded;     //datum som kontot skapades
-    private $admin = false;         //false = vanlig användare, true = admin
+    private $admin;         //false = vanlig användare, true = admin
     
     public function __construct($id, $userName, $email, $password, $salt, $dateAdded, $admin)
 	{
@@ -22,5 +24,4 @@ class User
 		$this->admin = $admin;
 		
 	}
-    
 }

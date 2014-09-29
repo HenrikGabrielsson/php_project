@@ -1,0 +1,35 @@
+<?php
+
+namespace model\repository;
+
+require_once("./model/repo/Repository.php");
+require_once("./model/User.php");
+
+class UserRepo extends \model\repository\Repository
+{
+
+    
+    //konstruktorn
+    public function __construct()
+    {
+        $this->connect();
+    }
+	
+	//hämta en användare
+	public function getUserById($id)
+	{		
+		$this->connect();
+		
+		$sql = 'SELECT * FROM user WHERE userID = ? ';
+		$params = array($id);
+		
+		$query = $this->dbConnection->prepare($sql);
+		$query->execute($params);
+		
+		$user = ($query->fetch());die();
+	}
+	
+}
+
+
+
