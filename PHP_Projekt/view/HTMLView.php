@@ -7,7 +7,7 @@ class HTMLView
     
     
     //funktion som visar innehållet på sidan. tar emot titeln och bodyn till sidan som ska visas
-    public function showHTML()
+    public function showHTML($title, $body)
     {
         echo 
         '

@@ -3,21 +3,25 @@
 namespace model\repository;
 
 require_once("./model/repo/Repository.php");
+require_once("./model/User.php");
 
 class UserRepo extends \model\repository\Repository
 {
-    private $id;            //unikt id
-    private $userName;      //användarnamn
-    private $email;         //email-address
-    private $password;      //lösenord(hashat)
-    private $salt;          //lösenord-salt
-    private $dateAdded;     //datum som kontot skapades
-    private $admin;         //false = vanlig användare, true = admin
+
     
+    //konstruktorn
     public function __construct()
     {
-        
+        $this->connect();
     }
+	
+	//hämta en användare
+	public function getUserById($id)
+	{		
+		$this->connect();
+		
+	}
+	
 }
 
 
