@@ -1,7 +1,0 @@
-<?php
-
-require_once("controller/navigationController.php");
-require_once("view");
-
-$navController = new \controller\NavigationController();
-

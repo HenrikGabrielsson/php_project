@@ -1,0 +1,24 @@
+<?php
+
+namespace model;
+
+class Answer
+{
+	private $id;		//unikt id
+	private $pollId;	//undersökning som svaret hör till
+	private $answer;	//svarstext
+	private $count;		//antal röster på detta svar.
+	
+	public function __construct($answer, $id = 0, $pollId = 0, $count = 0)
+	{
+		$this->id = $id;
+		$this->pollId = $pollId;
+		$this->answer = $answer;
+		$this->count = $count;
+	} 
+	
+	public function getId() 
+	{
+		return $this->id;
+	}
+}

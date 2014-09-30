@@ -1,0 +1,62 @@
+<?php
+
+namespace model\repository;
+
+require_once("./model/repo/Repository.php");
+require_once("./model/Poll.php");
+
+class PollRepo extends \model\repository\Repository
+{
+	//namn på fält i Poll-tabell
+	private $pollID = "pollID";				//unikt id
+	private $question = "question";			//frågan som ställs
+	private $creator = "creatorID";			//skaparen av undersökningen
+	private $creationDate = "creationDate";	//när undersökningen skapades
+	private $public = "public";				//ska den kunna ses av alla på webbplatsen.
+	private $category = "categoryID";		//kategori
+   
+   	//namn på fält i Answer-tabell
+   	private $answerID = "answerID";
+   	private $answer = "answer";
+	private $count = "count";
+	
+	//funktion för att lägga till en undersökning i databasen
+	public function addPoll(\model\Poll $poll)
+	{
+		$sql = "INSERT INTO poll(".$this->creator.", ".$this->question.", ".$this->creationDate.", ".$this->public.", ".$this->category.")
+		VALUES (?,?,?,?,?)";
+		$params = array($poll->getCreator(), $poll->getQuestion(), $poll->getCreationDate(), $poll->getPublic(), $poll->getCategory());
+		
+		$this->connect();	
+		
+		$query = $this->dbConnection->prepare($sql);	
+		$result = $query->execute($params);
+		
+		if($result)
+		{
+			foreach($poll->getAnswers() as $answer);
+			{
+				$added = $this->addAnswer($poll->getId(), $answer);
+			}
+		}
+		
+		return $result;
+	}
+	
+	private function addAnswer($pollID, $answer)
+	{
+		$sql = "INSERT INTO answer(".$this->pollID.", ".$this->answer.")
+		VALUES()";
+		$params = array($pollID, $answer);
+		
+		$this->connect();
+		
+		$query = $this->dbConnection->prepare($sql);	
+		$result = $query->execute($params);
+		
+		return $result;
+	}
+}
+
+
+

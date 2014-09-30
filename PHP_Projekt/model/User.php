@@ -2,6 +2,8 @@
 
 namespace model;
 
+require_once("repo/UserRepo.php");
+
 class User
 {
 	
@@ -13,6 +15,9 @@ class User
     private $dateAdded;     //datum som kontot skapades
     private $admin;         //false = vanlig användare, true = admin
     
+    private $userRepo;		//används för att komma åt databasen
+    
+    //User-konstruktor.
     public function __construct($userName, $email, $password, $salt, $dateAdded, $admin = 0, $id = 0)
 	{
 		$this->id = $id;
@@ -23,8 +28,10 @@ class User
 		$this->dateAdded = $dateAdded;
 		$this->admin = $admin;
 		
+		$this->userRepo = new \model\repository\UserRepo;		
 	}
 	
+	//getters för alla fält
 	public function getId()
 	{
 		return $this->id;
@@ -59,4 +66,5 @@ class User
 	{
 		return $this->admin;
 	}
+	
 }

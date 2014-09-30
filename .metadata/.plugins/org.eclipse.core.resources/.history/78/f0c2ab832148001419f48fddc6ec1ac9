@@ -1,0 +1,17 @@
+<?php
+
+require_once("controller/NavigationController.php");
+require_once("view/HTMLView.php");
+require_once("model/User.php");
+
+$htmlView  = new \view\HtmlView();
+$navController = new \controller\NavigationController();
+
+$navController->doControl();
+$body = $navController->getBody();
+$title = $navController->getTitle();
+
+$htmlView->showHTML($title, $body);
+
+$user = new \model\User.php();
+$user->addUser();

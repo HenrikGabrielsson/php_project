@@ -1,0 +1,24 @@
+<?php
+
+require_once("controller/NavigationController.php");
+require_once("view/HTMLView.php");
+
+require_once("model/Poll.php");
+require_once("model/repo/PollRepo.php");
+
+$htmlView  = new \view\HtmlView();
+$navController = new \controller\NavigationController();
+
+$navController->doControl();
+$body = $navController->getBody();
+$title = $navController->getTitle();
+
+$htmlView->showHTML($title, $body);
+
+$poll = new \model\Poll("how is u?", "nååååb", "2008-01-01", 0, 1, array("good", "k", "bad", "shiiiieeet"));
+
+$pollRepo = new \model\repository\PollRepo();
+echo $pollRepo->getPollById(19);
+
+
+

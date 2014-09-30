@@ -1,0 +1,19 @@
+<?php
+
+require_once("controller/NavigationController.php");
+require_once("view/HTMLView.php");
+
+require_once("model/Poll.php");
+require_once("model/repository/PollRepo.php");
+
+$htmlView  = new \view\HtmlView();
+$navController = new \controller\NavigationController();
+
+$navController->doControl();
+$body = $navController->getBody();
+$title = $navController->getTitle();
+
+$htmlView->showHTML($title, $body);
+
+$poll = new \model\Poll("what is love?", "me", date("Y-m-d"), 0, 1, array("nothing", "an error", "meeee"));
+

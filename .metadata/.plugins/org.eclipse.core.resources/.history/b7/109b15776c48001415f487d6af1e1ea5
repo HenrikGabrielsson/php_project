@@ -1,0 +1,14 @@
+<?php
+
+namespace model;
+
+class Poll
+{
+	private $id;
+	private $question;
+	private $creator;
+	private $creationDate;
+	private $public = true;
+	private $category;
+	
+}

@@ -1,0 +1,25 @@
+<?php
+
+namespace model\repository;
+
+require_once("./model/repo/Repository.php");
+
+class PollRepo extends \model\repository\Repository
+{
+	private $id = "pollID";					//unikt id
+	private $question = "question";			//frågan som ställs
+	private $creator = "creator";			//skaparen av undersökningen
+	private $creationDate = "creationDate";	//när undersökningen skapades
+	private $public = "public";				//ska den kunna ses av alla på webbplatsen.
+	private $category;						//kategori
+   
+    
+    
+    public function __construct()
+    {
+        
+    }
+}
+
+
+
