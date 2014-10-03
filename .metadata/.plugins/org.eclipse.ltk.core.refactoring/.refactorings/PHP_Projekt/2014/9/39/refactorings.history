@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Rename resource &apos;PHP_Projekt/view/ContentView.php&apos; to &apos;CategoryView.php&apos;" description="Rename resource &apos;ContentView.php&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="view/ContentView.php" name="CategoryView.php" stamp="1411718784174" updateReferences="true"/>
-</session>

@@ -2,12 +2,10 @@
 
 namespace model\repository;
 
+require_once("Settings.php");
+
 abstract class Repository 
 {
-    private $userName = "henrikgabrielss";
-    private $password = "tCiSetWtDead";
-    private $connectionString = "mysql:host=henrikgabrielsson.se.mysql;dbname=henrikgabrielss";
-    
     protected $dbConnection; 
 	protected $currentTable;
 
@@ -18,7 +16,7 @@ abstract class Repository
         {
             try
             {
-                $this->dbConnection  = new \PDO($this->connectionString, $this->userName, $this->password);
+                $this->dbConnection  = new \PDO(\Settings::$connectionString, \Settings::$dbUserName,\Settings::$dbPassword);
             }
             catch(Exception $e)
             {

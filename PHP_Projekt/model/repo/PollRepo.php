@@ -9,17 +9,21 @@ require_once("./model/Answer.php");
 class PollRepo extends \model\repository\Repository
 {
 	//namn på fält i Poll-tabell
-	private $pollID = "pollID";				//unikt id
+	private $pollId = "pollId";				//unikt id
 	private $question = "question";			//frågan som ställs
-	private $creator = "creatorID";			//skaparen av undersökningen
+	private $creator = "creatorId";			//skaparen av undersökningen
 	private $creationDate = "creationDate";	//när undersökningen skapades
 	private $public = "public";				//ska den kunna ses av alla på webbplatsen.
-	private $category = "categoryID";		//kategori
+	private $category = "categoryId";		//kategori
    
    	//namn på fält i Answer-tabell
-   	private $answerID = "answerID";
+   	private $answerId = "answerId";
    	private $answer = "answer";
 	private $count = "count";
+	
+	//namn på fält i Vote-tabell
+	private $voteId = "voteId";				//unikt id på varje röst
+	private $ip = "ip";						//ip på den som röstar.
 	
 	//funktion för att lägga till en undersökning i databasen
 	public function add(\model\Poll $poll)
@@ -34,11 +38,11 @@ class PollRepo extends \model\repository\Repository
 		$result = $query->execute($params);
 		
 		//id på den undersökning som lades in senast()
-		$lastID = ($this->dbConnection->lastInsertId());
+		$lastId = ($this->dbConnection->lastInsertId());
 
 		if($result)
 		{
-			$this->addAnswers($lastID, $poll->getAnswers());
+			$this->addAnswers($lastId, $poll->getAnswers());
 		}
 		
 		return $result;
@@ -47,7 +51,7 @@ class PollRepo extends \model\repository\Repository
 	
 	public function delete($id)
 	{
-		$sql = "DELETE FROM poll WHERE ".$this->pollID." = ?";
+		$sql = "DELETE FROM poll WHERE ".$this->pollId." = ?";
 		$params = array($id);
 		
 		$this->connect();
@@ -66,7 +70,7 @@ class PollRepo extends \model\repository\Repository
 	
 	public function getPollById($id)
 	{
-		$sql = "SELECT * FROM poll WHERE ".$this->pollID."=?";
+		$sql = "SELECT * FROM poll WHERE ".$this->pollId."=?";
 		$params = array($id);
 		
 		$this->connect();
@@ -92,7 +96,7 @@ class PollRepo extends \model\repository\Repository
 					$result[$this->public],
 					$result[$this->category],
 					$answers,
-					$result[$this->pollID]
+					$result[$this->pollId]
 					
 				);
 				
@@ -130,7 +134,7 @@ class PollRepo extends \model\repository\Repository
 			foreach($polls as $poll)
 			{
 				//hämta alla svar som hör till.
-				$answers = $this->getAnswers($poll[$this->pollID]);
+				$answers = $this->getAnswers($poll[$this->pollId]);
 
 				//skapa alla objekt				
 				$retPolls[] = new \model\Poll
@@ -141,7 +145,7 @@ class PollRepo extends \model\repository\Repository
 					$poll[$this->public],
 					$poll[$this->category],
 					$answers,
-					$poll[$this->pollID]						
+					$poll[$this->pollId]						
 				);
 				
 			}
@@ -174,7 +178,7 @@ class PollRepo extends \model\repository\Repository
 			foreach($polls as $poll)
 			{
 				//hämta alla svar som hör till.
-				$answers = $this->getAnswers($poll[$this->pollID]);
+				$answers = $this->getAnswers($poll[$this->pollId]);
 
 				//skapa alla objekt				
 				$retPolls[] = new \model\Poll
@@ -185,7 +189,7 @@ class PollRepo extends \model\repository\Repository
 					$poll[$this->public],
 					$poll[$this->category],
 					$answers,
-					$poll[$this->pollID]						
+					$poll[$this->pollId]						
 				);
 				
 			}
@@ -193,11 +197,37 @@ class PollRepo extends \model\repository\Repository
 		return $retPolls;
 		}
 		
-	}	
+	}
+	
+	public function addVote($answerId)
+	{
+
+		$voter = $this->alreadyVotedInPoll($answerId);
+		//kolla om denna ip redan har röstat i aktuell poll.
+		if($voter)
+		{
+			$sql = "UPDATE vote SET ".$this->answerId."=? WHERE ".$this->voteId."=?";
+			$params = array($answerId, $voter);
+		}
+		//om användaren inte tidigare har röstat i undersökningen så läggs en ny röst till.
+		else 
+		{
+			$sql = "INSERT INTO vote(".$this->ip.",".$this->answerId.")
+			VALUES(?,?)";
+			$params = array($_SERVER["REMOTE_ADDR"], $answerId);
+		}
+		
+		$this->connect();
+		
+		$query = $this->dbConnection->prepare($sql);
+		$result = $query->execute($params);	
+		
+		return $result;		
+	}
 	
 	private function deleteAnswers()
 	{
-		$sql = "DELETE FROM answer WHERE ".$this->pollID." = ?";
+		$sql = "DELETE FROM answer WHERE ".$this->pollId." = ?";
 		$params = array($id);
 		
 		$this->connect();
@@ -210,7 +240,7 @@ class PollRepo extends \model\repository\Repository
 	
 	private function getAnswers($pollId)
 	{
-		$sql = "SELECT * FROM answer WHERE ".$this->pollID."=?";
+		$sql = "SELECT * FROM answer WHERE ".$this->pollId."=?";
 		$params = array($pollId);
 		
 		$this->connect();
@@ -226,7 +256,7 @@ class PollRepo extends \model\repository\Repository
 			
 			foreach($rows as $row)
 			{
-				$answers[] = (new \model\Answer($row[$this->answer], $row[$this->answerID], $row[$this->pollID], $row[$this->count]));
+				$answers[] = (new \model\Answer($row[$this->answer], $row[$this->answerId], $row[$this->pollId], $this->getVotes($row[$this->answerId])));
 			}
 			
 			return $answers;
@@ -236,7 +266,58 @@ class PollRepo extends \model\repository\Repository
 		
 	}
 	
-	private function addAnswers($pollID, $answers)
+	//skickar tillbaka false om personen inte redan röstat. Annars skickas voteId på den förra rösten tillbaka.
+	private function alreadyVotedInPoll($answerId)
+	{		
+		//kollar vilken poll den nya rösten är i
+		$sql = "SELECT ".$this->pollId." FROM answer WHERE ".$this->answerId."=?";
+		$params = array($answerId);
+		
+		$this->connect();
+		
+		$query = $this->dbConnection->prepare($sql);
+		$query->execute($params);
+		
+		//här är den nya undersökningen som användaren röstade i
+		$newVotePoll = $query->fetch();
+		
+		//klientens ip
+		$ip = $_SERVER["REMOTE_ADDR"];
+		
+		//här så undersöker vi om personen med denna ip redan har röstat i undersökningen
+		$sql = "SELECT ".$this->voteId." FROM vote 
+		INNER JOIN answer ON vote.".$this->answerId." = answer.".$this->answerId."
+		WHERE ".$this->ip." = ? AND ".$this->pollId." = ?;
+		 ";
+		 $params = array($ip, $newVotePoll[$this->pollId]);
+		 
+		 $this->connect();
+		 
+		 $query = $this->dbConnection->prepare($sql);
+		 $query->execute($params);
+		 
+		 $result = $query->fetch();
+		 
+		 return $result[$this->voteId];
+		
+	}
+	
+	private function getVotes($answerId)
+	{
+		$sql = "SELECT COUNT(*) FROM vote WHERE ".$this->answerId."=?";
+		$params = array($answerId);
+		
+		$this->connect();
+		
+		$query = $this->dbConnection->prepare($sql);
+		$query->execute($params);
+		
+		$result = $query->fetch();
+		
+		return $result[0];
+	}
+	
+	private function addAnswers($pollId, $answers)
 	{
 		$params = array();
 		$values = array();
@@ -247,11 +328,11 @@ class PollRepo extends \model\repository\Repository
 		{
 			$values[] = "(?,?)";
 			
-			$params[] = $pollID;
+			$params[] = $pollId;
 			$params[] = $answer;
 		}
 		
-		$sql = "INSERT INTO answer(".$this->pollID.", ".$this->answer.")
+		$sql = "INSERT INTO answer(".$this->pollId.", ".$this->answer.")
 		VALUES".implode(',',$values).";";
 
 		$this->connect();

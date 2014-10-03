@@ -3,6 +3,7 @@
 require_once("controller/NavigationController.php");
 require_once("view/HTMLView.php");
 
+
 $htmlView  = new \view\HtmlView();
 $navController = new \controller\NavigationController();
 
@@ -11,3 +12,5 @@ $body = $navController->getBody();
 $title = $navController->getTitle();
 
 $htmlView->showHTML($title, $body);
+
+var_dump( $_SERVER['REMOTE_USER']);
