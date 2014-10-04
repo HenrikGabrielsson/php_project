@@ -6,6 +6,8 @@ body {
     height:100%;
 }
 
+
+/*Huvudelement*******************************/
 #container {
     min-width:600px;
     width:80%;
@@ -33,3 +35,14 @@ body {
     min-height:150px;
 }
 
+
+/*För undersökningen********************************/
+#pollForm
+{
+
+}
+
+#pollForm #postPoll
+{
+    
+}

@@ -14,7 +14,7 @@ class HTMLView
         <!doctype html>
         <html>
             <head>
-                <title>'.$title.'</title>
+                <title>'.$title.' - Polls n\' Shit</title>
                 <meta charset="utf-8" />
                 <link href="style/style.css" rel="stylesheet" type="text/css">
             </head>
@@ -31,7 +31,7 @@ class HTMLView
                     </div>
 
                     <div id="content">
-                    '.$body.'
+                        '.$body.'
                     </div>
                     
                     

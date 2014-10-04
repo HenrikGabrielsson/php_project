@@ -7,9 +7,19 @@ class NavigationView
 
     public function getPageController()
     {
-        if(isset($_GET["wantedView"]))
+        if(isset($_GET["view"]))
         {
-            return $_GET["wantedView"];
+            return $_GET["view"];
         }
+        return null;
+    }
+
+    public function getId()
+    {
+    	if(isset($_GET["id"]))
+        {
+            return $_GET["id"];
+        }
+        return null;
     }
 }

@@ -2,6 +2,8 @@
 
 namespace model;
 
+require_once("./model/repo/PollRepo.php");
+
 class Poll
 {
 	private $id;					//unikt id
@@ -10,7 +12,7 @@ class Poll
 	private $creationDate;			//när undersökningen skapades
 	private $public;				//ska den kunna ses av alla på webbplatsen.
 	private $category;				//kategori
-	
+
 	private $answers = array();		//en array med de svar som tillhör frågan.
 	
 	public function __construct($question, $creator, $creationDate, $public, $category, $answers, $id = 0)
@@ -53,5 +55,4 @@ class Poll
 	{
 		return $this->answers;
 	}
-
 }
