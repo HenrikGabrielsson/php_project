@@ -39,11 +39,27 @@ class PollView
 
 	private function getResult()
 	{
-		$percentageArr = $this->convertToPercentage($this->poll->getAnswers());
+
+		$answers = $this->poll->getAnswers();
+
+		//varje svar i procent.
+		$percentageArr = $this->convertToPercentage($answers);
+
+		$resultList = "";
+		for($i = 0; $i < count($answers); $i++)
+		{
+			$answer = $answers[$i];
+			$percentage = round(100 * ($percentageArr[$i]),1);
+
+			$resultList .= 
+			'<li>
+				'.$answer->getAnswer().'
+				'.$percentage.'  %
+			</li>';
+		}
 
 		//rita ett cirkeldiagram som är 200 X 200 px
 		$image = \view\helpers\DiagramMaker::drawCircleDiagram($percentageArr, 200, 200);
-        
         
         ob_start();
         imagepng($image);
@@ -55,7 +71,12 @@ class PollView
 			
 				<img src="data:image/png;base64,' . base64_encode( $raw) .'">
 
-				<script type="text/javascript" src="'.$this->scriptPath.'"></script>
+				<div id="diagramExplanation">
+				<ul id="resultsList">
+				'.$resultList.'	
+				</ul>
+				</div>
+
 			</div>
 			';
 	}
