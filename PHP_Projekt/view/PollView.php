@@ -42,17 +42,18 @@ class PollView
 		$percentageArr = $this->convertToPercentage($this->poll->getAnswers());
 
 		//rita ett cirkeldiagram som är 200 X 200 px
-		\view\helpers\DiagramMaker::drawCircleDiagram($percentageArr, 200, 200);
+		$image = \view\helpers\DiagramMaker::drawCircleDiagram($percentageArr, 200, 200);
+        
+        
+        ob_start();
+        imagepng($image);
+        $raw = ob_get_clean();
 
 		return 
 			'
 			<div id="pollResults">
-				<canvas id="pollCanvas">
-					Sorry, we can\'t show you this diagram! Turn on javascript, or try another browser. 
-				</canvas>
-				<ul id="diagramExplanation">
-					
-				</ul>
+			
+				<img src="data:image/png;base64,' . base64_encode( $raw) .'">
 
 				<script type="text/javascript" src="'.$this->scriptPath.'"></script>
 			</div>
