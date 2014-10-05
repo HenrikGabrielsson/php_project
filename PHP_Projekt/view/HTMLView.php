@@ -30,6 +30,12 @@ class HTMLView
                         
                     </div>
 
+                    <div id="sidebar">
+                        <div id="categoryList">
+
+                        </div>
+                    </div>
+
                     <div id="content">
                         '.$body.'
                     </div>

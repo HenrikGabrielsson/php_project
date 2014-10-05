@@ -27,6 +27,7 @@ class Poll
 		$this->answers = $answers;
 	}
 	
+	
 	public function getId()
 	{
 		return $this->id;
