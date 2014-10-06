@@ -17,7 +17,7 @@ class LoginController
 	public function __construct($htmlView)
 	{
 		$this->login = new \model\Login();
-		$this->loginView = new \view\LoginView();
+		$this->loginView = new \view\LoginView($this->login);
 		$this->htmlView = $htmlView;
 	}
 

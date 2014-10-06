@@ -11,9 +11,9 @@ class LoginView
 
 	private $login;
 
-	public function __construct()
+	public function __construct($login)
 	{
-		$this->login = new \model\Login();
+		$this->login = $login;
 	} 
 
 	public function getFeedback()
@@ -44,11 +44,13 @@ class LoginView
 
 	public function createLoginBox()
     {
+
     	$loginDiv = '<div id="loginBox">';
 
         if(\model\Login::isLoggedIn())
         {
         	$loginDiv .= 
+            $this->makeFeedBack().
             '<p>You are logged in as '.$this->login->getLoggedInUser().'.</p>
             <p><a href="?'.helpers\GetHandler::getLogout().'">Log out</a></p>
             ';
@@ -56,6 +58,7 @@ class LoginView
         else
         {
         	$loginDiv .= 
+            $this->makeFeedBack().
             '<form id="loginForm" method="post" action="?login">
             <label for="loginName"><input type="text" name="'.helpers\PostHandler::getLoginName().'" id="loginName" placeholder="Username" />
             <label for="loginPassword"><input type="password" name="'.helpers\PostHandler::getLoginPassword().'" id="loginPassword" placeholder="Password" />
@@ -72,7 +75,25 @@ class LoginView
     //funktion som skapar eventuell feedback efter att ha frågat modellen.
     private function makeFeedBack()
     {
-    	return null;
+
+        $feedback = "";
+
+
+        if(in_array($this->login->noNameError, $this->login->getErrorList()))
+        {
+            $feedback .= "<p>Please, fill out your username.</p>";
+        }
+
+        if(in_array($this->login->noPasswordError, $this->login->getErrorList()))
+        {
+            $feedback .= "<p>Please, fill out your password.</p>";
+        }       
+
+        else if(in_array($this->login->wrongCredentialsError, $this->login->getErrorList()))
+        {
+            $feedback .= "<p>Your username and/or Password was incorrect. Please, try again.</p>";
+        }
+    	return $feedback;
     }
 
 

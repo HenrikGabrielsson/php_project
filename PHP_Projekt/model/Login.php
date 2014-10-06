@@ -6,6 +6,13 @@ require_once("./model/helpers/SessionHandler.php");
 
 class Login
 {
+	public $noNameError = "noName";
+	public $noPasswordError = "noPassword";
+	public $wrongCredentialsError = "wrongCredentials";
+
+	private $errorList = array();
+	
+
 	public function __construct()
 	{
 		session_start();
@@ -23,7 +30,23 @@ class Login
 
 	public function attemptLogin($username, $password)
 	{
-		helpers\SessionHandler::loginUser();
+		if($username == "")
+		{
+			$this->errorList[] = $this->noNameError;
+		}
+
+		if($password == "")
+		{
+			$this->errorList[] = $this->noPasswordError;
+		}
+
+		if(count($this->errorList) > 0)
+		{
+			return;
+		} 
+
+		helpers\SessionHandler::loginUser($username);
+
 	}
 
 	public function logout()
@@ -33,7 +56,13 @@ class Login
 
 	public function getLoggedInUser()
 	{
-		return "TESTTESTTESTTEST";
+		return $_SESSION[helpers\SessionHandler::getUsername()];
 	}
+
+	public function getErrorList()
+	{
+		return $this->errorList;
+	}
+
 	
 }

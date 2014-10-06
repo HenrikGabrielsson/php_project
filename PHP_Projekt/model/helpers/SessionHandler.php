@@ -4,16 +4,24 @@ namespace model\helpers;
 
 class SessionHandler
 {
-	private static $LoggedIn = "loggedIn";
+	private static $loggedIn = "loggedIn";
+	private static $username = "username"; 
 
+	//getters för namnen på session-variablerna
 	public static function getLoggedIn()
 	{
-		return self:: $LoggedIn;
+		return self:: $loggedIn;
 	} 
 
-	public static function loginUser()
+	public static function getUsername()
 	{
-		$_SESSION["loggedIn"] = true;
+		return self::$username;
+	}
+
+	public static function loginUser($username)
+	{
+		$_SESSION[self::$username] = $username;
+		$_SESSION[self::$loggedIn] = true;
 	}
 
 	public static function removeSessions()
