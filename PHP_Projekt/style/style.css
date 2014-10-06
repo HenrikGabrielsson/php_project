@@ -37,12 +37,29 @@ body {
 
 
 /*För undersökningen********************************/
-#pollForm
-{
+#pollForm {
 
 }
 
-#pollForm #postPoll
-{
-    
+.pollResults {
+    max-width: 440px;
+}
+
+.resultsList {
+    list-style-type: none;
+    float:right;
+}
+
+.diagramImage {
+    float:left;
+}
+
+.resultsList li {
+    margin-top:5px;
+}
+
+.answerColor {
+    width:20px;
+    height:20px;
+    display: inline-block;
 }

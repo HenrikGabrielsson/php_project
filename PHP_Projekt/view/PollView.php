@@ -45,14 +45,19 @@ class PollView
 		//varje svar i procent.
 		$percentageArr = $this->convertToPercentage($answers);
 
+		//färgerna som används i diagrammet
+		$colors = \view\helpers\DiagramMaker::getDiagramColors();
+
 		$resultList = "";
 		for($i = 0; $i < count($answers); $i++)
 		{
 			$answer = $answers[$i];
 			$percentage = round(100 * ($percentageArr[$i]),1);
 
+
 			$resultList .= 
 			'<li>
+				<div class="answerColor" style="background-color:rgb('.$colors[$i][0].','.$colors[$i][1].','.$colors[$i][2].')" ></div>
 				'.$answer->getAnswer().'
 				'.$percentage.'  %
 			</li>';
@@ -67,15 +72,13 @@ class PollView
 
 		return 
 			'
-			<div id="pollResults">
+			<div class="pollResults">
 			
-				<img src="data:image/png;base64,' . base64_encode( $raw) .'">
+				<img class="diagramImage" src="data:image/png;base64,' . base64_encode( $raw) .'">
 
-				<div id="diagramExplanation">
-				<ul id="resultsList">
+				<ul class="resultsList">
 				'.$resultList.'	
 				</ul>
-				</div>
 
 			</div>
 			';
