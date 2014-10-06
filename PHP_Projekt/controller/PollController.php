@@ -18,7 +18,7 @@ class PollController
 			$this->htmlView = new \view\HTMLView();
 	}
 
-	public function getContent($id)
+	public function getContent($id, $loggedIn)
 	{
 		//skapar ett repositorie-objekt och hämtar aktuell undersökning
 		$repo = new \model\repository\pollRepo();

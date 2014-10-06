@@ -2,16 +2,22 @@
 
 namespace controller;
 
-require_once("view/NavigationView.php");
+require_once("model/Login.php");
+
+require_once("controller/LoginController.php");
 require_once("controller/HomeController.php");
 require_once("controller/PollController.php");
 require_once("controller/UserController.php");
 require_once("controller/CategoryController.php");
 
-require_once("view/HTMLView.php");
+require_once("view/NavigationView.php");
+require_once("view/LoginView.php");
 
 class NavigationController
 {
+
+    private $loginRequest = "login";
+    private $logoutRequest = "logout";
     private $pollRequest = "poll";
     private $userRequest = "user";
     private $categoryRequest = "category";
@@ -22,14 +28,14 @@ class NavigationController
     private $currentController;     //controller som ska användas.
     
     
-    public function __construct()
+    public function __construct($htmlView)
     {
-        $this->htmlView = new \view\HTMLView();
+        $this->htmlView = $htmlView;
         $this->navView = new \view\NavigationView();
     }
     
-    //kollar url och anropar sedan en lämplig controller
-    public function doControl()
+    //kollar url och anropar sedan en lämplig controller 
+    public function getPage()
     {
         switch ($this->navView->getPageController())
         {
@@ -46,8 +52,8 @@ class NavigationController
                 $this->currentController = new \controller\HomeController($this->htmlView);
         }
         
-        //kör Controller 
-        $this->currentController->getContent($this->navView->getId());
+        //kör Controller, skickar med id, samt en bool om användaren är inloggad eller inte.
+        $this->currentController->getContent($this->navView->getId(), \model\Login::isLoggedIn());
         
     }
 }

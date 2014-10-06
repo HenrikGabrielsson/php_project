@@ -1,6 +1,16 @@
 <?php
+
+require_once("controller/LoginController.php");
 require_once("controller/NavigationController.php");
 
-$navController = new \controller\NavigationController();
+require_once("view/HTMLView.php");
 
-$navController->doControl();
+
+$htmlView = new \view\HTMLView();
+
+
+$loginController = new \controller\LoginController($htmlView);
+$loginController->checkForLogin();
+
+$navController = new \controller\NavigationController($htmlView);
+$navController->getPage();
