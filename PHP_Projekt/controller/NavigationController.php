@@ -51,7 +51,7 @@ class NavigationController
             default:
                 $this->currentController = new \controller\HomeController($this->htmlView);
         }
-        
+
         //kör Controller, skickar med id, samt en bool om användaren är inloggad eller inte.
         $this->currentController->getContent($this->navView->getId(), \model\Login::isLoggedIn());
         

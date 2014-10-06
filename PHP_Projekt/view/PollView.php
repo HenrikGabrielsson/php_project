@@ -3,6 +3,7 @@
 namespace view;
 
 require_once("./view/helpers/DiagramMaker.php");
+require_once("./view/helpers/GetHandler.php");
 
 class PollView
 {
@@ -24,7 +25,7 @@ class PollView
 		$retString = "<h2>".$this->poll->getQuestion()."</h2>";
 
 		//om användaren vill se resultatet
-		if(isset($_GET["showResult"]))
+		if(isset($_GET[helpers\GetHandler::getShowResult()]))
 		{
 			$retString .= $this->getResult();
 		}

@@ -2,24 +2,18 @@
 
 namespace view;
 
+require_once("./view/helpers/GetHandler.php");
+
 class NavigationView
 {
 
     public function getPageController()
     {
-        if(isset($_GET["view"]))
-        {
-            return $_GET["view"];
-        }
-        return null;
+        return $_GET[helpers\GetHandler::getView()];
     }
 
     public function getId()
     {
-    	if(isset($_GET["id"]))
-        {
-            return $_GET["id"];
-        }
-        return null;
+        return $_GET[helpers\GetHandler::getId()];
     }
 }

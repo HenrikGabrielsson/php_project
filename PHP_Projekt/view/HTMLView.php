@@ -4,7 +4,7 @@ namespace view;
 
 class HTMLView 
 {
-    private $loginBox;
+    public $loginBox;
     
     //funktion som visar innehållet på sidan. tar emot titeln och bodyn till sidan som ska visas
     public function showHTML($title, $body)
@@ -48,31 +48,8 @@ class HTMLView
         ';
     }
 
-    public function createLoginBox($isLoggedIn, $feedback = null)
+    public function setLoginBox($loginBox)
     {
-        if($isLoggedIn)
-        {
-            if(isset($feedback))
-            {
-                //user just logged in, show feedback
-            }
-            else
-            {
-                //user is already logged in. dont show feedback
-            }
-            //dont show form, show logged in page
-        }
-        else
-        {
-            if(isset($feedback))
-            {
-                //user just logged out or failed login, show feedback
-            }
-            else
-            {
-                //user is already logged out. dont show feedback
-            }
-            //show form, dont show logged in page
-        }
-    }   
+        $this->loginBox = $loginBox;
+    }
 }

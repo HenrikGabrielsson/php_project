@@ -13,9 +13,9 @@ class PollController
 	private $htmlView;
 	private $pollView;
 
-	public function __construct()
+	public function __construct($htmlView)
 	{
-			$this->htmlView = new \view\HTMLView();
+			$this->htmlView = $htmlView;
 	}
 
 	public function getContent($id, $loggedIn)

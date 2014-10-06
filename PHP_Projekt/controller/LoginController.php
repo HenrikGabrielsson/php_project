@@ -23,7 +23,6 @@ class LoginController
 
 	public function checkForLogin()
 	{
-
 		//kollar om användaren är inloggad
 		if($this->login->isLoggedIn())
 		{
@@ -48,6 +47,6 @@ class LoginController
 		}
 
 		//skicka uppgifter till htmlView om feedback och om användaren är inloggad.
-		$this->htmlView->createLoginBox($this->login->isLoggedIn(), $this->loginView->getFeedback());
+		$this->htmlView->setLoginBox($this->loginView->createLoginBox());
 	}
 }
