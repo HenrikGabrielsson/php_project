@@ -78,7 +78,6 @@ class LoginView
 
         $feedback = "";
 
-
         if(in_array($this->login->noNameError, $this->login->getErrorList()))
         {
             $feedback .= "<p>Please, fill out your username.</p>";

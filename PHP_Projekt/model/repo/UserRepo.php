@@ -21,7 +21,7 @@ class UserRepo extends \model\repository\Repository
 	{		
 		
 		//skapar en sql sats och parametrar som ska skickas med.
-		$sql = 'SELECT * FROM user WHERE $this-> = ? ';
+		$sql = 'SELECT * FROM user WHERE '.$this->$userId.' = ? ';
 		$params = array($id);
 		
 		$this->connect();
@@ -52,6 +52,40 @@ class UserRepo extends \model\repository\Repository
 		
 		return $user;
 		
+	}
+
+	//hämtar en användare baserat på ett givet namn. (används för login)
+	public function getUserByName($username)
+	{
+
+		$sql = 'SELECT * FROM user WHERE '.$this->userName.' = ? ';
+		$params = array($username);
+
+		$this->connect();
+
+		//förbered frågan och kör den sedan (med params)
+		$query = $this->dbConnection->prepare($sql);
+		$query->execute($params);
+
+		$result = $query->fetch();
+
+		//lägger in datan i ett User-objekt och returnerar (om det finns).
+		$user;
+		if($result)
+		{
+			$user = new \model\User
+			(
+				$result[$this->userId],
+				$result[$this->userName],
+				$result[$this->email],
+				$result[$this->password],
+				$result[$this->salt],
+				$result[$this->dateAdded],
+				$result[$this->admin]		
+			);
+		}
+
+		return $user;
 	}
 	
 	public function add(\model\User $user)
