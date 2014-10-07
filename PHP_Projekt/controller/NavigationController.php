@@ -9,6 +9,7 @@ require_once("controller/HomeController.php");
 require_once("controller/PollController.php");
 require_once("controller/UserController.php");
 require_once("controller/CategoryController.php");
+require_once("controller/RegistrationController.php");
 
 require_once("view/NavigationView.php");
 require_once("view/LoginView.php");
@@ -21,6 +22,7 @@ class NavigationController
     private $pollRequest = "poll";
     private $userRequest = "user";
     private $categoryRequest = "category";
+    private $registerRequest = "register";
 
     private $navView;
     private $htmlView;
@@ -47,6 +49,9 @@ class NavigationController
                 break;
             case $this->categoryRequest:
                 $this->currentController = new \controller\CategoryController($this->htmlView);
+                break;
+            case $this->registerRequest:
+                $this->currentController = new \controller\RegistrationController($this->htmlView);
                 break;
             default:
                 $this->currentController = new \controller\HomeController($this->htmlView);

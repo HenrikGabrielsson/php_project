@@ -60,11 +60,12 @@ class LoginView
         	$loginDiv .= 
             $this->makeFeedBack().
             '<form id="loginForm" method="post" action="?login">
-            <label for="loginName"><input type="text" name="'.helpers\PostHandler::getLoginName().'" id="loginName" placeholder="Username" />
-            <label for="loginPassword"><input type="password" name="'.helpers\PostHandler::getLoginPassword().'" id="loginPassword" placeholder="Password" />
+            <label for="loginName">Username:</label><input type="text" name="'.helpers\PostHandler::getLoginName().'" id="loginName" placeholder="Username" />
+            <label for="loginPassword">Password:</label><input type="password" name="'.helpers\PostHandler::getLoginPassword().'" id="loginPassword" placeholder="Password" />
             <input type="submit" value="Logga in" />
 
-            </form>';
+            </form>
+            <p><a href="?'.helpers\GetHandler::getView().'='.helpers\GetHandler::getRegister().'">Register</a></p>';
         }
 
         return $loginDiv .'</div>';

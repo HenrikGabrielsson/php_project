@@ -9,6 +9,7 @@ class GetHandler
 	private static $view  = "view";
 	private static $id = "id";
 	private static $showResult = "showResult";
+	private static $register = "register";
 
 	//getters för namnen på alla get-parametrar
 	public static function getLogin()
@@ -34,6 +35,11 @@ class GetHandler
 	public static function getShowResult()
 	{
 		return self::$showResult;
+	} 
+
+	public static function getRegister()
+	{
+		return self::$register;
 	} 
 
 }
