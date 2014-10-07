@@ -54,10 +54,16 @@ class Login
 
 		$user = $this->repo->getUserByName($username);
 
-		var_dump($user);die();
-
-		helpers\SessionHandler::loginUser($username);
-
+		//Om användaren inte hittades eller om lösenordet inte matchar 
+		if(isset($user) && $this->checkPassword($password, $user->getPassword(), $user->getSalt()))
+		{
+			helpers\SessionHandler::loginUser($username);
+		}
+		else
+		{
+			$this->errorList[] = $this->wrongCredentialsError;
+			return;
+		}
 	}
 
 	public function logout()
@@ -73,6 +79,12 @@ class Login
 	public function getErrorList()
 	{
 		return $this->errorList;
+	}
+
+	//den här funktionen kollar om det angivna lösenordet matchar det hashade/saltade lösenordet från databasen.
+	private function checkPassword($givenPassword, $correctPassword, $salt)
+	{
+		return $correctPassword == sha1($salt.md5($givenPassword));
 	}
 
 	

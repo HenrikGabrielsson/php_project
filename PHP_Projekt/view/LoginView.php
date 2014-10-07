@@ -92,6 +92,7 @@ class LoginView
         {
             $feedback .= "<p>Your username and/or Password was incorrect. Please, try again.</p>";
         }
+
     	return $feedback;
     }
 

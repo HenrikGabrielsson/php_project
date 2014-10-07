@@ -21,7 +21,7 @@ class UserRepo extends \model\repository\Repository
 	{		
 		
 		//skapar en sql sats och parametrar som ska skickas med.
-		$sql = 'SELECT * FROM user WHERE '.$this->$userId.' = ? ';
+		$sql = 'SELECT * FROM user WHERE '.$this->userId.' = ? ';
 		$params = array($id);
 		
 		$this->connect();
@@ -40,13 +40,13 @@ class UserRepo extends \model\repository\Repository
 		{
 			$user = new \model\User
 			(
-				$result[$this->userId],
 				$result[$this->userName],
 				$result[$this->email],
 				$result[$this->password],
 				$result[$this->salt],
 				$result[$this->dateAdded],
-				$result[$this->admin]		
+				$result[$this->admin],
+				$result[$this->userId]
 			);
 		}
 		
@@ -57,8 +57,7 @@ class UserRepo extends \model\repository\Repository
 	//hämtar en användare baserat på ett givet namn. (används för login)
 	public function getUserByName($username)
 	{
-
-		$sql = 'SELECT * FROM user WHERE '.$this->userName.' = ? ';
+		$sql = 'SELECT * FROM `user` WHERE userName = BINARY ?';
 		$params = array($username);
 
 		$this->connect();
@@ -74,14 +73,14 @@ class UserRepo extends \model\repository\Repository
 		if($result)
 		{
 			$user = new \model\User
-			(
-				$result[$this->userId],
+			(	
 				$result[$this->userName],
 				$result[$this->email],
 				$result[$this->password],
 				$result[$this->salt],
 				$result[$this->dateAdded],
-				$result[$this->admin]		
+				$result[$this->admin],
+				$result[$this->userId]
 			);
 		}
 
