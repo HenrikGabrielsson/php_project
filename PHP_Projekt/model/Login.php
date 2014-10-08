@@ -7,6 +7,8 @@ require_once("./model/repo/UserRepo.php");
 
 class Login
 {
+
+	//Namn på fel. Läggs till i errorList om de har blivit sanna.
 	public $noNameError = "noName";
 	public $noPasswordError = "noPassword";
 	public $wrongCredentialsError = "wrongCredentials";

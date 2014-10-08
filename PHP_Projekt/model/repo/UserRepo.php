@@ -54,10 +54,10 @@ class UserRepo extends \model\repository\Repository
 		
 	}
 
-	//hämtar en användare baserat på ett givet namn. (används för login)
+	//hämtar en användare baserat på ett givet namn. 
 	public function getUserByName($username)
 	{
-		$sql = 'SELECT * FROM `user` WHERE userName = BINARY ?';
+		$sql = 'SELECT * FROM `user` WHERE '.$this->userName.' = BINARY ?';
 		$params = array($username);
 
 		$this->connect();
@@ -86,7 +86,42 @@ class UserRepo extends \model\repository\Repository
 
 		return $user;
 	}
-	
+
+
+	//hämtar en användare baserat på ett givet email.
+	public function getUserByEmail($email)
+	{
+		$sql = 'SELECT * FROM `user` WHERE '.$this->email.' = ?';
+		$params = array($email);
+
+		$this->connect();
+
+		//förbered frågan och kör den sedan (med params)
+		$query = $this->dbConnection->prepare($sql);
+		$query->execute($params);
+
+		$result = $query->fetch();
+
+		//lägger in datan i ett User-objekt och returnerar (om det finns).
+		$user;
+		if($result)
+		{
+			$user = new \model\User
+			(	
+				$result[$this->userName],
+				$result[$this->email],
+				$result[$this->password],
+				$result[$this->salt],
+				$result[$this->dateAdded],
+				$result[$this->admin],
+				$result[$this->userId]
+			);
+		}
+
+		return $user;
+	}	
+
+
 	public function add(\model\User $user)
 	{
 		
