@@ -8,7 +8,6 @@ require_once("./view/helpers/GetHandler.php");
 class PollView
 {
 	private $poll;
-	private $scriptPath = "script/pollScript.js";
 
 	public function __construct($poll)
 	{

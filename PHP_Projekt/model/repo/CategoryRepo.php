@@ -17,6 +17,27 @@ class CategoryRepo extends \model\repository\Repository
 
 	}
 
+	public function getCategoryById($id)
+	{
+		$sql = "SELECT * FROM category WHERE ".$this->categoryId."=?";
+		$params = array($id);
+		
+		$this->connect();
+		
+		$query = $this->dbConnection->prepare($sql);
+		$query->execute($params);
+		
+		$result = $query->fetch();
+		
+		if($result)
+		{
+			$category = new \model\Category($result[$this->categoryId], $result[$this->categoryName]);
+		}
+
+		return $category;
+
+	}
+
 	public function getAllCategories()
 	{
 		//array som ska returneras

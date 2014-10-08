@@ -22,6 +22,8 @@ class SidebarView
 
 		$sidebar = 
 		'
+
+		<h2>Categories</h2>
 		<ul id="sidebarList">
 		';
 		foreach($categories as $category)
