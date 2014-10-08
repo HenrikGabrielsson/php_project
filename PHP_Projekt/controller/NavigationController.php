@@ -11,21 +11,15 @@ require_once("controller/UserController.php");
 require_once("controller/CategoryController.php");
 require_once("controller/RegistrationController.php");
 
-require_once("view/NavigationView.php");
-require_once("view/LoginView.php");
+require_once("./view/helpers/GetHandler.php");
+require_once("./view/NavigationView.php");
+require_once("./view/SidebarView.php");
 
 class NavigationController
 {
-
-    private $loginRequest = "login";
-    private $logoutRequest = "logout";
-    private $pollRequest = "poll";
-    private $userRequest = "user";
-    private $categoryRequest = "category";
-    private $registerRequest = "register";
-
     private $navView;
     private $htmlView;
+    private $sidebarView;
 
     private $currentController;     //controller som ska användas.
     
@@ -34,23 +28,28 @@ class NavigationController
     {
         $this->htmlView = $htmlView;
         $this->navView = new \view\NavigationView();
+        $this->sidebarView = new \view\sidebarView();
     }
     
     //kollar url och anropar sedan en lämplig controller 
     public function getPage()
     {
+        //börjar med att lägga till innehållet i sidebar.
+        $this->htmlView->setSidebarContent($this->sidebarView->getSidebarContent());
+
+        //sedan anropas den konstruktor som lägger till innehåll i title och body.
         switch ($this->navView->getPageController())
         {
-            case $this->pollRequest:
+            case \view\helpers\GetHandler::getViewPoll():
                 $this->currentController = new \controller\PollController($this->htmlView);
                 break;
-            case $this->userRequest:
+            case \view\helpers\GetHandler::getViewUser():
                 $this->currentController = new \controller\UserController($this->htmlView);
                 break;
-            case $this->categoryRequest:
+            case \view\helpers\GetHandler::getViewCategory():
                 $this->currentController = new \controller\CategoryController($this->htmlView);
                 break;
-            case $this->registerRequest:
+            case \view\helpers\GetHandler::getViewRegister():
                 $this->currentController = new \controller\RegistrationController($this->htmlView);
                 break;
             default:

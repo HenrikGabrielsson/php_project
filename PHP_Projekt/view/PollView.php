@@ -22,7 +22,7 @@ class PollView
 
 	public function getBody()
 	{
-		$retString = "<h2>".$this->poll->getQuestion()."</h2>";
+		$retString = "<h1>".$this->poll->getQuestion()."</h1>";
 
 		//om användaren vill se resultatet
 		if(isset($_GET[helpers\GetHandler::getShowResult()]))

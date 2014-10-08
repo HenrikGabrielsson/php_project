@@ -42,8 +42,8 @@ class RegistrationView
 	public function getSuccessPage()
 	{
 		$body = 
-		'<h2>Congratulations!</h2>
-		<p>You have successfully registered! Login and start creating polls. </p>
+		'<h1>Registration done</h1>
+		<p>Congratulations! You have successfully registered. Login and start creating polls. </p>
 		';
 
 		return $body;
@@ -53,7 +53,7 @@ class RegistrationView
 	{
 
 		$body = 
-		'<h2>Registration</h2>
+		'<h1>Registration</h1>
 
 		'.$this->makeFeedback($feedback).'
 

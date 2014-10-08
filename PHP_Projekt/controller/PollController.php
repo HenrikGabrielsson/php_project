@@ -16,7 +16,6 @@ class PollController
 	public function __construct($htmlView)
 	{
 		$this->htmlView = $htmlView;
-		$this->pollView = new \view\PollView($poll);
 	}
 
 	public function getContent($id, $loggedIn)
@@ -24,6 +23,8 @@ class PollController
 		//skapar ett repositorie-objekt och hämtar aktuell undersökning
 		$repo = new \model\repository\pollRepo();
 		$poll = $repo->getPollById($id);
+
+		$this->pollView = new \view\PollView($poll);
 
 		//hämtar titel och body som ska visas, och skickar till htmlView som renderar.
 		$title = $this->pollView->getTitle();

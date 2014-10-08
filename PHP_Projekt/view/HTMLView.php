@@ -4,7 +4,8 @@ namespace view;
 
 class HTMLView 
 {
-    public $loginBox;
+    private $loginBox;
+    private $sidebarContent;
     
     //funktion som visar innehållet på sidan. tar emot titeln och bodyn till sidan som ska visas
     public function showHTML($title, $body)
@@ -29,14 +30,15 @@ class HTMLView
                         
                     </div>
 
-                    <div id="sidebar">
-                        <div id="categoryList">
+                    <div id="content">
+
+                        <div id="sidebar">
+                            '.$this->sidebarContent.'
 
                         </div>
-                    </div>
-
-                    <div id="content">
-                        '.$body.'
+                        <div id="main_content">
+                            '.$body.'
+                        </div>
                     </div>
                     
                     
@@ -51,5 +53,10 @@ class HTMLView
     public function setLoginBox($loginBox)
     {
         $this->loginBox = $loginBox;
+    }
+
+    public function setSidebarContent($sidebarContent)
+    {
+        $this->sidebarContent = $sidebarContent;
     }
 }

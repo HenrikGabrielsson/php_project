@@ -27,12 +27,22 @@ body {
     float:right;
 }
 
+#main_content {
+    width:70%;
+}
+
 
 #footer {
     float:right;
     min-width:600px;
     width:100%;
     min-height:150px;
+}
+
+#sidebar {
+    float:left;
+    width:10%;
+    min-width:100px;
 }
 
 
