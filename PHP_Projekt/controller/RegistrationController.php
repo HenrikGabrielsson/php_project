@@ -24,7 +24,6 @@ class RegistrationController
 	{
 
 		$title = $this->regView->getTitle();
-		$body;
 
 		if($this->regView->userWantsToRegister())
 		{
@@ -38,12 +37,13 @@ class RegistrationController
 
 			if($success)
 			{
-				$this->regView->getSuccessPage();
+				$body = $this->regView->getSuccessPage();
+				$this->htmlView->showHTML($title, $body);
 				return;
 			}
 		}
 
-		//Om em registrering misslyckas så visas formuläret igen med feedback.
+		//Om en registrering misslyckas så visas formuläret igen med feedback.
 		$feedback = $this->registration->getErrorList();
 
 		$body = $this->regView->getForm($feedback);

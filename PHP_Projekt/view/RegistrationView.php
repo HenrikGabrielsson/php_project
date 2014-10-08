@@ -39,6 +39,16 @@ class RegistrationView
 		return $_POST[helpers\PostHandler::getRegPassword2()];
 	}
 
+	public function getSuccessPage()
+	{
+		$body = 
+		'<h2>Congratulations!</h2>
+		<p>You have successfully registered! Login and start creating polls. </p>
+		';
+
+		return $body;
+	}
+
 	public function getForm($feedback)
 	{
 

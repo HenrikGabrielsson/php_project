@@ -36,13 +36,31 @@ class Registration
 		$this->validatePasswords($password1, $password2);
 		$this->validateEmail($email);
 
-		//om några fel hittas.
+		//om några fel hittas så avslutas registreringen.
 		if(count($this->errorList) > 0)
 		{
 			return false;
 		}	
 
+		$this->registerUser($username, $email, $password1);
 		return true;	
+	}
+
+	//denna funktion registrerar en ny medlem genom att lägga till dess uppgifter i databasen.
+	private function registerUser($username, $email, $password)
+	{
+		$salt = mcrypt_create_iv(32,MCRYPT_RAND);
+		$password = $this->hashPassword($password, $salt);
+
+		$newUser = new \model\User($username, $email, $password, $salt, date("Y-m-d"));
+
+		$this->repo->add($newUser);
+
+	}
+
+	private function hashPassword($password, $salt)
+	{
+		return sha1($salt.md5($password));
 	}
 
 	//funktion som validerar ett givet namn 

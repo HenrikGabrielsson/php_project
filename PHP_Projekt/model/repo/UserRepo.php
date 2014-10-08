@@ -125,9 +125,9 @@ class UserRepo extends \model\repository\Repository
 	public function add(\model\User $user)
 	{
 		
-		$sql = "INSERT INTO user(".$this->userName.",".$this->email.",".$this->dateAdded.",".$this->admin.",".$this->password.",".$this->salt.")VALUES(?,?,?,?,?,?)";
-		$params = array($user->getUserName(), $user->getEmail(), date("Y-m-d"), $user->getAdmin(), $user->getPassword(), $user->getSalt());
-		
+		$sql = "INSERT INTO user(".$this->userName.",".$this->email.",".$this->dateAdded.",".$this->admin.",".$this->password.",".$this->salt.") VALUES(?,?,?,?,?,?)";
+		$params = array($user->getUserName(), $user->getEmail(), $user->getDateAdded(), $user->getAdmin(), $user->getPassword(), $user->getSalt());
+
 		$this->connect();
 		
 		$query = $this->dbConnection->prepare($sql);
