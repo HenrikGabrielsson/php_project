@@ -90,15 +90,15 @@ class PollView
 		//loopar ut alla alternativ som radioknappar
 		foreach ($this->poll->getAnswers() as $answer)
 		{
-			$alternatives .= '<label for="'.$answer->getId().'" >'.$answer->getAnswer().': </label><input type="radio" id="'.$answer->getId().'" value="'.$answer->getId().'" />';
+			$alternatives .= '<label for="'.$answer->getId().'" >'.$answer->getAnswer().': </label><input type="radio" name="'.helpers\PostHandler::getVote().'" id="'.$answer->getId().'" value="'.$answer->getId().'" />';
 		}
 
 		//formulär med radioknappar
 		return 
 			'
-			<form id="pollForm" action="?voted" method="POST">
+			<form id="pollForm" action="'.$_SERVER['REQUEST_URI'].'&'.helpers\GetHandler::getShowResult().'" method="post">
 				'.$alternatives.'
-				<input type="submit" value="Rösta" id="postPoll" />
+				<input type="submit" value="Vote" id="postPoll" />
 			</form>
 			';
 	}

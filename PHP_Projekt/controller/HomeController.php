@@ -16,10 +16,10 @@ class HomeController
 		$this->homeView = new \view\HomePageView();
 	}
 
-	public function getContent()
+	public function getContent($id, $loggedIn)
 	{
 		$title = $this->homeView->getTitle();
-		$body = $this->homeView->getBody();
+		$body = $this->homeView->getBody($loggedIn);
 
 		$this->htmlView->showHTML($title, $body);
 	}

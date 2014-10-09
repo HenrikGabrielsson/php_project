@@ -10,6 +10,7 @@ require_once("controller/PollController.php");
 require_once("controller/UserController.php");
 require_once("controller/CategoryController.php");
 require_once("controller/RegistrationController.php");
+require_once("controller/PollCreationController.php");
 
 require_once("./view/helpers/GetHandler.php");
 require_once("./view/NavigationView.php");
@@ -51,6 +52,9 @@ class NavigationController
                 break;
             case \view\helpers\GetHandler::getViewRegister():
                 $this->currentController = new \controller\RegistrationController($this->htmlView);
+                break;
+            case \view\helpers\GetHandler::getViewCreatePoll():
+                $this->currentController = new \controller\PollCreationController($this->htmlView);
                 break;
             default:
                 $this->currentController = new \controller\HomeController($this->htmlView);

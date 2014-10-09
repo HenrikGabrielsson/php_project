@@ -49,15 +49,22 @@ class RegistrationView
 		return $body;
 	}
 
-	public function getForm($feedback)
+	public function getRegister($feedback)
 	{
 
 		$body = 
 		'<h1>Registration</h1>
 
-		'.$this->makeFeedback($feedback).'
+		'.$this->makeFeedback($feedback)
+		.$this->getForm();
+		
+		return $body;
+	}
 
-		<form id="registrationForm" method="post" action="?'.helpers\GetHandler::getView().'='.helpers\GetHandler::getRegister().'&'.helpers\GetHandler::getRegister().'">
+	public function getForm()
+	{
+		return 
+		'<form id="registrationForm" method="post" action="?'.helpers\GetHandler::getView().'='.helpers\GetHandler::getRegister().'&'.helpers\GetHandler::getRegister().'">
 
 			<label for="regUserName">Username:</label>
 				<input type="text" name="'.helpers\PostHandler::getRegUsername().'" id="regUserName"  placeholder="Username" />
@@ -73,10 +80,7 @@ class RegistrationView
 
 			<input type="submit" value="Registrera">
 		</form>
-		';
-
-
-		return $body;
+		';		
 	}
 
 	public function getTitle()

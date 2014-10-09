@@ -8,13 +8,16 @@ class GetHandler
 	private static $logout = "logout";
 	private static $view  = "view";
 	private static $id = "id";
-	private static $showResult = "showResult";
+	private static $showResult = "showResults";
 	private static $register = "register";
+	private static $create = "create";
+
 
 	private static $viewRegister = "register";
 	private static $viewCategory = "category";
 	private static $viewPoll = "poll";
 	private static $viewUser = "user";
+	private static $viewCreatePoll = "create";
 
 
 	//getters för namnen på alla get-parametrar
@@ -48,6 +51,11 @@ class GetHandler
 		return self::$register;
 	} 
 
+	public static function getCreate()
+	{
+		return self::$create;
+	} 
+
 	//views
 	public static function getViewRegister()
 	{
@@ -69,5 +77,9 @@ class GetHandler
 		return self::$viewUser;
 	}
 
+	public static function getViewCreatePoll()
+	{
+		return self::$viewCreatePoll;
+	}
 
 }

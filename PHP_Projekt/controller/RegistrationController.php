@@ -46,7 +46,7 @@ class RegistrationController
 		//Om en registrering misslyckas så visas formuläret igen med feedback.
 		$feedback = $this->registration->getErrorList();
 
-		$body = $this->regView->getForm($feedback);
+		$body = $this->regView->getRegister($feedback);
 
 		$this->htmlView->showHTML($title, $body);
 			
