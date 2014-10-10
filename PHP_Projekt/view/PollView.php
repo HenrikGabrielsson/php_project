@@ -14,30 +14,33 @@ class PollView
 		$this->poll = $poll;
 	}
 
+	public function getAnswer()
+	{
+		return $_POST[helpers\PostHandler::getVote()];
+	}
+
+	public function getClient()
+	{
+		return $_SERVER["REMOTE_ADDR"];
+	}
+
+	public function userWantsResults()
+	{
+		return isset($_GET[helpers\GetHandler::getShowResult()]);
+	}
+
+	public function userVoted()
+	{
+		return isset($_POST[helpers\PostHandler::getVote()]);
+	}
+
+
 	public function getTitle()
 	{
 		return $this->poll->getQuestion();
 	}
 
-	public function getBody()
-	{
-		$retString = "<h1>".$this->poll->getQuestion()."</h1>";
-
-		//om användaren vill se resultatet
-		if(isset($_GET[helpers\GetHandler::getShowResult()]))
-		{
-			$retString .= $this->getResult();
-		}
-
-		//annars visas formuläret där man kan svara på frågan som ställs.
-		else
-		{
-			$retString .= $this->getForm();
-		}
-		return $retString;
-	}
-
-	private function getResult()
+	public function getResult()
 	{
 
 		$answers = $this->poll->getAnswers();
@@ -72,6 +75,7 @@ class PollView
 
 		return 
 			'
+			<h1>'.$this->poll->getQuestion().'</h1>
 			<div class="pollResults">
 			
 				<img class="diagramImage" src="data:image/png;base64,' . base64_encode( $raw) .'">
@@ -84,7 +88,7 @@ class PollView
 			';
 	}
 
-	private function getForm()
+	public function getForm()
 	{
 
 		//loopar ut alla alternativ som radioknappar
@@ -96,6 +100,7 @@ class PollView
 		//formulär med radioknappar
 		return 
 			'
+			<h1>'.$this->poll->getQuestion().'</h1>
 			<form id="pollForm" action="'.$_SERVER['REQUEST_URI'].'&'.helpers\GetHandler::getShowResult().'" method="post">
 				'.$alternatives.'
 				<input type="submit" value="Vote" id="postPoll" />

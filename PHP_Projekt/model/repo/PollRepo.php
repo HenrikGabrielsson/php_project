@@ -199,30 +199,28 @@ class PollRepo extends \model\repository\Repository
 		
 	}
 	
-	public function addVote($answerId)
+	public function addVote($answerId, $ip)
 	{
 
-		$voter = $this->alreadyVotedInPoll($answerId);
-		//kolla om denna ip redan har röstat i aktuell poll.
-		if($voter)
-		{
-			$sql = "UPDATE vote SET ".$this->answerId."=? WHERE ".$this->voteId."=?";
-			$params = array($answerId, $voter);
-		}
-		//om användaren inte tidigare har röstat i undersökningen så läggs en ny röst till.
-		else 
-		{
-			$sql = "INSERT INTO vote(".$this->ip.",".$this->answerId.")
-			VALUES(?,?)";
-			$params = array($_SERVER["REMOTE_ADDR"], $answerId);
-		}
+		$sql = "INSERT INTO vote(".$this->ip.",".$this->answerId.")
+		VALUES(?,?)";
+		$params = array($ip, $answerId);
 		
-		$this->connect();
-		
+		$this->connect();	
+
 		$query = $this->dbConnection->prepare($sql);
-		$result = $query->execute($params);	
-		
-		return $result;		
+		return $query->execute($params);
+	}
+
+	public function updateVote($answerId, $voteId)
+	{
+		$sql = "UPDATE vote SET ".$this->answerId."=? WHERE ".$this->voteId."=?";
+		$params = array($answerId, $voteId);
+
+		$this->connect();
+
+		$query = $this->dbConnection->prepare($sql);
+		return $query->execute($params);	
 	}
 	
 	private function deleteAnswers()
@@ -267,7 +265,7 @@ class PollRepo extends \model\repository\Repository
 	}
 	
 	//skickar tillbaka false om personen inte redan röstat. Annars skickas voteId på den förra rösten tillbaka.
-	private function alreadyVotedInPoll($answerId)
+	public function alreadyVotedInPoll($answerId, $ip)
 	{		
 		//kollar vilken poll den nya rösten är i
 		$sql = "SELECT ".$this->pollId." FROM answer WHERE ".$this->answerId."=?";
@@ -280,9 +278,6 @@ class PollRepo extends \model\repository\Repository
 		
 		//här är den nya undersökningen som användaren röstade i
 		$newVotePoll = $query->fetch();
-		
-		//klientens ip
-		$ip = $_SERVER["REMOTE_ADDR"];
 		
 		//här så undersöker vi om personen med denna ip redan har röstat i undersökningen
 		$sql = "SELECT ".$this->voteId." FROM vote 

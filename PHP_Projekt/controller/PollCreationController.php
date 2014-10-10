@@ -26,7 +26,7 @@ class PollCreationController
 
 		if($this->pollCreationView->userWantsToCreatePoll())
 		{
-			//send poll to model for validation
+			//send poll-data to pollcreATOR
 
 			//on success. show poll
 		}
