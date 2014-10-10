@@ -26,12 +26,7 @@ class PollCreationController
 
 		if($this->pollCreationView->userWantsToCreatePoll())
 		{
-			$question = $this->pollCreationView->getQuestion();
-			$answers = $this->pollCreationView->getAnswers();
-			$category = $this->pollCreationView->getCategory();
-			$public = $this->pollCreationView->getIsPublic();
-
-			$success = $this->pollCreator->attemptTocreate($question, $answers, $category, $public);
+			//send poll-data to pollcreATOR
 
 			//on success. show poll
 		}

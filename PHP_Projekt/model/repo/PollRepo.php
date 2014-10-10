@@ -70,7 +70,6 @@ class PollRepo extends \model\repository\Repository
 	
 	public function getPollById($id)
 	{
-
 		$sql = "SELECT * FROM poll WHERE ".$this->pollId."=?";
 		$params = array($id);
 		
@@ -110,6 +109,7 @@ class PollRepo extends \model\repository\Repository
 	{
 		//array som ska returneras
 		$retPolls = array();
+		
 		
 		$sql = "SELECT * FROM poll WHERE ".$this->creator."=? ";
 		$params = array($userId);
@@ -201,6 +201,7 @@ class PollRepo extends \model\repository\Repository
 	
 	public function addVote($answerId, $ip)
 	{
+
 		$sql = "INSERT INTO vote(".$this->ip.",".$this->answerId.")
 		VALUES(?,?)";
 		$params = array($ip, $answerId);
@@ -253,7 +254,7 @@ class PollRepo extends \model\repository\Repository
 			
 			foreach($rows as $row)
 			{
-				$answers[] = (new \model\Answer($row[$this->answer],  $row[$this->pollId], $this->getVotes($row[$this->answerId]), $this->getVotes($row[$this->answerId])));
+				$answers[] = (new \model\Answer($row[$this->answer], $row[$this->answerId], $row[$this->pollId], $this->getVotes($row[$this->answerId])));
 			}
 			
 			return $answers;
@@ -321,9 +322,9 @@ class PollRepo extends \model\repository\Repository
 		foreach ($answers as $answer) 
 		{
 			$values[] = "(?,?)";
-
+			
 			$params[] = $pollId;
-			$params[] = $answer->getAnswer();
+			$params[] = $answer;
 		}
 		
 		$sql = "INSERT INTO answer(".$this->pollId.", ".$this->answer.")

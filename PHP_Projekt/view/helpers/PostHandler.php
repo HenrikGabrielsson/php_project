@@ -13,7 +13,7 @@ class PostHandler
 	private static $regPassword2 = "regPassword2";
 
 	private static $createQuestion = "createQuestion";
-	private static $createAnswer = "createAnswer";
+	private static $createAnswer = "createAnswer[]";
 	private static $createCategory = "createCategory";
 	private static $createPublic = "createPublic";
 

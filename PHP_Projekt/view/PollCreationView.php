@@ -24,26 +24,6 @@ class PollCreationView
 		return "Create a new poll";
 	}
 
-	public function getQuestion()
-	{
-		return $_POST[helpers\PostHandler::getCreateQuestion()];
-	}
-
-	public function getAnswers()
-	{
-		return $_POST[helpers\PostHandler::getCreateAnswer()];
-	}
-
-	public function getCategory()
-	{
-		return $_POST[helpers\PostHandler::getCreateCategory()];
-	}
-
-	public function getIsPublic()
-	{
-		return $_POST[helpers\PostHandler::getCreatePublic()];
-	}
-
 	public function getCreate($feedback)
 	{
 		$body = 
@@ -65,22 +45,11 @@ class PollCreationView
 			$categories .= '<option value="'.$category->getId().'">'.$category->getCategoryName().'</option>';
 		}
 
-		$answerFields = '';
-		for($i = 1; $i <= 10; $i++)
-		{
-			$answerFields .= 
-			'<label class="createAnswerLabels" for="createAnswer'.$i.'">Answer '.$i.': </label>
-			<input type="text" id="createAnswer'.$i.'" class="createAnswer" name="'.helpers\PostHandler::getCreateAnswer().'[]">';
-		}
-
 		$form = 
-		'<form id="createPollForm" action="'.$_SERVER['REQUEST_URI'].'&'.helpers\GetHandler::getCreate().'" method="post">
+		'<form id="createPollForm" action="?'.helpers\GetHandler::getCreate().'" method="post">
 
 		<label for="createQuestion">Question: </label><input type="text" name="'.helpers\PostHandler::getCreateQuestion().'" id="createQuestion">
-	
-		<fieldset id="answers_fieldset">
-		'.$answerFields.'
-		</fieldset>
+		<label for="createAnswer">Answer: </label><input type="text" id="createAnswer" name="'.helpers\PostHandler::getCreateAnswer().'">
 
 		<select name="'.helpers\PostHandler::getCreateCategory().'">
 			'.$categories.'

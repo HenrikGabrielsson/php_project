@@ -45,7 +45,6 @@ class HTMLView
                     <div id="footer">
                     </div>
                 </div>
-                <script src="script/pollScript.js" type="text/javascript" ></script>
             </body>
         </html>
         ';

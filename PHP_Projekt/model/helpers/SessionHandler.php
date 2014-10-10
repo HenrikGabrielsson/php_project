@@ -6,7 +6,6 @@ class SessionHandler
 {
 	private static $loggedIn = "loggedIn";
 	private static $username = "username"; 
-	private static $userId = "id";
 
 	//getters för namnen på session-variablerna
 	public static function getLoggedIn()
@@ -19,17 +18,10 @@ class SessionHandler
 		return self::$username;
 	}
 
-	public function getUserId()
-	{
-		return self::$userId;
-	}
-
-	public static function loginUser($username, $id)
+	public static function loginUser($username)
 	{
 		$_SESSION[self::$username] = $username;
-		$_SESSION[self::$userId] = $id;
 		$_SESSION[self::$loggedIn] = true;
-
 	}
 
 	public static function removeSessions()
