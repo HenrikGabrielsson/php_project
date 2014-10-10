@@ -32,9 +32,10 @@ class CategoryRepo extends \model\repository\Repository
 		if($result)
 		{
 			$category = new \model\Category($result[$this->categoryId], $result[$this->categoryName]);
+			return $category;
 		}
 
-		return $category;
+		return $result;
 
 	}
 
@@ -66,4 +67,5 @@ class CategoryRepo extends \model\repository\Repository
 		return $catArray;
 		}
 	}
+
 }

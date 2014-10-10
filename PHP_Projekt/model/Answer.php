@@ -9,7 +9,7 @@ class Answer
 	private $answer;	//svarstext
 	private $count;		//antal röster på detta svar.
 	
-	public function __construct($answer, $id = 0, $pollId = 0, $count = 0)
+	public function __construct($answer, $pollId = 0, $count = 0, $id = 0)
 	{
 		$this->id = $id;
 		$this->pollId = $pollId;
