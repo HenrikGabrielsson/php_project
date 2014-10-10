@@ -208,7 +208,7 @@ class PollRepo extends \model\repository\Repository
 		$this->connect();	
 
 		$query = $this->dbConnection->prepare($sql);
-		
+		die("testy");
 		return $query->execute($params);
 	}
 

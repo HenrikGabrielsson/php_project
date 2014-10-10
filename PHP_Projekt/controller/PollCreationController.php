@@ -33,7 +33,7 @@ class PollCreationController
 
 			$success = $this->pollCreator->attemptTocreate($question, $answers, $category, $public);
 
-			
+			//on success. show poll
 		}
 
 		$feedback = $this->pollCreator->getErrorList();

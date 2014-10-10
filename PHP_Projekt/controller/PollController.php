@@ -37,7 +37,6 @@ class PollController
 			$answer = $this->pollView->getAnswer();
 
 			$this->voter->addNewVote($answer,$ip);
-			//skicka svaret till model.
 		}
 
 		//om användaren vill se resultat eller frågan där de kan rösta
