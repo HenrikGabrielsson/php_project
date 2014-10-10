@@ -87,7 +87,7 @@ class PollCreationView
 		</select>
 
 		<label for="privateRadio">Private: </label><input id="privateRadio" type="radio" name="'.helpers\PostHandler::getCreatePublic().'" value="0">
-		<label for="publicRadio">Public: </label><input id="publicRadio" type="radio" name="'.helpers\PostHandler::getCreatePublic().'" value="1">
+		<label for="publicRadio">Public: </label><input id="publicRadio" type="radio" name="'.helpers\PostHandler::getCreatePublic().'" value="1" checked>
 
 		<input type="submit" value="Create!">
 		</form>

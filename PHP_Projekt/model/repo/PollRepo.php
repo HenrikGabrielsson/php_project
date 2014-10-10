@@ -28,6 +28,7 @@ class PollRepo extends \model\repository\Repository
 	//funktion för att lägga till en undersökning i databasen
 	public function add(\model\Poll $poll)
 	{
+
 		$sql = "INSERT INTO poll(".$this->creator.", ".$this->question.", ".$this->creationDate.", ".$this->public.", ".$this->category.")
 		VALUES (?,?,?,?,?);";
 		$params = array($poll->getCreator(), $poll->getQuestion(), date("Y-m-d"), $poll->getPublic(), $poll->getCategory());
@@ -201,6 +202,7 @@ class PollRepo extends \model\repository\Repository
 	
 	public function addVote($answerId, $ip)
 	{
+
 		$sql = "INSERT INTO vote(".$this->ip.",".$this->answerId.")
 		VALUES(?,?)";
 		$params = array($ip, $answerId);
@@ -208,7 +210,6 @@ class PollRepo extends \model\repository\Repository
 		$this->connect();	
 
 		$query = $this->dbConnection->prepare($sql);
-		die("testy");
 		return $query->execute($params);
 	}
 
@@ -220,7 +221,7 @@ class PollRepo extends \model\repository\Repository
 		$this->connect();
 
 		$query = $this->dbConnection->prepare($sql);
-		return $query->execute($params);	
+		$result = $query->execute($params);		
 	}
 	
 	private function deleteAnswers()
@@ -245,7 +246,7 @@ class PollRepo extends \model\repository\Repository
 		
 		$query = $this->dbConnection->prepare($sql);
 		$result = $query->execute($params);
-		
+
 		if($result)
 		{
 			$rows = $query->fetchAll();
@@ -254,7 +255,7 @@ class PollRepo extends \model\repository\Repository
 			
 			foreach($rows as $row)
 			{
-				$answers[] = (new \model\Answer($row[$this->answer],  $row[$this->pollId], $this->getVotes($row[$this->answerId]), $this->getVotes($row[$this->answerId])));
+				$answers[] = (new \model\Answer($row[$this->answer],  $row[$this->pollId], $this->getVotes($row[$this->answerId]), $row[$this->answerId]));
 			}
 			
 			return $answers;
