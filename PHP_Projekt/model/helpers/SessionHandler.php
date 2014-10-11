@@ -19,7 +19,7 @@ class SessionHandler
 		return self::$username;
 	}
 
-	public function getUserId()
+	public static function getUserId()
 	{
 		return self::$userId;
 	}

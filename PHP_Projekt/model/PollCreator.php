@@ -34,7 +34,6 @@ class PollCreator
 		return $this->errorList;
 	}
 
-
 	public function attemptToCreate($question, $answers, $category, $public)
 	{
 		//validera all input.
@@ -42,7 +41,6 @@ class PollCreator
 		$answers = $this->validateAnswers($answers);
 		$this->validatePublic($public);
 		$this->validateCategory($category);
-
 
 
 		//om det finns några fel så stoppar vi här.
@@ -58,7 +56,7 @@ class PollCreator
 		}
 
 		//en poll skapas om valideringen gick bra
-		$poll = new \model\Poll($question, getUserId, date("Y-m-d"), $public, $category, $answer_objs);
+		$poll = new \model\Poll($question, $_SESSION[helpers\SessionHandler::getUserId()], date("Y-m-d"), $public, $category, $answer_objs);
 	
 		$this->pollRepo->add($poll);
 

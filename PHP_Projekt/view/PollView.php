@@ -8,10 +8,12 @@ require_once("./view/helpers/GetHandler.php");
 class PollView
 {
 	private $poll;
+	private $owner;
 
-	public function __construct($poll)
+	public function __construct($poll, $owner)
 	{
 		$this->poll = $poll;
+		$this->owner = $owner;
 	}
 
 	public function getAnswer()
@@ -74,9 +76,9 @@ class PollView
         $raw = ob_get_clean();
 
 		return 
-			'
-			<h1>'.$this->poll->getQuestion().'</h1>
-			<div class="pollResults">
+			
+			$this->getTitleAndCreator().
+			'<div class="pollResults">
 			
 				<img class="diagramImage" src="data:image/png;base64,' . base64_encode( $raw) .'">
 
@@ -99,13 +101,22 @@ class PollView
 
 		//formulär med radioknappar
 		return 
-			'
-			<h1>'.$this->poll->getQuestion().'</h1>
+			$this->getTitleAndCreator().
+			'<h1>'.$this->poll->getQuestion().'</h1>
 			<form id="pollForm" action="'.$_SERVER['REQUEST_URI'].'&'.helpers\GetHandler::getShowResult().'" method="post">
 				'.$alternatives.'
 				<input type="submit" value="Vote" id="postPoll" />
 			</form>
 			';
+	}
+
+	public function getTitleAndCreator()
+	{
+		return 
+		'<h1>'.$this->poll->getQuestion().'</h1>
+		<p>Created by: <a href="?'.helpers\GetHandler::getView().'='.helpers\GetHandler::getViewUser().
+		'&'.helpers\GetHandler::getId().'='.$this->owner->getId().'">'.$this->owner->getUserName().'</a> </p>
+		';	
 	}
 
 	private function convertToPercentage($answers)

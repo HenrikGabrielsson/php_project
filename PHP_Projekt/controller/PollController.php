@@ -6,6 +6,7 @@ require_once("./view/HTMLView.php");
 require_once("./view/PollView.php");
 require_once("./model/Poll.php");
 require_once("./model/repo/PollRepo.php");
+require_once("./model/repo/UserRepo.php");
 require_once("./model/Voter.php");
 
 class PollController
@@ -13,22 +14,25 @@ class PollController
 	private $htmlView;
 	private $pollView;
 	private $voter;
-	private $repo;
+	private $pollRepo;
+	private $userRepo;
 
 	public function __construct($htmlView)
 	{
-		$this->repo = new \model\repository\pollRepo();
+		$this->pollRepo = new \model\repository\PollRepo();
+		$this->userRepo = new \model\repository\UserRepo();
 		$this->htmlView = $htmlView;
-		$this->voter = new \model\Voter($this->repo);
+		$this->voter = new \model\Voter($this->pollRepo);
 	}
 
 	public function getContent($id, $loggedIn)
 	{
 		//skapar ett repositorie-objekt och hämtar aktuell undersökning
 		
-		$poll = $this->repo->getPollById($id);
+		$poll = $this->pollRepo->getPollById($id);
+		$owner = $this->userRepo->getUserById($poll->getCreator());
 
-		$this->pollView = new \view\PollView($poll);
+		$this->pollView = new \view\PollView($poll, $owner);
 
 		//om användaren har röstat så skickas detta till modellen
 		if($this->pollView->userVoted())

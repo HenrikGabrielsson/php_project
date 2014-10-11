@@ -59,7 +59,7 @@ class Login
 		//Om användaren inte hittades eller om lösenordet inte matchar 
 		if(isset($user) && $this->checkPassword($password, $user->getPassword(), $user->getSalt()))
 		{
-			helpers\SessionHandler::loginUser($user->getUsername(), $this->user->getId());
+			helpers\SessionHandler::loginUser($user->getUsername(), $user->getId());
 		}
 		else
 		{
