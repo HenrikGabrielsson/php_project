@@ -31,7 +31,7 @@ class PollRepo extends \model\repository\Repository
 
 		$sql = "INSERT INTO poll(".$this->creator.", ".$this->question.", ".$this->creationDate.", ".$this->public.", ".$this->category.")
 		VALUES (?,?,?,?,?);";
-		$params = array($poll->getCreator(), $poll->getQuestion(), date("Y-m-d"), $poll->getPublic(), $poll->getCategory());
+		$params = array($poll->getCreator(), $poll->getQuestion(), $poll->getCreationDate(), $poll->getPublic(), $poll->getCategory());
 		
 		$this->connect();	
 		
@@ -81,7 +81,7 @@ class PollRepo extends \model\repository\Repository
 		$query->execute($params);
 		
 		$result = $query->fetch();
-		
+
 		if($result)
 		{
 			//svaren till undersökningen
@@ -105,6 +105,7 @@ class PollRepo extends \model\repository\Repository
 				return $poll;
 			}
 		}
+		return null;
 	}
 	
 	public function getAllPollsFromUser($userId, $includePrivate = true)

@@ -18,6 +18,7 @@ class PostHandler
 	private static $createPublic = "createPublic";
 
 	private static $vote = "vote";
+	private static $comment = "comment";
 
 
 	//getters för namnen på alla post-parametrar
@@ -76,5 +77,10 @@ class PostHandler
 	public function getVote()
 	{
 		return self::$vote;
+	}
+
+	public function getComment()
+	{
+		return self::$comment;
 	}
 }

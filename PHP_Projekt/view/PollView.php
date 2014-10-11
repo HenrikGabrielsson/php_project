@@ -9,16 +9,23 @@ class PollView
 {
 	private $poll;
 	private $owner;
+	private $commentHandler;
 
-	public function __construct($poll, $owner)
+	public function __construct($poll, $owner, $commentHandler)
 	{
 		$this->poll = $poll;
 		$this->owner = $owner;
+		$this->commentHandler = $commentHandler;
 	}
 
 	public function getAnswer()
 	{
 		return $_POST[helpers\PostHandler::getVote()];
+	}
+
+	public function getComment()
+	{
+		return $_POST[helpers\PostHandler::getComment()];
 	}
 
 	public function getClient()
@@ -36,13 +43,18 @@ class PollView
 		return isset($_POST[helpers\PostHandler::getVote()]);
 	}
 
+	public function userCommented()
+	{
+		return isset($_POST[helpers\PostHandler::getComment()]);
+	}
+
 
 	public function getTitle()
 	{
 		return $this->poll->getQuestion();
 	}
 
-	public function getResult()
+	public function getResult($feedback = "")
 	{
 
 		$answers = $this->poll->getAnswers();
@@ -75,8 +87,9 @@ class PollView
         imagepng($image);
         $raw = ob_get_clean();
 
+
+
 		return 
-			
 			$this->getTitleAndCreator().
 			'<div class="pollResults">
 			
@@ -86,8 +99,9 @@ class PollView
 				'.$resultList.'	
 				</ul>
 
-			</div>
-			';
+			</div>'
+			.$this->getCommentSection($feedback)
+			;
 	}
 
 	public function getForm()
@@ -119,6 +133,59 @@ class PollView
 			';	
 	}
 
+	public function getCommentSection($feedback)
+	{
+		if($feedback == null)
+		{
+			$feedback = "Write a comment. Keep it civil, please.";
+		}
+
+		else if(is_array($feedback))
+		{
+			$feedback = $this->makeFeedback($feedback);
+		}
+
+		return 
+		'<div id="commentSection" >
+			<form action="'.$_SERVER['REQUEST_URI'].'" method="post">
+				<textarea maxlength="1000" cols="100" rows="5" name="'.helpers\PostHandler::getComment().'" id="comment">'.$feedback.'
+				</textarea>
+				<input type="submit" value="Send Comment">
+			</form>
+			'.$this->getComments().'
+			
+		</div>
+		';
+	}
+
+	private function getComments()
+	{
+		$comments = $this->commentHandler->getCommentsInPoll($this->poll->getId());
+
+		$retHTML = '<div id="comments">';
+
+		foreach ($comments as $comment) 
+		{
+			$writer = $this->commentHandler->getCommentWriter($comment);
+
+			$retHTML .= 
+			'<div class="comment">
+				<div class="commentHead">
+					<p>'.$comment->getCommentTime().'</p><p><a href="?'.helpers\GetHandler::getView().'='.helpers\GetHandler::getViewUser().
+					'&'.helpers\GetHandler::getId().'='.$comment->getUserId().'">'. $writer->getUserName().'</a><p>
+				</div>
+				<div class="commentBody">
+					'.$comment->getComment().'
+				</div>
+			
+			</div>
+			';
+		}
+
+		return $retHTML . '</div>';
+
+	}
+
 	private function convertToPercentage($answers)
 	{
 
@@ -147,5 +214,25 @@ class PollView
 
 	}
 
+	public function makeFeedback($feedbackArray)
+	{
 
+		$feedback = '';
+
+		if(in_array($this->commentHandler->shortComment, $feedbackArray))
+        {
+            $feedback .= "You have to write something.\n";
+        }	
+		if(in_array($this->commentHandler->longComment, $feedbackArray))
+        {
+            $feedback .= "Your comment was too long. The maximum Length is 1000 characters. \n";
+        }      
+        if(in_array($this->commentHandler->pollDoesNotExist, $feedbackArray))
+        {
+            $feedback .= "The poll does not exist.";
+        }
+
+        return $feedback;
+	}
 }
+

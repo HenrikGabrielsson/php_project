@@ -12,11 +12,6 @@ class CategoryRepo extends \model\repository\Repository
 	private $categoryId = "categoryId";
 	private $categoryName = "categoryName";
 
-	public function __construct()
-	{
-
-	}
-
 	public function getCategoryById($id)
 	{
 		$sql = "SELECT * FROM category WHERE ".$this->categoryId."=?";

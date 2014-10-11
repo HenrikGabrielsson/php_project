@@ -56,7 +56,7 @@ class PollCreator
 		}
 
 		//en poll skapas om valideringen gick bra
-		$poll = new \model\Poll($question, $_SESSION[helpers\SessionHandler::getUserId()], date("Y-m-d"), $public, $category, $answer_objs);
+		$poll = new \model\Poll($question, $_SESSION[helpers\SessionHandler::getUserId()], date("Y-m-d H:i:s"), $public, $category, $answer_objs);
 
 		$this->pollRepo->add($poll);
 
