@@ -13,12 +13,12 @@ class PollCreator
 	private $errorList;
 
 	//errors
-	private $shortQuestion = "shortQuestion"; 
-	private $longQuestion = "longQuestion";
-	private $tooManyAnswers = "tooManyAnswers";
-	private $tooFewAnswers = "tooFewAnswers";
-	private $notPublicOrPrivate = "notPublicOrPrivate";
-	private $categoryDoesNotExist = "categoryDoesNotExist";
+	public $shortQuestion = "shortQuestion"; 
+	public $longQuestion = "longQuestion";
+	public $tooManyAnswers = "tooManyAnswers";
+	public $tooFewAnswers = "tooFewAnswers";
+	public $notPublicOrPrivate = "notPublicOrPrivate";
+	public $categoryDoesNotExist = "categoryDoesNotExist";
 
 	private $categoryRepo;
 	private $pollRepo;
@@ -57,7 +57,7 @@ class PollCreator
 
 		//en poll skapas om valideringen gick bra
 		$poll = new \model\Poll($question, $_SESSION[helpers\SessionHandler::getUserId()], date("Y-m-d"), $public, $category, $answer_objs);
-	
+
 		$this->pollRepo->add($poll);
 
 		//allt gick bra

@@ -3,14 +3,21 @@
 namespace view;
 
 require_once("./view/RegistrationView.php");
+require_once("./view/PollCreationView.php");
+require_once("./model/PollCreator.php");
 
 class HomePageView
 {
 
 	private $regView;
+	private $createView;
+	private $pollCreator;
 
 	public function __construct()
 	{
+		$this->pollCreator = new \model\PollCreator();
+		$this->createView = new PollCreationView();
+
 		$this->regView = new RegistrationView();
 	}
 
@@ -25,7 +32,7 @@ class HomePageView
 
 		if($loggedIn)
 		{
-			//visa poll creator
+			$body .= $this->createView->getForm($this->pollCreator);
 		}
 
 		else 

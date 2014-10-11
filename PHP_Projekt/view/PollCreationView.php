@@ -8,10 +8,12 @@ require_once("./model/repo/CategoryRepo.php");
 class PollCreationView
 {
 	private $catRepo;
+	private $pollCreator;
 
-	public function __construct()
+	public function __construct($pollCreator)
 	{
 		$this->catRepo = new \model\repository\CategoryRepo();
+		$this->pollCreator = $pollCreator;
 	}
 
 	public function userWantsToCreatePoll()
@@ -44,7 +46,22 @@ class PollCreationView
 		return $_POST[helpers\PostHandler::getCreatePublic()];
 	}
 
-	public function getCreate($feedback)
+	public function getNotLoggedIn()
+	{
+		return 
+		'<h1>Create Poll</h1>
+		<p>You must log in before you can create a poll.</p>';
+	}
+
+	public function getSuccessPage()
+	{
+		$body = 
+		'<h1>Poll Created</h1>
+		<p>Congratulations! Your poll has successfully been created.</p>';
+		return $body;
+	}
+
+	public function getCreate($feedback = null)
 	{
 		$body = 
 		'<h1>Create Poll</h1>
@@ -74,7 +91,7 @@ class PollCreationView
 		}
 
 		$form = 
-		'<form id="createPollForm" action="'.$_SERVER['REQUEST_URI'].'&'.helpers\GetHandler::getCreate().'" method="post">
+		'<form id="createPollForm" action="?'.helpers\GetHandler::getView().'='.helpers\GetHandler::getViewCreatePoll().'&'.helpers\GetHandler::getCreate().'" method="post">
 
 		<label for="createQuestion">Question: </label><input type="text" name="'.helpers\PostHandler::getCreateQuestion().'" id="createQuestion">
 	
@@ -96,9 +113,42 @@ class PollCreationView
 		return $form;
 	}
 
-	public function makeFeedback()
+	public function makeFeedback($feedbackArray)
 	{
-		return "i dont do anything yet";
+		if(is_null($feedbackArray))
+		{
+			return;
+		}
+
+		$feedback .= '<ol>';
+
+		if(in_array($this->pollCreator->shortQuestion, $feedbackArray))
+        {
+            $feedback .= "<li>You must write a quesion.</li>";
+        }	
+		if(in_array($this->pollCreator->longQuestion, $feedbackArray))
+        {
+            $feedback .= "<li>Your question can't be longer than 100 characters.</li>";
+        }      
+        if(in_array($this->pollCreator->tooManyAnswers, $feedbackArray))
+        {
+            $feedback .= "<li>You can have a maximum of 10 answers for one question.</li>";
+        }
+        if(in_array($this->pollCreator->tooFewAnswers, $feedbackArray))
+        {
+            $feedback .= "<li>A question must have at least 2 answers.</li>";
+        }    
+        if(in_array($this->pollCreator->notPublicOrPrivate, $feedbackArray))
+        {
+            $feedback .= "<li>Decide if you want your poll to be public or private.</li>";
+        }
+        if(in_array($this->pollCreator->categoryDoesNotExist, $feedbackArray))
+        {
+            $feedback .= "<li>Pick a category.</li>";
+        }
+
+        return $feedback . '</ol>';
+
 	}
 
 }

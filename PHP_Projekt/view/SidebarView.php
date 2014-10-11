@@ -22,7 +22,7 @@ class SidebarView
 
 		$sidebar = 
 		'
-
+		<p><a href="?'.helpers\GetHandler::getView().'='.helpers\GetHandler::getViewCreatePoll().'">Create a poll!</a></p>
 		<h2>Categories</h2>
 		<ul id="sidebarList">
 		';

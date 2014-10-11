@@ -16,15 +16,22 @@ class PollCreationController
 	public function __construct($htmlView)
 	{
 		$this->htmlView = $htmlView;
-		$this->pollCreationView = new \view\PollCreationView();
 		$this->pollCreator = new \model\PollCreator();
+		$this->pollCreationView = new \view\PollCreationView($this->pollCreator);	
 	}
 
 	public function getContent($id, $loggedIn)
 	{
 		$title = $this->pollCreationView->getTitle();
+		$body;
 
-		if($this->pollCreationView->userWantsToCreatePoll())
+		//om man inte är inloggad så kan man inte skapa en poll
+		if(!$loggedIn)
+		{
+			$body = $this->pollCreationView->getNotLoggedIn();
+		}
+
+		else if($this->pollCreationView->userWantsToCreatePoll())
 		{
 			$question = $this->pollCreationView->getQuestion();
 			$answers = $this->pollCreationView->getAnswers();
@@ -33,12 +40,22 @@ class PollCreationController
 
 			$success = $this->pollCreator->attemptTocreate($question, $answers, $category, $public);
 
-			//on success. show poll
+			if($success)
+			{
+				$body = $this->pollCreationView->getSuccessPage();
+			}
+			else
+			{
+				$feedback = $this->pollCreator->getErrorList();
+				$body = $this->pollCreationView->getCreate($feedback);
+			}
 		}
+		else
+		{
+			$body = $this->pollCreationView->getCreate();
 
-		$feedback = $this->pollCreator->getErrorList();
-		$body = $this->pollCreationView->getCreate($feedback);
-
+		}
+		
 		$this->htmlView->showHTML($title, $body);
 
 	}

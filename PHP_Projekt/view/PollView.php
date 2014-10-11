@@ -102,21 +102,21 @@ class PollView
 		//formulär med radioknappar
 		return 
 			$this->getTitleAndCreator().
-			'<h1>'.$this->poll->getQuestion().'</h1>
-			<form id="pollForm" action="'.$_SERVER['REQUEST_URI'].'&'.helpers\GetHandler::getShowResult().'" method="post">
+			'<form id="pollForm" action="'.$_SERVER['REQUEST_URI'].'&'.helpers\GetHandler::getShowResult().'" method="post">
 				'.$alternatives.'
 				<input type="submit" value="Vote" id="postPoll" />
 			</form>
+			<p><a href="'.$_SERVER['REQUEST_URI'].'&'.helpers\GetHandler::getShowResult().'">See results</a> without voting.</p>
 			';
 	}
 
 	public function getTitleAndCreator()
 	{
 		return 
-		'<h1>'.$this->poll->getQuestion().'</h1>
-		<p>Created by: <a href="?'.helpers\GetHandler::getView().'='.helpers\GetHandler::getViewUser().
-		'&'.helpers\GetHandler::getId().'='.$this->owner->getId().'">'.$this->owner->getUserName().'</a> </p>
-		';	
+			'<h1>'.$this->poll->getQuestion().'</h1>
+			<p>Created by: <a href="?'.helpers\GetHandler::getView().'='.helpers\GetHandler::getViewUser().
+			'&'.helpers\GetHandler::getId().'='.$this->owner->getId().'">'.$this->owner->getUserName().'</a> </p>
+			';	
 	}
 
 	private function convertToPercentage($answers)
