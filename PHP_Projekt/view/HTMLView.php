@@ -2,6 +2,8 @@
 
 namespace view;
 
+require_once("Settings.php");
+
 class HTMLView 
 {
     private $loginBox;
@@ -15,7 +17,7 @@ class HTMLView
         <!doctype html>
         <html>
             <head>
-                <title>'.$title.' - Polls n\' Shit</title>
+                <title>'.$title.' - PHP Polls</title>
                 <meta charset="utf-8" />
                 <link href="style/style.css" rel="stylesheet" type="text/css">
             </head>
@@ -24,6 +26,7 @@ class HTMLView
                 <div id="container">
                     <div id="header">
                         <div id="logo">
+                        <a href="."><img src="image/logo.png" alt="Welcome to PHP Polls"></a>
                         </div>
                         
                         '.$this->loginBox.'

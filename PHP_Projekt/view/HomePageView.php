@@ -30,7 +30,7 @@ class HomePageView
 
 	public function getBody($loggedIn)
 	{
-		$body = '<h1>Welcome to Polls n\' Shit</h1>';
+		$body = '<h1>Welcome to PHP Polls</h1>';
 
 		if($loggedIn)
 		{

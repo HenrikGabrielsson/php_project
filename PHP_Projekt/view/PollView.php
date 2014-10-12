@@ -58,7 +58,6 @@ class PollView
 	{
 		$answers = $this->poll->getAnswers();
 		
-
 		//varje svar i procent.
 		$percentageArr = $this->convertToPercentage($answers);
 
