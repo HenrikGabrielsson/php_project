@@ -16,27 +16,27 @@ class RegistrationView
 
 	public function userWantsToRegister()
 	{
-		return isset($_GET[helpers\GetHandler::getRegister()]);
+		return isset($_GET[helpers\GetHandler::$REGISTER]);
 	}
 
 	public function getUsername()
 	{
-		return $_POST[helpers\PostHandler::getRegUsername()];
+		return $_POST[helpers\PostHandler::$REGUSERNAME];
 	}
 
 	public function getEmail()
 	{
-		return $_POST[helpers\PostHandler::getRegEmail()];
+		return $_POST[helpers\PostHandler::$REGEMAIL];
 	}
 
 	public function getPassword1()
 	{
-		return $_POST[helpers\PostHandler::getRegPassword1()];
+		return $_POST[helpers\PostHandler::$REGPASSWORD1];
 	}
 
 	public function getPassword2()
 	{
-		return $_POST[helpers\PostHandler::getRegPassword2()];
+		return $_POST[helpers\PostHandler::$REGPASSWORD2];
 	}
 
 	public function getSuccessPage()
@@ -64,19 +64,19 @@ class RegistrationView
 	public function getForm()
 	{
 		return 
-		'<form id="registrationForm" method="post" action="?'.helpers\GetHandler::getView().'='.helpers\GetHandler::getRegister().'&'.helpers\GetHandler::getRegister().'">
+		'<form id="registrationForm" method="post" action="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$REGISTER.'&'.helpers\GetHandler::$REGISTER.'">
 
 			<label for="regUserName">Username:</label>
-				<input type="text" name="'.helpers\PostHandler::getRegUsername().'" id="regUserName"  placeholder="Username" />
+				<input type="text" name="'.helpers\PostHandler::$REGUSERNAME.'" id="regUserName"  placeholder="Username" />
 
 			<label for="regEmail">Email:</label>
-				<input type="text" name="'.helpers\PostHandler::getRegEmail().'" id="regEmail" placeholder="Email" />
+				<input type="text" name="'.helpers\PostHandler::$REGEMAIL.'" id="regEmail" placeholder="Email" />
 
 			<label for="regPassword1">Password:</label>
-				<input type="password" name="'.helpers\PostHandler::getRegPassword1().'" id="regPassword1" placeholder="Password" />
+				<input type="password" name="'.helpers\PostHandler::$REGPASSWORD1.'" id="regPassword1" placeholder="Password" />
 
 			<label for="regPassword2">Password again:</label>
-				<input type="password" name="'.helpers\PostHandler::getRegPassword2().'" id="regPassword2" placeholder="Password again" />
+				<input type="password" name="'.helpers\PostHandler::$REGPASSWORD2.'" id="regPassword2" placeholder="Password again" />
 
 			<input type="submit" value="Registrera">
 		</form>

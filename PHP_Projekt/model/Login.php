@@ -89,5 +89,4 @@ class Login
 		return $correctPassword == sha1($salt.md5($givenPassword));
 	}
 
-	
 }

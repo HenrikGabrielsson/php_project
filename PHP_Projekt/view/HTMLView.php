@@ -28,7 +28,14 @@ class HTMLView
                         <div id="logo">
                         <a href="."><img src="image/logo.png" alt="Welcome to PHP Polls"></a>
                         </div>
-                        
+                        <div id="search">
+                        <form method="post" action="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWSEARCH.'">
+                            <label for="searchbox">Search for poll:</label><input type="text" id="search" placeholder="search" name="searchword">
+                            <input type="submit" value="Search">
+
+                        </form>
+                        </div>
+
                         '.$this->loginBox.'
                         
                     </div>

@@ -22,13 +22,13 @@ class SidebarView
 
 		$sidebar = 
 		'
-		<p><a href="?'.helpers\GetHandler::getView().'='.helpers\GetHandler::getViewCreatePoll().'">Create a poll!</a></p>
+		<p><a href="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWCREATEPOLL.'">Create a poll!</a></p>
 		<h2>Categories</h2>
 		<ul id="sidebarList">
 		';
 		foreach($categories as $category)
 		{
-			$link = "?". helpers\GetHandler::getView() ."=" .helpers\GetHandler::getViewCategory() ."&". helpers\GetHandler::getId() ."=". $category->getId();
+			$link = "?". helpers\GetHandler::$VIEW ."=" .helpers\GetHandler::$VIEWCATEGORY ."&". helpers\GetHandler::$ID ."=". $category->getId();
 			$sidebar .=
 			'<li><a href="'.$link.'">'.$category->getCategoryName().'</a></li>';
 		}

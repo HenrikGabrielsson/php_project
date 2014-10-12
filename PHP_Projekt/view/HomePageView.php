@@ -52,7 +52,7 @@ class HomePageView
 		{
 			$body .= 
 			'<li>
-				<a href="?'.helpers\GetHandler::getView().'='.helpers\GetHandler::getViewPoll().'&'.helpers\GetHandler::getId().'='.$poll->getId().'">
+				<a href="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWPOLL.'&'.helpers\GetHandler::$ID.'='.$poll->getId().'">
 				'.$poll->getQuestion().'</a>
 			</li>';			
 		}

@@ -20,12 +20,12 @@ class PollView
 
 	public function getAnswer()
 	{
-		return $_POST[helpers\PostHandler::getVote()];
+		return $_POST[helpers\PostHandler::$VOTE];
 	}
 
 	public function getComment()
 	{
-		return $_POST[helpers\PostHandler::getComment()];
+		return $_POST[helpers\PostHandler::$OMMENT];
 	}
 
 	public function getClient()
@@ -35,17 +35,17 @@ class PollView
 
 	public function userWantsResults()
 	{
-		return isset($_GET[helpers\GetHandler::getShowResult()]);
+		return isset($_GET[helpers\GetHandler::$SHOWRESULT]);
 	}
 
 	public function userVoted()
 	{
-		return isset($_POST[helpers\PostHandler::getVote()]);
+		return isset($_POST[helpers\PostHandler::$VOTE]);
 	}
 
 	public function userCommented()
 	{
-		return isset($_POST[helpers\PostHandler::getComment()]);
+		return isset($_POST[helpers\PostHandler::$COMMENT]);
 	}
 
 
@@ -109,17 +109,17 @@ class PollView
 		//loopar ut alla alternativ som radioknappar
 		foreach ($this->poll->getAnswers() as $answer)
 		{
-			$alternatives .= '<label for="'.$answer->getId().'" >'.$answer->getAnswer().': </label><input type="radio" name="'.helpers\PostHandler::getVote().'" id="'.$answer->getId().'" value="'.$answer->getId().'" />';
+			$alternatives .= '<label for="'.$answer->getId().'" >'.$answer->getAnswer().': </label><input type="radio" name="'.helpers\PostHandler::$VOTE.'" id="'.$answer->getId().'" value="'.$answer->getId().'" />';
 		}
 
 		//formulär med radioknappar
 		return 
 			$this->getTitleAndCreator().
-			'<form id="pollForm" action="'.$_SERVER['REQUEST_URI'].'&'.helpers\GetHandler::getShowResult().'" method="post">
+			'<form id="pollForm" action="'.$_SERVER['REQUEST_URI'].'&'.helpers\GetHandler::$SHOWRESULT.'" method="post">
 				'.$alternatives.'
 				<input type="submit" value="Vote" id="postPoll" />
 			</form>
-			<p><a href="'.$_SERVER['REQUEST_URI'].'&'.helpers\GetHandler::getShowResult().'">See results</a> without voting.</p>
+			<p><a href="'.$_SERVER['REQUEST_URI'].'&'.helpers\GetHandler::$SHOWRESULT.'">See results</a> without voting.</p>
 			';
 	}
 
@@ -127,8 +127,8 @@ class PollView
 	{
 		return 
 			'<h1>'.$this->poll->getQuestion().'</h1>
-			<p>Created by: <a href="?'.helpers\GetHandler::getView().'='.helpers\GetHandler::getViewUser().
-			'&'.helpers\GetHandler::getId().'='.$this->owner->getId().'">'.$this->owner->getUserName().'</a> </p>
+			<p>Created by: <a href="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWUSER.
+			'&'.helpers\GetHandler::$ID.'='.$this->owner->getId().'">'.$this->owner->getUserName().'</a> </p>
 			';	
 	}
 
@@ -147,7 +147,7 @@ class PollView
 		return 
 		'<div id="commentSection" >
 			<form action="'.$_SERVER['REQUEST_URI'].'" method="post">
-				<textarea maxlength="1000" cols="100" rows="5" name="'.helpers\PostHandler::getComment().'" id="comment">'.$feedback.'
+				<textarea maxlength="1000" cols="100" rows="5" name="'.helpers\PostHandler::$COMMENT.'" id="comment">'.$feedback.'
 				</textarea>
 				<input type="submit" value="Send Comment">
 			</form>
@@ -170,8 +170,8 @@ class PollView
 			$retHTML .= 
 			'<div class="comment">
 				<div class="commentHead">
-					<p>'.$comment->getCommentTime().'</p><p><a href="?'.helpers\GetHandler::getView().'='.helpers\GetHandler::getViewUser().
-					'&'.helpers\GetHandler::getId().'='.$comment->getUserId().'">'. $writer->getUserName().'</a><p>
+					<p>'.$comment->getCommentTime().'</p><p><a href="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWUSER.
+					'&'.helpers\GetHandler::$ID.'='.$comment->getUserId().'">'. $writer->getUserName().'</a><p>
 				</div>
 				<div class="commentBody">
 					'.$comment->getComment().'

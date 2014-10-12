@@ -68,6 +68,46 @@ class PollRepo extends \model\repository\Repository
 		
 		return $result;
 	}
+
+	public function getAllPolls()
+	{
+		//array som ska returneras
+		$retPolls = array();
+
+		$sql = "SELECT * FROM poll WHERE ".$this->creator."= ? ".$privates." ORDER BY ". $this->creationDate ." DESC ".$limit;
+
+		$this->connect();
+		
+		$query = $this->dbConnection->prepare($sql);
+		$query->execute();	
+		
+		//hämta alla rader
+		$polls = $query->fetchAll();
+		
+		//om det kom några polls
+		if($polls)
+		{
+			foreach($polls as $poll)
+			{
+				//hämta alla svar som hör till.
+				$answers = $this->getAnswers($poll[$this->pollId]);
+
+				//skapa alla objekt				
+				$retPolls[] = new \model\Poll
+				(
+					$poll[$this->question],
+					$poll[$this->creator],
+					$poll[$this->creationDate],
+					$poll[$this->public],
+					$poll[$this->category],
+					$answers,
+					$poll[$this->pollId]						
+				);
+			}
+			
+		return $retPolls;
+		}	
+	}
 	
 	public function getPollById($id)
 	{

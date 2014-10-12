@@ -18,7 +18,7 @@ class PollCreationView
 
 	public function userWantsToCreatePoll()
 	{
-		return isset($_GET[helpers\GetHandler::getCreate()]);	
+		return isset($_GET[helpers\GetHandler::$CREATE]);	
 	}
 
 	public function getTitle()
@@ -28,22 +28,22 @@ class PollCreationView
 
 	public function getQuestion()
 	{
-		return $_POST[helpers\PostHandler::getCreateQuestion()];
+		return $_POST[helpers\PostHandler::$CREATEQUESTION];
 	}
 
 	public function getAnswers()
 	{
-		return $_POST[helpers\PostHandler::getCreateAnswer()];
+		return $_POST[helpers\PostHandler::$CREATEANSWER];
 	}
 
 	public function getCategory()
 	{
-		return $_POST[helpers\PostHandler::getCreateCategory()];
+		return $_POST[helpers\PostHandler::$CREATECATEGORY];
 	}
 
 	public function getIsPublic()
 	{
-		return $_POST[helpers\PostHandler::getCreatePublic()];
+		return $_POST[helpers\PostHandler::$CREATEPUBLIC];
 	}
 
 	public function getNotLoggedIn()
@@ -87,24 +87,24 @@ class PollCreationView
 		{
 			$answerFields .= 
 			'<label class="createAnswerLabels" for="createAnswer'.$i.'">Answer '.$i.': </label>
-			<input type="text" id="createAnswer'.$i.'" class="createAnswer" name="'.helpers\PostHandler::getCreateAnswer().'[]">';
+			<input type="text" id="createAnswer'.$i.'" class="createAnswer" name="'.helpers\PostHandler::$CREATEANSWER.'[]">';
 		}
 
 		$form = 
-		'<form id="createPollForm" action="?'.helpers\GetHandler::getView().'='.helpers\GetHandler::getViewCreatePoll().'&'.helpers\GetHandler::getCreate().'" method="post">
+		'<form id="createPollForm" action="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWCREATEPOLL.'&'.helpers\GetHandler::$CREATE.'" method="post">
 
-		<label for="createQuestion">Question: </label><input type="text" name="'.helpers\PostHandler::getCreateQuestion().'" id="createQuestion">
+		<label for="createQuestion">Question: </label><input type="text" name="'.helpers\PostHandler::$CREATEQUESTION.'" id="createQuestion">
 	
 		<fieldset id="answers_fieldset">
 		'.$answerFields.'
 		</fieldset>
 
-		<select name="'.helpers\PostHandler::getCreateCategory().'">
+		<select name="'.helpers\PostHandler::$CREATECATEGORY.'">
 			'.$categories.'
 		</select>
 
-		<label for="privateRadio">Private: </label><input id="privateRadio" type="radio" name="'.helpers\PostHandler::getCreatePublic().'" value="0">
-		<label for="publicRadio">Public: </label><input id="publicRadio" type="radio" name="'.helpers\PostHandler::getCreatePublic().'" value="1" checked>
+		<label for="privateRadio">Private: </label><input id="privateRadio" type="radio" name="'.helpers\PostHandler::$CREATEPUBLIC.'" value="0">
+		<label for="publicRadio">Public: </label><input id="publicRadio" type="radio" name="'.helpers\PostHandler::$CREATEPUBLIC.'" value="1" checked>
 
 		<input type="submit" value="Create!">
 		</form>

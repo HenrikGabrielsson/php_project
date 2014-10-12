@@ -21,9 +21,6 @@ class NavigationController
     private $navView;
     private $htmlView;
     private $sidebarView;
-
-    private $currentController;     //controller som ska användas.
-    
     
     public function __construct($htmlView)
     {
@@ -41,27 +38,32 @@ class NavigationController
         //sedan anropas den konstruktor som lägger till innehåll i title och body.
         switch ($this->navView->getPageController())
         {
-            case \view\helpers\GetHandler::getViewPoll():
-                $this->currentController = new \controller\PollController($this->htmlView);
+            case \view\helpers\GetHandler::$VIEWPOLL:
+                $controller = new \controller\PollController($this->htmlView);
+                $controller->getContent($this->navView->getId(), \model\Login::isLoggedIn());
                 break;
-            case \view\helpers\GetHandler::getViewUser():
-                $this->currentController = new \controller\UserController($this->htmlView);
+            case \view\helpers\GetHandler::$VIEWUSER:
+                $controller = new \controller\UserController($this->htmlView);
+                $controller->getContent($this->navView->getId(), \model\Login::isLoggedIn());
                 break;
-            case \view\helpers\GetHandler::getViewCategory():
-                $this->currentController = new \controller\CategoryController($this->htmlView);
+            case \view\helpers\GetHandler::$VIEWCATEGORY:
+                $controller = new \controller\CategoryController($this->htmlView);
+                $controller->getContent($this->navView->getId(), \model\Login::isLoggedIn());
                 break;
-            case \view\helpers\GetHandler::getViewRegister():
-                $this->currentController = new \controller\RegistrationController($this->htmlView);
+            case \view\helpers\GetHandler::$VIEWREGISTER:
+                $controller = new \controller\RegistrationController($this->htmlView);
+                $controller->getContent($this->navView->getId(), \model\Login::isLoggedIn());
                 break;
-            case \view\helpers\GetHandler::getViewCreatePoll():
-                $this->currentController = new \controller\PollCreationController($this->htmlView);
+            case \view\helpers\GetHandler::$VIEWCREATEPOLL:
+                $controller = new \controller\PollCreationController($this->htmlView);
+                $controller->getContent($this->navView->getId(), \model\Login::isLoggedIn());
                 break;
             default:
-                $this->currentController = new \controller\HomeController($this->htmlView);
+                $controller = new \controller\HomeController($this->htmlView);
+                $controller->getContent($this->navView->getId(), \model\Login::isLoggedIn());
         }
 
-        //kör Controller, skickar med id, samt en bool om användaren är inloggad eller inte.
-        $this->currentController->getContent($this->navView->getId(), \model\Login::isLoggedIn());
+        
         
     }
 }

@@ -4,82 +4,20 @@ namespace view\helpers;
 
 class GetHandler
 {
-	private static $login = "login";
-	private static $logout = "logout";
-	private static $view  = "view";
-	private static $id = "id";
-	private static $showResult = "showResults";
-	private static $register = "register";
-	private static $create = "create";
+	public static $LOGIN = "login";
+	public static $LOGOUT = "logout";
+	public static $VIEW  = "view";
+	public static $ID = "id";
+	public static $SHOWRESULT = "showResults";
+	public static $REGISTER = "register";
+	public static $CREATE = "create";
 
 
-	private static $viewRegister = "register";
-	private static $viewCategory = "category";
-	private static $viewPoll = "poll";
-	private static $viewUser = "user";
-	private static $viewCreatePoll = "create";
-
-
-	//getters för namnen på alla get-parametrar
-	public static function getLogin()
-	{
-		return self::$login;
-	} 
-
-	public static function getLogout()
-	{
-		return self::$logout;
-	} 
-
-	public static function getView()
-	{
-		return self::$view;
-	} 
-
-	public static function getId()
-	{
-		return self::$id;
-	} 
-
-	public static function getShowResult()
-	{
-		return self::$showResult;
-	} 
-
-	public static function getRegister()
-	{
-		return self::$register;
-	} 
-
-	public static function getCreate()
-	{
-		return self::$create;
-	} 
-
-	//views
-	public static function getViewRegister()
-	{
-		return self::$viewRegister;
-	}
-
-	public static function getViewCategory()
-	{
-		return self::$viewCategory;
-	}
-
-	public static function getViewPoll()
-	{
-		return self::$viewPoll;
-	}
-
-	public static function getViewUser()
-	{
-		return self::$viewUser;
-	}
-
-	public static function getViewCreatePoll()
-	{
-		return self::$viewCreatePoll;
-	}
+	public static $VIEWREGISTER = "register";
+	public static $VIEWCATEGORY = "category";
+	public static $VIEWPOLL = "poll";
+	public static $VIEWUSER = "user";
+	public static $VIEWCREATEPOLL = "create";
+	public static $VIEWSEARCH = "search";
 
 }

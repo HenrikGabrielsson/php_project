@@ -39,7 +39,7 @@ class UserView
 		foreach ($this->polls as $poll) {
 			$pollList .= 
 			'<li>
-				<a href="?'.helpers\GetHandler::getView().'='.helpers\GetHandler::getViewPoll().'&'.helpers\GetHandler::getId().'='.$poll->getId().'">
+				<a href="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWPOLL.'&'.helpers\GetHandler::$ID.'='.$poll->getId().'">
 				'.$poll->getQuestion().'</a>
 			</li>';
 		}
@@ -55,7 +55,7 @@ class UserView
 
 		foreach ($this->comments as $comment) {
 			$commentList .=
-			'<li>In <a href="?'.helpers\GetHandler::getView().'='.helpers\GetHandler::getViewPoll().'&'.helpers\GetHandler::getId().'='.$comment->getPollId().'">this poll</a>
+			'<li>In <a href="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWPOLL.'&'.helpers\GetHandler::$ID.'='.$comment->getPollId().'">this poll</a>
 			<p>At '.$comment->getCommentTime(). $this->user->getUserName().' wrote:</p>
 
 			<p>'.$comment->getComment().'</p>
