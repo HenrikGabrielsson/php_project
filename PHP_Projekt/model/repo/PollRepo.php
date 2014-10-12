@@ -108,20 +108,24 @@ class PollRepo extends \model\repository\Repository
 		return null;
 	}
 	
-	public function getAllPollsFromUser($userId, $includePrivate = true)
+	public function getAllPollsFromUser($userId, $getAll, $includePrivate = false)
 	{
 		//array som ska returneras
 		$retPolls = array();
 		
-		$sql = "SELECT * FROM poll WHERE ".$this->creator."=? ";
-		$params = array($userId);
-		
-		//om även privata ska visas
-		if($includePrivate === false)
-		{
-			$sql .= "AND ".$this->public."=1";
-		}
-		
+		if($getAll)
+			$limit = "";
+		else 
+			$limit = "LIMIT 0,10";
+
+		if($includlimitePrivate)
+			$privates = "";
+		else
+			$privates  = "AND ".$this->public."=1 ";
+
+		$sql = "SELECT * FROM poll WHERE ".$this->creator."= ? ".$privates." ORDER BY ". $this->creationDate ." DESC ".$limit;
+		$params = array( $userId);
+
 		$this->connect();
 		
 		$query = $this->dbConnection->prepare($sql);
@@ -198,7 +202,6 @@ class PollRepo extends \model\repository\Repository
 			
 		return $retPolls;
 		}
-		
 	}
 	
 	public function addVote($answerId, $ip)

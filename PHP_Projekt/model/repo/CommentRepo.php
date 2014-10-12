@@ -42,12 +42,18 @@ class CommentRepo extends \model\repository\Repository
 		return $result;		
 	}
 
-	public function getCommentsFromUser($userId)
+	public function getCommentsFromUser($userId, $getAll)
 	{
+
+		if($getAll)
+			$limit = "";
+		else 
+			$limit = "LIMIT 0,10";
+
 		//array som ska returneras
 		$retComments = array();
 		
-		$sql = "SELECT * FROM comment WHERE ".$this->userId."=? ";
+		$sql = "SELECT * FROM comment WHERE ".$this->userId."=? " . $limit;
 		$params = array($userId);
 		
 		$this->connect();
@@ -84,7 +90,7 @@ class CommentRepo extends \model\repository\Repository
 		//array som ska returneras
 		$retComments = array();
 		
-		$sql = "SELECT * FROM comment WHERE ".$this->pollId."=? ";
+		$sql = "SELECT * FROM comment WHERE ".$this->pollId."=? ORDER BY ".$this->commentTime." DESC";
 		$params = array($pollId);
 		
 		$this->connect();
