@@ -4,7 +4,7 @@ namespace view;
 
 require_once("./view/helpers/GetHandler.php");
 require_once("./view/helpers/PostHandler.php");
-require_once("./model/Login.php");
+require_once("./model/LoginHandler.php");
 
 class LoginView
 {
@@ -15,11 +15,6 @@ class LoginView
 	{
 		$this->login = $login;
 	} 
-
-	public function getFeedback()
-	{
-		return null;
-	}
 
 	public function getUsername()
     {
@@ -47,7 +42,7 @@ class LoginView
 
     	$loginDiv = '<div id="loginBox">';
 
-        if(\model\Login::isLoggedIn())
+        if(\model\LoginHandler::isLoggedIn())
         {
         	$loginDiv .= 
             $this->makeFeedBack().

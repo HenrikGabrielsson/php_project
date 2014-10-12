@@ -2,7 +2,6 @@
 
 namespace controller;
 
-require_once("./model/Login.php");
 require_once("./view/HTMLView.php");
 require_once("./view/RegistrationView.php");
 require_once("./view/helpers/GetHandler.php");

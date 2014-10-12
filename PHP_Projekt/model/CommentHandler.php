@@ -58,7 +58,7 @@ class CommentHandler
 		}
 
 		//skapar kommentaren och sparar den i databasen
-		$comment = new Comment($comment, $pollId, $_SESSION[helpers\SessionHandler::getUserId()], date("Y-m-d H:i:s"));
+		$comment = new Comment($comment, $pollId, $_SESSION[helpers\SessionHandler::$USERID], date("Y-m-d H:i:s"));
 		$this->commentRepo->add($comment);
 
 		return true;

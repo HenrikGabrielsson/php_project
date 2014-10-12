@@ -54,8 +54,11 @@ class DiagramMaker
 			$startPoint = $endPoint;
 		}
 	    
-		return $image;
-
+	    
+		ob_start();
+        imagepng($image);
+        $raw = ob_get_clean();
+        return base64_encode( $raw);
 	}
 
 

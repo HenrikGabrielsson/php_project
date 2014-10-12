@@ -8,7 +8,6 @@ require_once("./model/Poll.php");
 require_once("./model/repo/PollRepo.php");
 require_once("./model/repo/UserRepo.php");
 require_once("./model/Voter.php");
-require_once("./model/Login.php");
 require_once("./model/CommentHandler.php");
 
 class PollController
@@ -66,7 +65,7 @@ class PollController
 					$feedback = $this->commentHandler->getErrorList();
 				}
 			}
-			$body = $this->pollView->getResult($feedback);
+			$body = $this->pollView->getResultPage($feedback);
 		}
 		else
 		{

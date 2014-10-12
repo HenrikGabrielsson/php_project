@@ -5,7 +5,7 @@ namespace model;
 require_once("./model/helpers/SessionHandler.php");
 require_once("./model/repo/UserRepo.php");
 
-class Login
+class LoginHandler
 {
 
 	//Namn på fel. Läggs till i errorList om de har blivit sanna.
@@ -27,7 +27,7 @@ class Login
 	public static function isLoggedIn()
 	{
 
-		if($_SESSION[helpers\SessionHandler::getLoggedIn()])
+		if($_SESSION[helpers\SessionHandler::$LOGGEDIN])
 		{
 			return true;
 		}
@@ -75,7 +75,7 @@ class Login
 
 	public function getLoggedInUser()
 	{
-		return $_SESSION[helpers\SessionHandler::getUsername()];
+		return $_SESSION[helpers\SessionHandler::$USERNAME];
 	}
 
 	public function getErrorList()

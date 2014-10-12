@@ -69,12 +69,12 @@ class PollRepo extends \model\repository\Repository
 		return $result;
 	}
 
-	public function getAllPolls()
+	public function getAllPublicPolls()
 	{
 		//array som ska returneras
 		$retPolls = array();
 
-		$sql = "SELECT * FROM poll WHERE ".$this->creator."= ? ".$privates." ORDER BY ". $this->creationDate ." DESC ".$limit;
+		$sql = "SELECT * FROM poll WHERE ".$this->public." = 1";
 
 		$this->connect();
 		

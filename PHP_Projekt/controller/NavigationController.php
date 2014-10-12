@@ -2,7 +2,7 @@
 
 namespace controller;
 
-require_once("model/Login.php");
+require_once("model/LoginHandler.php");
 
 require_once("controller/LoginController.php");
 require_once("controller/HomeController.php");
@@ -11,6 +11,7 @@ require_once("controller/UserController.php");
 require_once("controller/CategoryController.php");
 require_once("controller/RegistrationController.php");
 require_once("controller/PollCreationController.php");
+require_once("controller/SearchController.php");
 
 require_once("./view/helpers/GetHandler.php");
 require_once("./view/NavigationView.php");
@@ -39,28 +40,32 @@ class NavigationController
         switch ($this->navView->getPageController())
         {
             case \view\helpers\GetHandler::$VIEWPOLL:
-                $controller = new \controller\PollController($this->htmlView);
-                $controller->getContent($this->navView->getId(), \model\Login::isLoggedIn());
+                $controller = new PollController($this->htmlView);
+                $controller->getContent($this->navView->getId(), \model\LoginHandler::isLoggedIn());
                 break;
             case \view\helpers\GetHandler::$VIEWUSER:
-                $controller = new \controller\UserController($this->htmlView);
-                $controller->getContent($this->navView->getId(), \model\Login::isLoggedIn());
+                $controller = new UserController($this->htmlView);
+                $controller->getContent($this->navView->getId(), \model\LoginHandler::isLoggedIn());
                 break;
             case \view\helpers\GetHandler::$VIEWCATEGORY:
-                $controller = new \controller\CategoryController($this->htmlView);
-                $controller->getContent($this->navView->getId(), \model\Login::isLoggedIn());
+                $controller = new CategoryController($this->htmlView);
+                $controller->getContent($this->navView->getId(), \model\LoginHandler::isLoggedIn());
                 break;
             case \view\helpers\GetHandler::$VIEWREGISTER:
-                $controller = new \controller\RegistrationController($this->htmlView);
-                $controller->getContent($this->navView->getId(), \model\Login::isLoggedIn());
+                $controller = new RegistrationController($this->htmlView);
+                $controller->getContent($this->navView->getId(), \model\LoginHandler::isLoggedIn());
                 break;
             case \view\helpers\GetHandler::$VIEWCREATEPOLL:
-                $controller = new \controller\PollCreationController($this->htmlView);
-                $controller->getContent($this->navView->getId(), \model\Login::isLoggedIn());
+                $controller = new PollCreationController($this->htmlView);
+                $controller->getContent($this->navView->getId(), \model\LoginHandler::isLoggedIn());
+                break;
+            case \view\helpers\GetHandler::$VIEWSEARCH:
+                $controller = new SearchController($this->htmlView);
+                $controller->getContent(\model\LoginHandler::isLoggedIn());
                 break;
             default:
-                $controller = new \controller\HomeController($this->htmlView);
-                $controller->getContent($this->navView->getId(), \model\Login::isLoggedIn());
+                $controller = new HomeController($this->htmlView);
+                $controller->getContent($this->navView->getId(), \model\LoginHandler::isLoggedIn());
         }
 
         

@@ -25,7 +25,7 @@ class PollView
 
 	public function getComment()
 	{
-		return $_POST[helpers\PostHandler::$OMMENT];
+		return $_POST[helpers\PostHandler::$COMMENT];
 	}
 
 	public function getClient()
@@ -54,7 +54,35 @@ class PollView
 		return $this->poll->getQuestion();
 	}
 
-	public function getResult($feedback = "")
+	public function getResultPage($feedback = "")
+	{    
+		return 
+			$this->getTitleAndCreator().
+			$this->getResults().
+			$this->getCommentSection($feedback);
+	}
+
+	public function getForm()
+	{
+
+		//loopar ut alla alternativ som radioknappar
+		foreach ($this->poll->getAnswers() as $answer)
+		{
+			$alternatives .= '<label for="'.$answer->getId().'" >'.$answer->getAnswer().': </label><input type="radio" name="'.helpers\PostHandler::$VOTE.'" id="'.$answer->getId().'" value="'.$answer->getId().'" />';
+		}
+
+		//formulär med radioknappar
+		return 
+			$this->getTitleAndCreator().
+			'<form id="pollForm" action="'.$_SERVER['REQUEST_URI'].'&'.helpers\GetHandler::$SHOWRESULT.'" method="post">
+				'.$alternatives.'
+				<input type="submit" value="Vote" id="postPoll" />
+			</form>
+			<p><a href="'.$_SERVER['REQUEST_URI'].'&'.helpers\GetHandler::$SHOWRESULT.'">See results</a> without voting.</p>
+			';
+	}
+
+	public function getResults()
 	{
 		$answers = $this->poll->getAnswers();
 		
@@ -81,46 +109,17 @@ class PollView
 
 		//rita ett cirkeldiagram som är 200 X 200 px
 		$image = \view\helpers\DiagramMaker::drawCircleDiagram($percentageArr, 200, 200);
-        
-        ob_start();
-        imagepng($image);
-        $raw = ob_get_clean();
 
+		return
+		'<div class="pollResults">
+	
+		<img class="diagramImage" src="data:image/png;base64,'.$image.'">
 
+		<ul class="resultsList">
+		'.$resultList.'	
+		</ul>
 
-		return 
-			$this->getTitleAndCreator().
-			'<div class="pollResults">
-			
-				<img class="diagramImage" src="data:image/png;base64,' . base64_encode( $raw) .'">
-
-				<ul class="resultsList">
-				'.$resultList.'	
-				</ul>
-
-			</div>'
-			.$this->getCommentSection($feedback)
-			;
-	}
-
-	public function getForm()
-	{
-
-		//loopar ut alla alternativ som radioknappar
-		foreach ($this->poll->getAnswers() as $answer)
-		{
-			$alternatives .= '<label for="'.$answer->getId().'" >'.$answer->getAnswer().': </label><input type="radio" name="'.helpers\PostHandler::$VOTE.'" id="'.$answer->getId().'" value="'.$answer->getId().'" />';
-		}
-
-		//formulär med radioknappar
-		return 
-			$this->getTitleAndCreator().
-			'<form id="pollForm" action="'.$_SERVER['REQUEST_URI'].'&'.helpers\GetHandler::$SHOWRESULT.'" method="post">
-				'.$alternatives.'
-				<input type="submit" value="Vote" id="postPoll" />
-			</form>
-			<p><a href="'.$_SERVER['REQUEST_URI'].'&'.helpers\GetHandler::$SHOWRESULT.'">See results</a> without voting.</p>
-			';
+		</div>';	
 	}
 
 	public function getTitleAndCreator()

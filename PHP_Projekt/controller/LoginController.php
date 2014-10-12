@@ -2,7 +2,7 @@
 
 namespace controller;
 
-require_once("model/Login.php");
+require_once("model/LoginHandler.php");
 
 require_once("view/LoginView.php");
 require_once("view/HTMLView.php");
@@ -16,7 +16,7 @@ class LoginController
 
 	public function __construct($htmlView)
 	{
-		$this->login = new \model\Login();
+		$this->login = new \model\LoginHandler();
 		$this->loginView = new \view\LoginView($this->login);
 		$this->htmlView = $htmlView;
 	}

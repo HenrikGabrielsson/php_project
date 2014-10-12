@@ -4,31 +4,15 @@ namespace model\helpers;
 
 class SessionHandler
 {
-	private static $loggedIn = "loggedIn";
-	private static $username = "username"; 
-	private static $userId = "id";
-
-	//getters för namnen på session-variablerna
-	public static function getLoggedIn()
-	{
-		return self:: $loggedIn;
-	} 
-
-	public static function getUsername()
-	{
-		return self::$username;
-	}
-
-	public static function getUserId()
-	{
-		return self::$userId;
-	}
+	public static $LOGGEDIN = "loggedIn";
+	public static $USERNAME = "username"; 
+	public static $USERID = "id";
 
 	public static function loginUser($username, $id)
 	{
-		$_SESSION[self::$username] = $username;
-		$_SESSION[self::$userId] = $id;
-		$_SESSION[self::$loggedIn] = true;
+		$_SESSION[self::$USERNAME] = $username;
+		$_SESSION[self::$USERID] = $id;
+		$_SESSION[self::$LOGGEDIN] = true;
 
 	}
 
