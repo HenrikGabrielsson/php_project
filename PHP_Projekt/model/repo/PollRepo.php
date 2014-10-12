@@ -160,6 +160,54 @@ class PollRepo extends \model\repository\Repository
 		}
 		
 	}
+
+	public function getLatestPolls($numberOfPolls)
+	{
+		if(!is_int($numberOfPolls))
+		{
+			throw new \Exception("Parameter has too be a number.");
+		}
+
+		$retPolls = array();
+
+		//alla "publik" undersökningar i efterfrågad kategori
+		$sql = "SELECT * FROM poll WHERE ".$this->public."=1 ORDER BY ". $this->creationDate ." DESC LIMIT 0,".$numberOfPolls;
+		$params = array();
+		
+		$this->connect();
+		
+		$query = $this->dbConnection->prepare($sql);
+		$query->execute($params);
+
+		//hämta alla rader
+		$polls = $query->fetchAll();
+		
+		//om det kom några polls
+		if($polls)
+		{
+			foreach($polls as $poll)
+			{
+				//hämta alla svar som hör till.
+				$answers = $this->getAnswers($poll[$this->pollId]);
+
+				//skapa alla objekt				
+				$retPolls[] = new \model\Poll
+				(
+					$poll[$this->question],
+					$poll[$this->creator],
+					$poll[$this->creationDate],
+					$poll[$this->public],
+					$poll[$this->category],
+					$answers,
+					$poll[$this->pollId]						
+				);
+				
+			}
+		}
+			
+		return $retPolls;
+
+	}
 	
 	public function getAllPollsInCategory($categoryId)
 	{

@@ -12,12 +12,14 @@ class HomePageView
 	private $regView;
 	private $createView;
 	private $pollCreator;
+	private $pollRepo;
 
-	public function __construct()
+	public function __construct($pollRepo)
 	{
 		$this->pollCreator = new \model\PollCreator();
-		$this->createView = new PollCreationView();
+		$this->pollRepo = $pollRepo;
 
+		$this->createView = new PollCreationView($this->pollCreator);
 		$this->regView = new RegistrationView();
 	}
 
@@ -40,7 +42,22 @@ class HomePageView
 			$body .= $this->regView->getForm();
 
 		}
-			
+
+		$body .= 
+		'<h2>Recent polls</h2>
+		<div id="recentPolls">';
+		$recentPolls = $this->pollRepo->getLatestPolls(3);
+		
+		foreach($recentPolls as $poll)
+		{
+			$body .= 
+			'<li>
+				<a href="?'.helpers\GetHandler::getView().'='.helpers\GetHandler::getViewPoll().'&'.helpers\GetHandler::getId().'='.$poll->getId().'">
+				'.$poll->getQuestion().'</a>
+			</li>';			
+		}
+		$body .= "</div>";
+					
 		return $body;
 
 		
