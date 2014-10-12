@@ -10,13 +10,13 @@ class RegistrationController
 {
 	private $htmlView;
 	private $regView;
-	private $registration;
+	private $loginHandler;
 
 	public function __construct($htmlView)
 	{
 		$this->htmlView = $htmlView;
 		$this->regView = new \view\RegistrationView();
-		$this->registration = new \model\Registration();
+		$this->loginHandler = new \model\LoginHandler();
 	}
 
 	public function getContent($id, $loggedIn)
@@ -32,7 +32,7 @@ class RegistrationController
 			$pass2 = $this->regView->getPassword2();
 
 			//försöker registrera. Om det lyckas så visas inte formuläret, utan en sida som berättar att allt gick bra.
-			$success = $this->registration->attemptRegister($username, $email, $pass1, $pass2);
+			$success = $this->loginHandler->attemptRegister($username, $email, $pass1, $pass2);
 
 			if($success)
 			{
@@ -43,7 +43,7 @@ class RegistrationController
 		}
 
 		//Om en registrering misslyckas så visas formuläret igen med feedback.
-		$feedback = $this->registration->getErrorList();
+		$feedback = $this->loginHandler->getErrorList();
 
 		$body = $this->regView->getRegister($feedback);
 
