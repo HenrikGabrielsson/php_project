@@ -9,6 +9,7 @@ require_once("./model/repo/PollRepo.php");
 require_once("./model/repo/UserRepo.php");
 require_once("./model/Voter.php");
 require_once("./model/CommentHandler.php");
+require_once("./model/ReportHandler.php");
 
 class PollController
 {
@@ -17,7 +18,8 @@ class PollController
 	private $voter;
 	private $pollRepo;
 	private $userRepo;
-	private $commentCreator;
+	private $commentHandler;
+	private $reportHandler;
 
 	public function __construct($htmlView)
 	{
@@ -27,6 +29,8 @@ class PollController
 
 		$this->voter = new \model\Voter($this->pollRepo);
 		$this->commentHandler = new \model\CommentHandler();
+		$this->reportHandler = new \model\ReportHandler();
+
 	}
 
 	public function getContent($id, $login)
@@ -38,14 +42,6 @@ class PollController
 
 		$this->pollView = new \view\PollView($poll, $owner, $login, $this->commentHandler);
 
-		//om användaren har röstat så skickas detta till modellen
-		if($this->pollView->userVoted())
-		{
-			$ip = $this->pollView->getClient();
-			$answer = $this->pollView->getAnswer();
-
-			$this->voter->addNewVote($answer,$ip);
-		}
 
 		//om användaren vill se resultat eller frågan där de kan rösta
 		if($this->pollView->userWantsResults())
@@ -54,9 +50,7 @@ class PollController
 			{
 				$comment = $this->pollView->getComment();
 
-				$success = $this->commentHandler->attemptCreateComment($comment, $id);
-
-				if($success)
+				if($this->commentHandler->attemptCreateComment($comment, $id))
 				{
 					$feedback = "Thank you for your comment.";
 				}
@@ -65,6 +59,31 @@ class PollController
 					$feedback = $this->commentHandler->getErrorList();
 				}
 			}
+
+			//om användaren har röstat så skickas detta till modellen
+			if($this->pollView->userVoted())
+			{
+				$ip = $this->pollView->getClient();
+				$answer = $this->pollView->getAnswer();
+
+				$this->voter->addNewVote($answer,$ip);
+
+				$feedback = "Thank you for your vote.";
+			}
+
+			//om användaren har rapporterat en kommentar
+			if($this->pollView->userReportedComment())
+			{
+				$commentId = $this->pollView->getCommentReportId();
+				$reportReason = $this->pollView->getCommentReportReason();
+
+				$comment = $this->commentHandler->getComment($commentId);
+
+				$this->reportHandler->reportComment($comment, $reportReason);
+
+				$feedback = "Thank you reporting this. We will have a look at it.";
+			}
+
 			$body = $this->pollView->getResultPage($feedback);
 		}
 		else

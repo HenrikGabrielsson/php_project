@@ -40,6 +40,11 @@ class CommentHandler
 		return $this->commentRepo->getCommentsInPoll($pollId);
 	}
 
+	public function getComment($id)
+	{
+		return $this->commentRepo->getCommentById($id);
+	}
+
 	public function getCommentWriter($comment)
 	{
 		return $this->userRepo->getUserById($comment->getUserId());

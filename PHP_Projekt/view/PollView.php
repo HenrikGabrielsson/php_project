@@ -50,6 +50,21 @@ class PollView
 		return isset($_POST[helpers\PostHandler::$COMMENT]);
 	}
 
+	public function userReportedComment()
+	{
+		return isset($_POST[helpers\PostHandler::$COMMENTREPORT_ID]);
+	}
+
+	public function getCommentReportId()
+	{
+		return $_POST[helpers\PostHandler::$COMMENTREPORT_ID];
+	}
+
+	public function getCommentReportReason()
+	{
+		return $_POST[helpers\PostHandler::$COMMENTREPORT_REASON];
+	}
+
 
 	public function getTitle()
 	{
@@ -61,7 +76,8 @@ class PollView
 		return 
 			$this->getTitleAndCreator().
 			$this->getResults().
-			$this->getCommentSection($feedback);
+			$this->makeFeedback($feedback).
+			$this->getCommentSection();
 	}
 
 	public function getForm()
@@ -133,18 +149,8 @@ class PollView
 			';	
 	}
 
-	public function getCommentSection($feedback)
+	public function getCommentSection()
 	{
-		if($feedback == null)
-		{
-			$feedback = "Write a comment. Keep it civil, please.";
-		}
-
-		else if(is_array($feedback))
-		{
-			$feedback = $this->makeFeedback($feedback);
-		}
-
 		return 
 		'<div id="commentSection" >'.
 			$this->getCommentForm().
@@ -190,8 +196,9 @@ class PollView
 					'&'.helpers\GetHandler::$ID.'='.$comment->getUserId().'">'. $writer->getUserName().'</a>
 
 					<input type="button" value="Report this comment" class="showReportForm" style="display:none">
-					<form class="reportForm" method="post" action="'.$_SERVER['REQUEST_URI'].'" id="'.$comment->getId().'" class="reportComment">
-						<input type="text" maxlength="200" name="'.helpers\PostHandler::$REPORT.'" placeholder="(optional) Write a comment. Why did you report this?" />
+					<form class="reportForm" method="post" action="'.$_SERVER['REQUEST_URI'].'" class="reportComment">
+						<input type="hidden" name="'.helpers\PostHandler::$COMMENTREPORT_ID.'" value="'.$comment->getId().'">
+						<input type="text" maxlength="200" name="'.helpers\PostHandler::$COMMENTREPORT_REASON.'" placeholder="(optional) Write a comment. Why did you report this?" />
 						<input type="submit" value="Report">
 					</form>
 
@@ -236,25 +243,36 @@ class PollView
 
 	}
 
-	public function makeFeedback($feedbackArray)
+	public function makeFeedback($feedback)
 	{
 
-		$feedback = '';
+		$retString = '<div id="feedback">';  
 
-		if(in_array($this->commentHandler->shortComment, $feedbackArray))
-        {
-            $feedback .= "You have to write something.\n";
-        }	
-		if(in_array($this->commentHandler->longComment, $feedbackArray))
-        {
-            $feedback .= "Your comment was too long. The maximum Length is 1000 characters. \n";
-        }      
-        if(in_array($this->commentHandler->pollDoesNotExist, $feedbackArray))
-        {
-            $feedback .= "The poll does not exist.";
-        }
+		if(is_array($feedback))
+		{
+			
+			$retString = "<ul>";
+			if(in_array($this->commentHandler->shortComment, $feedback))
+	        {
+	            $retString .= "<li>You have to write something.</li>";
+	        }	
+			if(in_array($this->commentHandler->longComment, $feedback))
+	        {
+	            $retString .= "<li>Your comment was too long. The maximum Length is 1000 characters. </li>";
+	        }      
+	        if(in_array($this->commentHandler->pollDoesNotExist, $feedback))
+	        {
+	            $retString .= "<li>The poll does not exist.</li>";
+	        }
+	        $retString .="</ul>";
+	    }
 
-        return $feedback;
+	    else
+	    {
+	    	$retString = '<p>'.$feedback.'</p>';
+	    }
+
+        return $retString . "</div>";
 	}
 }
 
