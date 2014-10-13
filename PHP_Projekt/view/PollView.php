@@ -65,6 +65,21 @@ class PollView
 		return $_POST[helpers\PostHandler::$COMMENTREPORT_REASON];
 	}
 
+	public function getPollReportId()
+	{
+		return $_POST[helpers\PostHandler::$POLLREPORT_ID];
+	}
+
+	public function getPollReportReason()
+	{
+		return $_POST[helpers\PostHandler::$POLLREPORT_REASON];
+	}
+
+	public function userReportedPoll()
+	{
+		return isset($_POST[helpers\PostHandler::$POLLREPORT_ID]);
+	}
+
 
 	public function getTitle()
 	{
@@ -142,11 +157,28 @@ class PollView
 
 	public function getTitleAndCreator()
 	{
-		return 
+
+		$pollheader =  
 			'<h1>'.$this->poll->getQuestion().'</h1>
 			<p>Created by: <a href="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWUSER.
-			'&'.helpers\GetHandler::$ID.'='.$this->owner->getId().'">'.$this->owner->getUserName().'</a> </p>
+			'&'.helpers\GetHandler::$ID.'='.$this->owner->getId().'">'.$this->owner->getUserName().'</a></p>
 			';	
+
+			//man ska ha möjlighet att rapportera kränkande polls till admins om man är inloggad.
+			if($this->login->getIsLoggedIn())
+			{
+				$pollheader .= 
+				'<input type="button" value="Report this poll" class="showPollReportForm" style="display:none">
+				<form method="post" action="'.$_SERVER['REQUEST_URI'].'" class="reportPoll">
+					<input type="hidden" name="'.helpers\PostHandler::$POLLREPORT_ID.'" value="'.$this->poll->getId().'">
+					<input type="text" maxlength="200" name="'.helpers\PostHandler::$POLLREPORT_REASON.'" placeholder="(optional) Write a comment. Why did you report this?" />
+					<input type="submit" value="Report">
+				</form>		
+				';		
+			}
+
+			return $pollheader;
+
 	}
 
 	public function getCommentSection()
@@ -195,8 +227,8 @@ class PollView
 					<p>'.$comment->getCommentTime().'</p><p><a href="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWUSER.
 					'&'.helpers\GetHandler::$ID.'='.$comment->getUserId().'">'. $writer->getUserName().'</a>
 
-					<input type="button" value="Report this comment" class="showReportForm" style="display:none">
-					<form class="reportForm" method="post" action="'.$_SERVER['REQUEST_URI'].'" class="reportComment">
+					<input type="button" value="Report this comment" class="showCommentReportForm" style="display:none">
+					<form method="post" action="'.$_SERVER['REQUEST_URI'].'" class="reportComment">
 						<input type="hidden" name="'.helpers\PostHandler::$COMMENTREPORT_ID.'" value="'.$comment->getId().'">
 						<input type="text" maxlength="200" name="'.helpers\PostHandler::$COMMENTREPORT_REASON.'" placeholder="(optional) Write a comment. Why did you report this?" />
 						<input type="submit" value="Report">
@@ -217,7 +249,6 @@ class PollView
 
 	private function convertToPercentage($answers)
 	{
-
 		$retArr = array();
 		$totalNumVotes = 0;
 
@@ -240,7 +271,6 @@ class PollView
 		}
 
 		return $retArr;
-
 	}
 
 	public function makeFeedback($feedback)

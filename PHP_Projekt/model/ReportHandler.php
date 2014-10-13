@@ -11,11 +11,11 @@ class ReportHandler
 
 	public function reportComment($comment, $reason)
 	{
-
+		
 	}
 
 	public function reportPoll($poll, $reason)
 	{
-		
+
 	}
 }

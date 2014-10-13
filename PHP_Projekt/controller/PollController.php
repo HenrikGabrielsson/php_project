@@ -42,7 +42,6 @@ class PollController
 
 		$this->pollView = new \view\PollView($poll, $owner, $login, $this->commentHandler);
 
-
 		//om användaren vill se resultat eller frågan där de kan rösta
 		if($this->pollView->userWantsResults())
 		{
@@ -71,6 +70,17 @@ class PollController
 				$feedback = "Thank you for your vote.";
 			}
 
+			//om användaren har rapporterat en undersökning
+			if($this->pollView->userReportedPoll())
+			{
+				$pollId = $this->pollView->getPollReportId();
+				$reportReason = $this->pollView->getPollReportReason();
+
+				$this->reportHandler->reportPoll($poll, $reportReason);
+
+				$feedback = "Thank you reporting this poll. We will have a look at it.";
+			}
+
 			//om användaren har rapporterat en kommentar
 			if($this->pollView->userReportedComment())
 			{
@@ -81,7 +91,7 @@ class PollController
 
 				$this->reportHandler->reportComment($comment, $reportReason);
 
-				$feedback = "Thank you reporting this. We will have a look at it.";
+				$feedback = "Thank you reporting this comment. We will have a look at it.";
 			}
 
 			$body = $this->pollView->getResultPage($feedback);

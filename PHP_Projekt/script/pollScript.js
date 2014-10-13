@@ -62,33 +62,36 @@ function addField()
 
 
 
-
-
-//funktioner och variabler för kommentarer (närmare bestämt rapportering)
-//hämta in alla comments på sidan
-var comments = document.getElementsByClassName('commentHead');
-
 //om det finns kommentarer så gömmer vi alla formulär och visar knappar för att visa formulären istället. Detta för att inte stöka till sidan med en massa formulär överallt
 //om man inte använder javascript så får man leva med det ändå.
-if(comments.length > 0)
+if(document.getElementsByClassName('reportComment').length > 0)
 {
-	var buttons = document.getElementsByClassName('showReportForm');
-	var reportForms = document.getElementsByClassName('reportForm');
+	var buttons = document.getElementsByClassName('showCommentReportForm');
+	var reportForms = document.getElementsByClassName('reportComment');
 
-	changePage(buttons, reportForms);
-}
-
-function changePage(buttons, reportForms)
-{
-
-
-	for (var i = 0; i < comments.length;i++)
+	for (var i = 0; i < document.getElementsByClassName('reportComment').length;i++)
 	{
 		buttons[i].style.display = "block";
 		addAnEventListener(buttons[i], reportForms[i]);
 		reportForms[i].style.display = "none";
 	}
 }
+
+//samma sak med själva undersökningen
+if(document.getElementsByClassName("reportPoll").length > 0)
+{
+	var buttons = document.getElementsByClassName('showPollReportForm');
+	var reportForms = document.getElementsByClassName('reportPoll');
+
+	//finns bara en poll på sidan så plockar ut den första
+	for (var i = 0; i < document.getElementsByClassName('reportPoll').length;i++)
+	{
+		buttons[i].style.display = "block";
+		addAnEventListener(buttons[i], reportForms[i]);
+		reportForms[i].style.display = "none";
+	}
+}
+
 
 function addAnEventListener(button, form)
 {
@@ -98,6 +101,10 @@ function addAnEventListener(button, form)
 		form.style.display = "block";		
 	}, false);
 }
+
+
+
+
 
 
 

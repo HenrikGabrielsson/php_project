@@ -22,5 +22,7 @@ class PostHandler
 
 	public static $COMMENTREPORT_REASON = "commentReportReason";
 	public static $COMMENTREPORT_ID = "commentReportId";
+	public static $POLLREPORT_REASON = "pollReportReason";
+	public static $POLLREPORT_ID = "pollReportId";
 
 }
