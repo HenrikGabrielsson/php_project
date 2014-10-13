@@ -225,22 +225,28 @@ class PollView
 			'<div class="comment">
 				<div class="commentHead">
 					<p>'.$comment->getCommentTime().'</p><p><a href="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWUSER.
-					'&'.helpers\GetHandler::$ID.'='.$comment->getUserId().'">'. $writer->getUserName().'</a>
+					'&'.helpers\GetHandler::$ID.'='.$comment->getUserId().'">'. $writer->getUserName().'</a>';
 
+
+			if($this->login->getIsLoggedIn())
+			{
+				$retHTML .= 
+				'
 					<input type="button" value="Report this comment" class="showCommentReportForm" style="display:none">
 					<form method="post" action="'.$_SERVER['REQUEST_URI'].'" class="reportComment">
 						<input type="hidden" name="'.helpers\PostHandler::$COMMENTREPORT_ID.'" value="'.$comment->getId().'">
 						<input type="text" maxlength="200" name="'.helpers\PostHandler::$COMMENTREPORT_REASON.'" placeholder="(optional) Write a comment. Why did you report this?" />
 						<input type="submit" value="Report">
 					</form>
+				';
+			}
 
-				</div>
+			$retHTML .=
+			'</div>
 				<div class="commentBody">
 					'.$comment->getComment().'
 				</div>
-			
-			</div>
-			';
+			</div>';
 		}
 
 		return $retHTML . '</div>';
