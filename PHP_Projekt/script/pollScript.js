@@ -1,3 +1,6 @@
+
+//funktioner och variabler för när man skapar undersökningar
+//svarsfältt och labels när man skapar en poll
 var answerFields = document.getElementsByClassName('createAnswer');
 var answersLabels = document.getElementsByClassName('createAnswerLabels');
 
@@ -54,3 +57,47 @@ function addField()
 	answerFields[shownAnswers].focus();
 	shownAnswers++;
 }
+
+
+
+
+
+
+
+//funktioner och variabler för kommentarer (närmare bestämt rapportering)
+//hämta in alla comments på sidan
+var comments = document.getElementsByClassName('commentHead');
+
+//om det finns kommentarer så gömmer vi alla formulär och visar knappar för att visa formulären istället. Detta för att inte stöka till sidan med en massa formulär överallt
+//om man inte använder javascript så får man leva med det ändå.
+if(comments.length > 0)
+{
+	var buttons = document.getElementsByClassName('showReportForm');
+	var reportForms = document.getElementsByClassName('reportForm');
+
+	changePage(buttons, reportForms);
+}
+
+function changePage(buttons, reportForms)
+{
+
+
+	for (var i = 0; i < comments.length;i++)
+	{
+		buttons[i].style.display = "block";
+		addAnEventListener(buttons[i], reportForms[i]);
+		reportForms[i].style.display = "none";
+	}
+}
+
+function addAnEventListener(button, form)
+{
+	button.addEventListener("click", function()
+	{
+		button.style.display = "none";
+		form.style.display = "block";		
+	}, false);
+}
+
+
+

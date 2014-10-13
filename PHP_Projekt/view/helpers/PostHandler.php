@@ -19,5 +19,6 @@ class PostHandler
 
 	public static $VOTE = "vote";
 	public static $COMMENT = "comment";
+	public static $REPORT = "report";
 
 }

@@ -72,7 +72,6 @@ class LoginHandler
 	}
 
 
-
 	public function getUser()
 	{
 		return $_SESSION[helpers\SessionHandler::$USERNAME];
