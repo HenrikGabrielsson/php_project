@@ -23,7 +23,7 @@ class UserController
 		$this->commentRepo = new \model\repository\CommentRepo();
 	}
 
-	public function getContent($id, $loggedIn)
+	public function getContent($id, $login)
 	{
 		$user = $this->userRepo->getUserById($id);
 		$polls = $this->pollRepo->getAllPollsFromUser($user->getId(), false, true);

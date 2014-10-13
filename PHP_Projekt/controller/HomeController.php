@@ -20,11 +20,11 @@ class HomeController
 		
 	}
 
-	public function getContent($id, $loggedIn)
+	public function getContent($id, $login)
 	{
 		$title = $this->homeView->getTitle();
-		$body = $this->homeView->getBody($loggedIn);
 
+		$body = $this->homeView->getBody($login->getIsLoggedIn());
 		$this->htmlView->showHTML($title, $body);
 	}
 }

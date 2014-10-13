@@ -29,14 +29,14 @@ class PollController
 		$this->commentHandler = new \model\CommentHandler();
 	}
 
-	public function getContent($id, $loggedIn)
+	public function getContent($id, $login)
 	{
 		//skapar ett repositorie-objekt och hämtar aktuell undersökning
 		
 		$poll = $this->pollRepo->getPollById($id);
 		$owner = $this->userRepo->getUserById($poll->getCreator());
 
-		$this->pollView = new \view\PollView($poll, $owner, $this->commentHandler);
+		$this->pollView = new \view\PollView($poll, $owner, $login, $this->commentHandler);
 
 		//om användaren har röstat så skickas detta till modellen
 		if($this->pollView->userVoted())

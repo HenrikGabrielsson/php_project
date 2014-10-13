@@ -35,15 +35,7 @@ class LoginHandler
 		$this->repo = new repository\UserRepo();
 	}
 
-	public static function isLoggedIn()
-	{
 
-		if($_SESSION[helpers\SessionHandler::$LOGGEDIN])
-		{
-			return true;
-		}
-		return false;
-	}
 
 	public function attemptLogin($username, $password)
 	{
@@ -67,10 +59,10 @@ class LoginHandler
 
 		$user = $this->repo->getUserByName($username);
 
-		//Om användaren inte hittades eller om lösenordet inte matchar 
+		//Om användaren hittades och om lösenordet matchar 
 		if(isset($user) && $this->checkPassword($password, $user->getPassword(), $user->getSalt()))
 		{
-			helpers\SessionHandler::loginUser($user->getUsername(), $user->getId());
+			$this->loginUser($user->getUsername(), $user->getId(), $user->getAdmin());
 		}
 		else
 		{
@@ -79,20 +71,61 @@ class LoginHandler
 		}
 	}
 
-	public function logout()
-	{
-		helpers\SessionHandler::removeSessions();
-	}
 
-	public function getLoggedInUser()
+
+	public function getUser()
 	{
 		return $_SESSION[helpers\SessionHandler::$USERNAME];
+	}
+
+	public function getIsAdmin()
+	{
+		return $_SESSION[helpers\SessionHandler::$ISADMIN];
+	}
+
+	public function getId()
+	{
+		return $_SESSION[helpers\SessionHandler::$USERID];
+	}
+
+	public function getIsLoggedIn()
+	{
+		if (isset($_SESSION[helpers\SessionHandler::$LOGGEDIN]))
+		{
+			return true;
+		}
+		return false;
 	}
 
 	public function getErrorList()
 	{
 		return $this->errorList;
 	}
+
+	public static function loginUser($username, $id, $isAdmin)
+	{
+		if($isAdmin === 1)
+		{
+			$isAdmin = true;
+		}
+		else
+		{
+			$isAdmin = false;
+		}
+
+
+		$_SESSION[helpers\SessionHandler::$USERNAME] = $username;
+		$_SESSION[helpers\SessionHandler::$ISADMIN] = $isAdmin;
+		$_SESSION[helpers\SessionHandler::$USERID] = $id;
+		$_SESSION[helpers\SessionHandler::$LOGGEDIN] = true;
+	}
+
+	public function logout()
+	{
+		session_unset(); 
+		session_destroy(); 
+	}
+
 
 	//den här funktionen kollar om det angivna lösenordet matchar det hashade/saltade lösenordet från databasen.
 	private function checkPassword($givenPassword, $correctPassword, $salt)

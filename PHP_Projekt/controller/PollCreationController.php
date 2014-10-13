@@ -20,13 +20,13 @@ class PollCreationController
 		$this->pollCreationView = new \view\PollCreationView($this->pollCreator);	
 	}
 
-	public function getContent($id, $loggedIn)
+	public function getContent($id, $login)
 	{
 		$title = $this->pollCreationView->getTitle();
 		$body;
 
 		//om man inte är inloggad så kan man inte skapa en poll
-		if(!$loggedIn)
+		if($login->getIsLoggedIn() === false)
 		{
 			$body = $this->pollCreationView->getNotLoggedIn();
 		}

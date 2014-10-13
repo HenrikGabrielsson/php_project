@@ -25,7 +25,7 @@ class CategoryController
 		$this->pollRepo = new \model\repository\PollRepo();
 	}
 
-	public function getContent($id, $loggedIn)
+	public function getContent($id)
 	{
 		//hämta alla polls i denna kategori.
 		$polls = $this->pollRepo->getAllPollsInCategory($id);

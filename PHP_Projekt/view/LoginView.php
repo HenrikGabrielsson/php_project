@@ -42,11 +42,11 @@ class LoginView
 
     	$loginDiv = '<div id="loginBox">';
 
-        if(\model\LoginHandler::isLoggedIn())
+        if($this->login->getIsLoggedIn())
         {
         	$loginDiv .= 
             $this->makeFeedBack().
-            '<p>You are logged in as '.$this->login->getLoggedInUser().'.</p>
+            '<p>You are logged in as '.$this->login->getUser().'.</p>
             <p><a href="?'.helpers\GetHandler::$LOGOUT.'">Log out</a></p>
             ';
         }

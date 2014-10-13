@@ -10,12 +10,14 @@ class PollView
 	private $poll;
 	private $owner;
 	private $commentHandler;
+	private $login;
 
-	public function __construct($poll, $owner, $commentHandler)
+	public function __construct($poll, $owner, $login, $commentHandler)
 	{
 		$this->poll = $poll;
 		$this->owner = $owner;
 		$this->commentHandler = $commentHandler;
+		$this->login = $login;
 	}
 
 	public function getAnswer()
@@ -144,16 +146,31 @@ class PollView
 		}
 
 		return 
-		'<div id="commentSection" >
+		'<div id="commentSection" >'.
+			$this->getCommentForm().
+			$this->getComments().
+			
+		'</div>
+		';
+	}
+
+	public function getCommentForm()
+	{
+		if($this->login->getIsLoggedIn())
+		{
+			return '
 			<form action="'.$_SERVER['REQUEST_URI'].'" method="post">
 				<textarea maxlength="1000" cols="100" rows="5" name="'.helpers\PostHandler::$COMMENT.'" id="comment">'.$feedback.'
 				</textarea>
 				<input type="submit" value="Send Comment">
-			</form>
-			'.$this->getComments().'
-			
-		</div>
-		';
+			</form>	
+			';
+		}
+		else
+		{
+			return 
+			'<p>Login to make a comment</p>';
+		}
 	}
 
 	private function getComments()

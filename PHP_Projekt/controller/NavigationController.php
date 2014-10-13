@@ -19,12 +19,14 @@ require_once("./view/SidebarView.php");
 
 class NavigationController
 {
+    private $loginHandler;
     private $navView;
     private $htmlView;
     private $sidebarView;
     
     public function __construct($htmlView)
     {
+        $this->loginHandler = new \model\LoginHandler();
         $this->htmlView = $htmlView;
         $this->navView = new \view\NavigationView();
         $this->sidebarView = new \view\sidebarView();
@@ -33,7 +35,11 @@ class NavigationController
     //kollar url och anropar sedan en lämplig controller 
     public function getPage()
     {
-        //börjar med att lägga till innehållet i sidebar.
+        //börjar med att kolla om användaren är inloggad
+        $loginController = new \controller\LoginController($this->htmlView, $this->loginHandler);
+        $loginController->checkForLogin();
+
+        //sen lägger vi till innehållet i sidebar.
         $this->htmlView->setSidebarContent($this->sidebarView->getSidebarContent());
 
         //sedan anropas den konstruktor som lägger till innehåll i title och body.
@@ -41,34 +47,32 @@ class NavigationController
         {
             case \view\helpers\GetHandler::$VIEWPOLL:
                 $controller = new PollController($this->htmlView);
-                $controller->getContent($this->navView->getId(), \model\LoginHandler::isLoggedIn());
+                $controller->getContent($this->navView->getId(), $this->loginHandler);
                 break;
             case \view\helpers\GetHandler::$VIEWUSER:
                 $controller = new UserController($this->htmlView);
-                $controller->getContent($this->navView->getId(), \model\LoginHandler::isLoggedIn());
+                $controller->getContent($this->navView->getId(), $this->loginHandler);
                 break;
             case \view\helpers\GetHandler::$VIEWCATEGORY:
                 $controller = new CategoryController($this->htmlView);
-                $controller->getContent($this->navView->getId(), \model\LoginHandler::isLoggedIn());
+                $controller->getContent($this->navView->getId());
                 break;
             case \view\helpers\GetHandler::$VIEWREGISTER:
                 $controller = new RegistrationController($this->htmlView);
-                $controller->getContent($this->navView->getId(), \model\LoginHandler::isLoggedIn());
+                $controller->getContent($this->navView->getId(), $this->loginHandler);
                 break;
             case \view\helpers\GetHandler::$VIEWCREATEPOLL:
                 $controller = new PollCreationController($this->htmlView);
-                $controller->getContent($this->navView->getId(), \model\LoginHandler::isLoggedIn());
+                $controller->getContent($this->navView->getId(), $this->loginHandler);
                 break;
             case \view\helpers\GetHandler::$VIEWSEARCH:
                 $controller = new SearchController($this->htmlView);
-                $controller->getContent(\model\LoginHandler::isLoggedIn());
+                $controller->getContent();
                 break;
             default:
                 $controller = new HomeController($this->htmlView);
-                $controller->getContent($this->navView->getId(), \model\LoginHandler::isLoggedIn());
+                $controller->getContent($this->navView->getId(), $this->loginHandler);
         }
-
-        
-        
+ 
     }
 }

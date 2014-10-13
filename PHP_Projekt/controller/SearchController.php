@@ -20,7 +20,6 @@ class SearchController
 
 	public function getContent()
 	{
-
 		$searchWords = $this->searchView->getSearchTerms();
 		$polls = $this->search->getSearchResults($searchWords);
 

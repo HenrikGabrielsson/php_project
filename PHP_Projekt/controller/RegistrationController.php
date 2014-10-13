@@ -19,7 +19,7 @@ class RegistrationController
 		$this->loginHandler = new \model\LoginHandler();
 	}
 
-	public function getContent($id, $loggedIn)
+	public function getContent($id, $login)
 	{
 
 		$title = $this->regView->getTitle();
