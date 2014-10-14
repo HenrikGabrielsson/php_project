@@ -40,7 +40,7 @@ class PollController
 		$poll = $this->pollRepo->getPollById($id);
 		$owner = $this->userRepo->getUserById($poll->getCreator());
 
-		$this->pollView = new \view\PollView($poll, $owner, $login, $this->commentHandler);
+		$this->pollView = new \view\PollView($poll, $owner, $login, $this->commentHandler, $this->reportHandler);
 
 		//om användaren vill se resultat eller frågan där de kan rösta
 		if($this->pollView->userWantsResults())
@@ -73,12 +73,16 @@ class PollController
 			//om användaren har rapporterat en undersökning
 			if($this->pollView->userReportedPoll())
 			{
-				$pollId = $this->pollView->getPollReportId();
 				$reportReason = $this->pollView->getPollReportReason();
 
-				$this->reportHandler->reportPoll($poll, $reportReason);
-
-				$feedback = "Thank you reporting this poll. We will have a look at it.";
+				if($this->reportHandler->reportPoll($poll, $reportReason))
+				{
+					$feedback = "Thank you reporting this poll. We will have a look at it.";
+				}
+				else
+				{
+					$feedback = $this->reportHandler->getErrorList();
+				}
 			}
 
 			//om användaren har rapporterat en kommentar
@@ -89,9 +93,15 @@ class PollController
 
 				$comment = $this->commentHandler->getComment($commentId);
 
-				$this->reportHandler->reportComment($comment, $reportReason);
 
-				$feedback = "Thank you reporting this comment. We will have a look at it.";
+				if($this->reportHandler->reportComment($comment, $reportReason))
+				{
+					$feedback = "Thank you reporting this comment. We will have a look at it.";
+				}
+				else
+				{
+					$feedback = $this->reportHandler->getErrorList();
+				}
 			}
 
 			$body = $this->pollView->getResultPage($feedback);

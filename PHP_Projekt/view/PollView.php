@@ -12,11 +12,12 @@ class PollView
 	private $commentHandler;
 	private $login;
 
-	public function __construct($poll, $owner, $login, $commentHandler)
+	public function __construct($poll, $owner, $login, $commentHandler, $reportHandler)
 	{
 		$this->poll = $poll;
 		$this->owner = $owner;
 		$this->commentHandler = $commentHandler;
+		$this->reportHandler = $reportHandler;
 		$this->login = $login;
 	}
 
@@ -65,21 +66,15 @@ class PollView
 		return $_POST[helpers\PostHandler::$COMMENTREPORT_REASON];
 	}
 
-	public function getPollReportId()
+	public function userReportedPoll()
 	{
-		return $_POST[helpers\PostHandler::$POLLREPORT_ID];
+		return isset($_POST[helpers\PostHandler::$POLLREPORT_REASON]);
 	}
 
 	public function getPollReportReason()
 	{
 		return $_POST[helpers\PostHandler::$POLLREPORT_REASON];
 	}
-
-	public function userReportedPoll()
-	{
-		return isset($_POST[helpers\PostHandler::$POLLREPORT_ID]);
-	}
-
 
 	public function getTitle()
 	{
@@ -148,11 +143,33 @@ class PollView
 	
 		<img class="diagramImage" src="data:image/png;base64,'.$image.'">
 
+		'.$this->getReportPoll().'
+
+
 		<ul class="resultsList">
 		'.$resultList.'	
 		</ul>
 
 		</div>';	
+	}
+
+	public function getReportPoll()
+	{
+		$reportForm = "";
+
+		//man ska ha möjlighet att rapportera kränkande polls till admins om man är inloggad.
+		if($this->login->getIsLoggedIn())
+		{
+			$reportForm .= 
+			'<input type="button" value="Report this poll" class="showPollReportForm" style="display:none">
+			<form method="post" action="'.$_SERVER['REQUEST_URI'].'" class="reportPoll">
+				<input type="text" maxlength="200" name="'.helpers\PostHandler::$POLLREPORT_REASON.'" placeholder="(optional) Write a comment. Why did you report this?" />
+				<input type="submit" value="Report">
+			</form>		
+			';		
+		}
+
+		return $reportForm;
 	}
 
 	public function getTitleAndCreator()
@@ -164,20 +181,8 @@ class PollView
 			'&'.helpers\GetHandler::$ID.'='.$this->owner->getId().'">'.$this->owner->getUserName().'</a></p>
 			';	
 
-			//man ska ha möjlighet att rapportera kränkande polls till admins om man är inloggad.
-			if($this->login->getIsLoggedIn())
-			{
-				$pollheader .= 
-				'<input type="button" value="Report this poll" class="showPollReportForm" style="display:none">
-				<form method="post" action="'.$_SERVER['REQUEST_URI'].'" class="reportPoll">
-					<input type="hidden" name="'.helpers\PostHandler::$POLLREPORT_ID.'" value="'.$this->poll->getId().'">
-					<input type="text" maxlength="200" name="'.helpers\PostHandler::$POLLREPORT_REASON.'" placeholder="(optional) Write a comment. Why did you report this?" />
-					<input type="submit" value="Report">
-				</form>		
-				';		
-			}
 
-			return $pollheader;
+		return $pollheader;
 
 	}
 
@@ -281,13 +286,24 @@ class PollView
 
 	public function makeFeedback($feedback)
 	{
-
 		$retString = '<div id="feedback">';  
 
 		if(is_array($feedback))
 		{
 			
 			$retString = "<ul>";
+			if(in_array($this->reportHandler->longReason, $feedback))
+	        {
+	            $retString .= "<li>The reason you wrote was too long. Maximum number of characters is 200.</li>";
+	        }
+	     	if(in_array($this->reportHandler->noComment, $feedback))
+	        {
+	            $retString .= "<li>This comment doesn't exist.</li>";
+	        }
+	       	if(in_array($this->reportHandler->noPoll, $feedback))
+	        {
+	            $retString .= "<li>This poll doesn't exist.</li>";
+	        }
 			if(in_array($this->commentHandler->shortComment, $feedback))
 	        {
 	            $retString .= "<li>You have to write something.</li>";

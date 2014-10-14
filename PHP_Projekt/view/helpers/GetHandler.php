@@ -20,5 +20,6 @@ class GetHandler
 	public static $VIEWUSER = "user";
 	public static $VIEWCREATEPOLL = "create";
 	public static $VIEWSEARCH = "search";
+	public static $VIEWREPORT = "report";
 
 }

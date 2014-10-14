@@ -12,6 +12,7 @@ require_once("controller/CategoryController.php");
 require_once("controller/RegistrationController.php");
 require_once("controller/PollCreationController.php");
 require_once("controller/SearchController.php");
+require_once("controller/ReportListController.php");
 
 require_once("./view/helpers/GetHandler.php");
 require_once("./view/NavigationView.php");
@@ -68,6 +69,10 @@ class NavigationController
             case \view\helpers\GetHandler::$VIEWSEARCH:
                 $controller = new SearchController($this->htmlView);
                 $controller->getContent();
+                break;
+            case \view\helpers\GetHandler::$VIEWREPORT:
+                $controller = new ReportListController($this->htmlView);
+                $controller->getContent($this->loginHandler);
                 break;
             default:
                 $controller = new HomeController($this->htmlView);

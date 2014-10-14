@@ -103,16 +103,6 @@ class LoginHandler
 
 	public static function loginUser($username, $id, $isAdmin)
 	{
-		if($isAdmin === 1)
-		{
-			$isAdmin = true;
-		}
-		else
-		{
-			$isAdmin = false;
-		}
-
-
 		$_SESSION[helpers\SessionHandler::$USERNAME] = $username;
 		$_SESSION[helpers\SessionHandler::$ISADMIN] = $isAdmin;
 		$_SESSION[helpers\SessionHandler::$USERID] = $id;

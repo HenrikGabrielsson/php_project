@@ -59,9 +59,6 @@ function addField()
 }
 
 
-
-
-
 //om det finns kommentarer så gömmer vi alla formulär och visar knappar för att visa formulären istället. Detta för att inte stöka till sidan med en massa formulär överallt
 //om man inte använder javascript så får man leva med det ändå.
 if(document.getElementsByClassName('reportComment').length > 0)
@@ -80,6 +77,7 @@ if(document.getElementsByClassName('reportComment').length > 0)
 //samma sak med själva undersökningen
 if(document.getElementsByClassName("reportPoll").length > 0)
 {
+
 	var buttons = document.getElementsByClassName('showPollReportForm');
 	var reportForms = document.getElementsByClassName('reportPoll');
 
