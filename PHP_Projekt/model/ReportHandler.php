@@ -4,6 +4,8 @@ namespace model;
 
 require_once("./model/repo/ReportedCommentRepo.php");
 require_once("./model/repo/ReportedPollRepo.php");
+require_once("./model/repo/PollRepo.php");
+require_once("./model/repo/CommentRepo.php");
 require_once("./model/PollReport.php");
 require_once("./model/CommentReport.php");
 
@@ -11,6 +13,8 @@ class ReportHandler
 {
 	private $reportedPollRepo;
 	private $reportedCommentRepo;
+	private $pollRepo;
+	private $commentRepo;
 
 	//errors
 	public $longReason = "longReason";
@@ -23,6 +27,8 @@ class ReportHandler
 	{
 		$this->reportedPollRepo = new repository\ReportedPollRepo();
 		$this->reportedCommentRepo = new repository\ReportedCommentRepo();
+		$this->pollRepo = new repository\PollRepo();
+		$this->commentRepo = new repository\CommentRepo();
 	}
 
 	public function getErrorList()
@@ -63,7 +69,39 @@ class ReportHandler
 		return false;
 	}
 
+	public function pollDeleted($id)
+	{
+		$reports = $this->reportedPollRepo->getAllReports();
 
+		//ta bort alla som har rapporterat denna poll
+		foreach($reports as $report)
+		{
+			if($report->getPollId() == $id)
+			{
+				$this->reportedPollRepo->delete($report->getId());
+			}
+		}
+
+		//ta bort poll
+		$this->pollRepo->delete($id);
+	}
+
+	public function commentDeleted($id)
+	{
+		$reports = $this->reportedCommentRepo->getAllReports();
+
+		//ta bort alla som har rapporterat denna comment
+		foreach($reports as $report)
+		{
+			if($report->getCommentId() == $id)
+			{
+				$this->reportedCommentRepo->delete($report->getId());
+			}
+		}
+
+		//ta bort poll
+		$this->commentRepo->delete($id);
+	}
 
 	private function validateReason($reason)
 	{

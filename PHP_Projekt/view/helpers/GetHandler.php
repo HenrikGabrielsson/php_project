@@ -12,6 +12,11 @@ class GetHandler
 	public static $REGISTER = "register";
 	public static $CREATE = "create";
 	public static $SEARCHWORDS = "searchwords";
+	public static $LIST = "list";
+	public static $POLLLIST = "poll";
+	public static $COMMENTLIST = "comment";
+	public static $USERLIST = "user";
+
 
 	//olika "views"
 	public static $VIEWREGISTER = "register";

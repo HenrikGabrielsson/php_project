@@ -24,4 +24,10 @@ class PostHandler
 	public static $COMMENTREPORT_ID = "commentReportId";
 	public static $POLLREPORT_REASON = "pollReportReason";
 
+	public static $DELETEPOLL_POLLID = "deletePollPollId";
+	public static $DELETEPOLL_REPORTID = "deletePollReportId";
+	public static $DELETEPOLL_REASON = "deletePollReason";
+	public static $DELETECOMMENT_COMMENTID = "deleteCommentCommentId";
+	public static $DELETECOMMENT_REPORTID = "deleteCommentReportId";
+	public static $DELETECOMMENT_REASON = "deleteCommentReason";
 }

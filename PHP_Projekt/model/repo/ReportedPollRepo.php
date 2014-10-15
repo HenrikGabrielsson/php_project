@@ -30,7 +30,7 @@ class ReportedPollRepo extends \model\repository\Repository
 
 	public function delete($reportId)
 	{
-		$sql = "DELETE FROM reportedPoll WHERE ".$this->reportedCPollId." = ?";
+		$sql = "DELETE FROM reportedPoll WHERE ".$this->reportedPollId." = ?";
 		$params = array($reportId);
 		
 		$this->connect();
