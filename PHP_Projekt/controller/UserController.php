@@ -33,7 +33,7 @@ class UserController
 			//även privata polls visas
 			$polls = $this->pollRepo->getAllPollsFromUser($user->getId(), false, true);
 			$comments = $this->commentRepo->getCommentsFromUser($user->getId(), false);
-
+ 
 		}
 		else
 		{

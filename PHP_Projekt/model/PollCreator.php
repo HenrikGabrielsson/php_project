@@ -17,6 +17,7 @@ class PollCreator
 	public $longQuestion = "longQuestion";
 	public $tooManyAnswers = "tooManyAnswers";
 	public $tooFewAnswers = "tooFewAnswers";
+	public $longAnswer = "longAnswer";
 	public $notPublicOrPrivate = "notPublicOrPrivate";
 	public $categoryDoesNotExist = "categoryDoesNotExist";
 
@@ -92,10 +93,17 @@ class PollCreator
 		$tempArray = array();
 		foreach ($answers as $ans) 
 		{
+			//konstig, men tyvärr nödvändig lösning med en temparray för att ta bort tomma element.
 			if((strlen(trim($ans)) == 0) == false)
 			{
 				$ans = htmlspecialchars($ans);
 				$tempArray[] = $ans;
+			}
+
+			//koll ifall svaret är för långt
+			if(strlen($ans) > 100)
+			{
+				$this->errorList[] = $this->longAnswer;
 			}
 		}
 		$answers = $tempArray;

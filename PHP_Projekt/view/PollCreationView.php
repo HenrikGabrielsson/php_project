@@ -87,13 +87,13 @@ class PollCreationView
 		{
 			$answerFields .= 
 			'<label class="createAnswerLabels" for="createAnswer'.$i.'">Answer '.$i.': </label>
-			<input type="text" id="createAnswer'.$i.'" class="createAnswer" name="'.helpers\PostHandler::$CREATEANSWER.'[]">';
+			<input type="text" id="createAnswer'.$i.'" maxlength="100" class="createAnswer" name="'.helpers\PostHandler::$CREATEANSWER.'[]">';
 		}
 
 		$form = 
 		'<form id="createPollForm" action="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWCREATEPOLL.'&'.helpers\GetHandler::$CREATE.'" method="post">
 
-		<label for="createQuestion">Question: </label><input type="text" name="'.helpers\PostHandler::$CREATEQUESTION.'" id="createQuestion">
+		<label for="createQuestion">Question: </label><input maxlength="100" type="text" name="'.helpers\PostHandler::$CREATEQUESTION.'" id="createQuestion">
 	
 		<fieldset id="answers_fieldset">
 		'.$answerFields.'
@@ -137,7 +137,11 @@ class PollCreationView
         if(in_array($this->pollCreator->tooFewAnswers, $feedbackArray))
         {
             $feedback .= "<li>A question must have at least 2 answers.</li>";
-        }    
+        }   
+        if(in_array($this->pollCreator->longAnswer, $feedbackArray))
+        {
+            $feedback .= "<li>An answer can't be longer than 100 characters.</li>";
+        }   
         if(in_array($this->pollCreator->notPublicOrPrivate, $feedbackArray))
         {
             $feedback .= "<li>Decide if you want your poll to be public or private.</li>";
