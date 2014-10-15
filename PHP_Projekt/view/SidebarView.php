@@ -15,15 +15,30 @@ class SidebarView
 		$this->repo = new \model\repository\CategoryRepo();
 	}
 
-	public function getSidebarContent()
+	public function getSidebarContent($login)
 	{
 		$categories = $this->repo->getAllCategories();
 
+		//om användaren är inloggad så visas en create poll-länk
+		$createPoll = "";
+		if($login->getIsLoggedIn())
+		{
+			$createPoll= '<p><a href="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWCREATEPOLL.'">Create a poll!</a></p>';
+		}
+
+		//om användaren är admin så visas en länk till report-sidorna.
+		$reportLists = "";
+		if($login->getIsAdmin())
+		{
+			$reportLists = '<p><a href="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWREPORT.'">Check reported items</a></p>';
+		}
+
 
 		$sidebar = 
-		'
-		<p><a href="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWCREATEPOLL.'">Create a poll!</a></p>
-		<h2>Categories</h2>
+	
+		$createPoll.
+		$reportLists.
+		'<h2>Categories</h2>
 		<ul id="sidebarList">
 		';
 		foreach($categories as $category)

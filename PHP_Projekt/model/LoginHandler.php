@@ -59,6 +59,8 @@ class LoginHandler
 
 		$user = $this->repo->getUserByName($username);
 
+
+
 		//Om användaren hittades och om lösenordet matchar 
 		if(isset($user) && $this->checkPassword($password, $user->getPassword(), $user->getSalt()))
 		{

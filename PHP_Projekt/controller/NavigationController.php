@@ -41,7 +41,7 @@ class NavigationController
         $loginController->checkForLogin();
 
         //sen lägger vi till innehållet i sidebar.
-        $this->htmlView->setSidebarContent($this->sidebarView->getSidebarContent());
+        $this->htmlView->setSidebarContent($this->sidebarView->getSidebarContent($this->loginHandler));
 
         //sedan anropas den konstruktor som lägger till innehåll i title och body.
         switch ($this->navView->getPageController())

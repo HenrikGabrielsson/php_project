@@ -37,7 +37,7 @@ class PollView
 
 	public function getAnswer()
 	{
-		return $_POST[helpers\PostHandler::$VOTE];
+		return $_GET[helpers\GetHandler::$VOTE];
 	}
 
 	public function getComment()
@@ -57,7 +57,7 @@ class PollView
 
 	public function userVoted()
 	{
-		return isset($_POST[helpers\PostHandler::$VOTE]);
+		return isset($_GET[helpers\GetHandler::$VOTE]);
 	}
 
 	public function userCommented()
@@ -104,24 +104,45 @@ class PollView
 			$this->getCommentSection();
 	}
 
-	public function getForm()
+	public function getForm($ignoreShare = false)
 	{
-
 		//loopar ut alla alternativ som radioknappar
 		foreach ($this->poll->getAnswers() as $answer)
 		{
-			$alternatives .= '<label for="'.$answer->getId().'" >'.$answer->getAnswer().': </label><input type="radio" name="'.helpers\PostHandler::$VOTE.'" id="'.$answer->getId().'" value="'.$answer->getId().'" />';
+			$alternatives .= '<label for="'.$answer->getId().'" >'.$answer->getAnswer().': </label><input type="radio" name="'.helpers\GetHandler::$VOTE.'" id="'.$answer->getId().'" value="'.$answer->getId().'" />';
+		}
+
+		$share = "";
+		if($ignoreShare == false)	
+		{
+			$share = $this->getShare();
 		}
 
 		//formulär med radioknappar
 		return 
 			$this->getTitleAndCreator().
-			'<form id="pollForm" action="'.$_SERVER['REQUEST_URI'].'&'.helpers\GetHandler::$SHOWRESULT.'" method="post">
+			$share.
+			'<form id="pollForm" action="'.\Settings::$ROOT.'" method="get">
 				'.$alternatives.'
+				<input type="hidden" name="'.helpers\GetHandler::$VIEW.'" value="'.helpers\GetHandler::$VIEWPOLL.'" />
+				<input type="hidden" name="'.helpers\GetHandler::$ID.'" value="'.$this->poll->getId().'" />
+				<input type="hidden" name="'.helpers\GetHandler::$SHOWRESULT.'" />
 				<input type="submit" value="Vote" id="postPoll" />
 			</form>
 			<p><a href="'.$_SERVER['REQUEST_URI'].'&'.helpers\GetHandler::$SHOWRESULT.'">See results</a> without voting.</p>
 			';
+	}
+
+	private function getShare()
+	{
+		$shareCode = 
+		'<p>Share this poll on your own website:</p>
+		<input type="button" value="Share this poll" id="showShareCodeButton" style="display:none">
+		<textarea id="shareCodeArea">'.
+		htmlspecialchars($this->getForm(true)).
+		'</textarea>';
+
+		return $shareCode;
 	}
 
 	public function getResults()
@@ -133,6 +154,17 @@ class PollView
 
 		//färgerna som används i diagrammet
 		$colors = \view\helpers\DiagramMaker::getDiagramColors();
+
+		//om inga röster har gjorts i undersökningen så ritas diagrammet
+		if($percentageArr)
+		{
+			//rita ett cirkeldiagram som är 200 X 200 px
+			$image = \view\helpers\DiagramMaker::drawCircleDiagram($percentageArr, 200, 200);
+		}
+		else
+		{
+			$image = "No votes yet.";
+		}
 
 		$resultList = "";
 		for($i = 0; $i < count($answers); $i++)
@@ -149,21 +181,15 @@ class PollView
 			</li>';
 		}
 
-		//rita ett cirkeldiagram som är 200 X 200 px
-		$image = \view\helpers\DiagramMaker::drawCircleDiagram($percentageArr, 200, 200);
-
 		return
-		'<div class="pollResults">
+		'<div class="pollResults">'.
 	
-		<img class="diagramImage" src="data:image/png;base64,'.$image.'">
+		$image.
+		$this->getReportPoll().
 
-		'.$this->getReportPoll().'
-
-
-		<ul class="resultsList">
-		'.$resultList.'	
+		'<ul class="resultsList">'.
+		$resultList.'	
 		</ul>
-
 		</div>';	
 	}
 
@@ -283,8 +309,7 @@ class PollView
 			$totalNumVotes = $totalNumVotes + $answer->getCount(); 
 		}
 
-		//om ingen har röstat än så returneras false
-		if($totalNumVotes === 0)
+		if($totalNumVotes == 0)
 		{
 			return false;
 		}

@@ -34,9 +34,7 @@ class PollController
 	}
 
 	public function getContent($id, $login)
-	{
-		//skapar ett repositorie-objekt och hämtar aktuell undersökning
-		
+	{	
 		$poll = $this->pollRepo->getPollById($id);
 		$owner = $this->userRepo->getUserById($poll->getCreator());
 

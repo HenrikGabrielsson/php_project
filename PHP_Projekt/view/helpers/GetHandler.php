@@ -27,4 +27,5 @@ class GetHandler
 	public static $VIEWSEARCH = "search";
 	public static $VIEWREPORT = "report";
 
+	public static $VOTE = "vote";
 }

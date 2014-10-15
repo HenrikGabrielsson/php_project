@@ -58,7 +58,7 @@ class DiagramMaker
 		ob_start();
         imagepng($image);
         $raw = ob_get_clean();
-        return base64_encode( $raw);
+        return '<img class="diagramImage" src="data:image/png;base64,'.base64_encode( $raw).'">';
 	}
 
 

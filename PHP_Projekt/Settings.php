@@ -7,7 +7,7 @@
  */
 class Settings
 {
-	public static $root = "./project";
+	public static $ROOT = "http://www.henrikgabrielsson.se/project";
 	
 	public static $dbUserName = "henrikgabrielss";
 	public static $dbPassword = "tCiSetWtDead";

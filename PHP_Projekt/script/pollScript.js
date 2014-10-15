@@ -102,6 +102,19 @@ function addAnEventListener(button, form)
 
 
 
+//visa "Share"-knappen om js är aktiverat och dölj koden tills användaren trycker på knappen
+if(document.getElementById("showShareCodeButton") !== null)
+{
+	var button = document.getElementById("showShareCodeButton");
+	var textarea = document.getElementById("shareCodeArea");
+
+	button.style.display = "block";
+	textarea.style.display = "none";
+
+	addAnEventListener(button, textarea);
+}
+
+
 
 
 

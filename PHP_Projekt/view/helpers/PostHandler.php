@@ -17,7 +17,6 @@ class PostHandler
 	public static $CREATECATEGORY = "createCategory";
 	public static $CREATEPUBLIC = "createPublic";
 
-	public static $VOTE = "vote";
 	public static $COMMENT = "comment";
 
 	public static $COMMENTREPORT_REASON = "commentReportReason";
