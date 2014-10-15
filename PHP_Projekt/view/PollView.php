@@ -21,6 +21,20 @@ class PollView
 		$this->login = $login;
 	}
 
+	public function denyTitle()
+	{
+		return "Access Denied";
+	}
+
+	public function denyPage()
+	{
+		return 
+		'
+		<h1>Access Denied</h1>
+		<p>Sorry! You\'re not allowed to see this page.</p>
+		';
+	}
+
 	public function getAnswer()
 	{
 		return $_POST[helpers\PostHandler::$VOTE];

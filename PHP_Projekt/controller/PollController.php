@@ -42,6 +42,15 @@ class PollController
 
 		$this->pollView = new \view\PollView($poll, $owner, $login, $this->commentHandler, $this->reportHandler);
 
+		//om undersökningen är privat så kan bara skaparen se den.
+		if($poll->getPublic() == false && $poll->getCreator() !== $login->getId())
+		{
+			$title = $this->pollView->denyTitle();
+			$body = $this->pollView->denyPage();
+			$this->htmlView->showHTML($title, $body);
+			return;
+		}
+
 		//om användaren vill se resultat eller frågan där de kan rösta
 		if($this->pollView->userWantsResults())
 		{

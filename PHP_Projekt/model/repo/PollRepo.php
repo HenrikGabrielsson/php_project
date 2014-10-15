@@ -158,7 +158,7 @@ class PollRepo extends \model\repository\Repository
 		else 
 			$limit = "LIMIT 0,10";
 
-		if($includlimitePrivate)
+		if($includePrivate)
 			$privates = "";
 		else
 			$privates  = "AND ".$this->public."=1 ";
