@@ -77,6 +77,11 @@ class PollController
 				$this->voter->addNewVote($answer,$ip);
 
 				$feedback = "Thank you for your vote.";
+
+				//uppdaterna med den nya rösten
+				$poll = $this->pollRepo->getPollById($id);
+				$this->pollView = new \view\PollView($poll, $owner, $login, $this->commentHandler, $this->reportHandler);
+
 			}
 
 			//om användaren har rapporterat en undersökning
