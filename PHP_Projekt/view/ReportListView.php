@@ -22,6 +22,16 @@ class ReportListView
 		
 	}
 
+	public function getDeletePollReason()
+	{
+		return $_POST[helpers\PostHandler::$DELETEPOLL_REASON];
+	}
+
+	public function getDeleteCommentReason()
+	{
+		return $_POST[helpers\PostHandler::$DELETECOMMENT_REASON];
+	}
+
 	public function getCommentToDelete()
 	{
 		if(isset($_POST[helpers\PostHandler::$DELETECOMMENT_COMMENTID]))
@@ -61,6 +71,17 @@ class ReportListView
 		"<h1>Access Denied</h1>
 		<p>We're Sorry. You're not allowed to visit this page.Go play somewhere else.</p>
 		";
+	}
+
+	public function getContentHead()
+	{
+		return 
+		'<h1>The Reports Lists</h1>
+		<ul>
+			<li><a href="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWREPORT.'&'.helpers\GetHandler::$LIST.'='.helpers\GetHandler::$USERLIST.'">Reported Users</a></li>
+			<li><a href="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWREPORT.'&'.helpers\GetHandler::$LIST.'='.helpers\GetHandler::$POLLLIST.'">Reported Polls</a></li>
+			<li><a href="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWREPORT.'&'.helpers\GetHandler::$LIST.'='.helpers\GetHandler::$COMMENTLIST.'">Reported Comments</a></li>
+		</ul>';
 	}
 
 	public function getPollList($polls, $users, $reports)
@@ -114,11 +135,11 @@ class ReportListView
 		$table .= '</table>';
 
 		$bodyContent = 
-		'<h1>All reported polls</h1>
+		'<h2>All reported polls</h2>
 		<p>There are currently '.count($polls).' polls that has been reported as offensive.</p>
 		'.$table;
 
-		return $bodyContent;
+		return $this->getContentHead().$bodyContent;
 	}
 
 	public function getCommentList($comments, $users, $reports)
@@ -172,16 +193,45 @@ class ReportListView
 		$table .= '</table>';
 
 		$bodyContent = 
-		'<h1>All reported comments</h1>
+		'<h2>All reported comments</h2>
 		<p>There are currently '.count($comments).' comments that has been reported as offensive.</p>
 		'.$table;
 		
-		return $bodyContent;
+		return $this->getContentHead().$bodyContent;
 	}
 
-	public function getUserList()
+	public function getUserList($users, $userReports)
 	{
-		return "userList";
+		$reportedTable = 
+		'<h2>Users nominated for deletion</h2>
+		<tr>
+			<th>Remove report</th> <th>User</th> <th>Reason</th> <th>Type</th> <th>Delete</th>
+		</tr>
+		';
+
+
+		$nominatedTable = 
+		'<h2>Users with 1 or more reports</h2>
+		<table>
+		<tr>
+			<th>Remove report</th> <th>User</th> <th>Reason</th> <th>Type</th> <th>Delete</th>
+		</tr>
+		';
+
+
+		foreach($userReports as $report)
+		{
+			//detta är de som ännu inte har fått en nominering att bli borttagna.
+			if(is_null($report->getNomination))
+			{
+				
+			}
+			else
+			{
+			}
+		}
+
+		return $this->getContentHead();
 	}
 
 	

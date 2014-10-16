@@ -4,8 +4,11 @@ namespace model;
 
 require_once("./model/repo/ReportedCommentRepo.php");
 require_once("./model/repo/ReportedPollRepo.php");
+require_once("./model/repo/ReportedUserRepo.php");
+
 require_once("./model/repo/PollRepo.php");
 require_once("./model/repo/CommentRepo.php");
+require_once("./model/repo/UserRepo.php");
 require_once("./model/PollReport.php");
 require_once("./model/CommentReport.php");
 
@@ -13,8 +16,10 @@ class ReportHandler
 {
 	private $reportedPollRepo;
 	private $reportedCommentRepo;
+	private $reportedUserRepo;
 	private $pollRepo;
 	private $commentRepo;
+	private $userRepo;
 
 	//errors
 	public $longReason = "longReason";
@@ -27,8 +32,10 @@ class ReportHandler
 	{
 		$this->reportedPollRepo = new repository\ReportedPollRepo();
 		$this->reportedCommentRepo = new repository\ReportedCommentRepo();
+		$this->reportedUserRepo = new repository\ReportedUserRepo();
 		$this->pollRepo = new repository\PollRepo();
 		$this->commentRepo = new repository\CommentRepo();
+		$this->userRepo = new repository\UserRepo();
 	}
 
 	public function getErrorList()
@@ -69,38 +76,50 @@ class ReportHandler
 		return false;
 	}
 
-	public function pollDeleted($id)
+	public function pollDeleted($pollId, $reason)
 	{
 		$reports = $this->reportedPollRepo->getAllReports();
 
 		//ta bort alla som har rapporterat denna poll
 		foreach($reports as $report)
 		{
-			if($report->getPollId() == $id)
+			if($report->getPollId() == $pollId)
 			{
 				$this->reportedPollRepo->delete($report->getId());
 			}
 		}
 
+		$poll = $this->pollRepo->getPollById($pollId);
+
+		//lägg till rapport på medlem
+		$userReport = new userReport($poll->getCreator(), "poll", $reason);
+		$this->reportedUserRepo->add($userReport);
+
 		//ta bort poll
-		$this->pollRepo->delete($id);
+		$this->pollRepo->delete($pollId);
 	}
 
-	public function commentDeleted($id)
+	public function commentDeleted($commentId, $reason)
 	{
 		$reports = $this->reportedCommentRepo->getAllReports();
 
 		//ta bort alla som har rapporterat denna comment
 		foreach($reports as $report)
 		{
-			if($report->getCommentId() == $id)
+			if($report->getCommentId() == $commentId)
 			{
 				$this->reportedCommentRepo->delete($report->getId());
 			}
 		}
 
-		//ta bort poll
-		$this->commentRepo->delete($id);
+		$comment = $this->commentRepo->getCommentById($commentId);
+
+		//lägg till rapport på medlem
+		$userReport = new userReport($comment->getUserId(), "comment", $reason);
+		$this->reportedUserRepo->add($userReport);		
+
+		//ta bort comment
+		$this->commentRepo->delete($commentId);
 	}
 
 	private function validateReason($reason)

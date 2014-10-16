@@ -14,9 +14,11 @@ class GetHandler
 	public static $CREATE = "create";
 	public static $SEARCHWORDS = "searchwords";
 	public static $LIST = "list";
+	
 	public static $POLLLIST = "poll";
 	public static $COMMENTLIST = "comment";
 	public static $USERLIST = "user";
+
 	public static $IGNOREPOLL = "ignorePoll";
 	public static $IGNORECOMMENT = "ignoreComment";
 

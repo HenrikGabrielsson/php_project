@@ -5,6 +5,7 @@ namespace controller;
 require_once("./view/ReportListView.php");
 require_once("./model/repo/ReportedPollRepo.php");
 require_once("./model/repo/ReportedCommentRepo.php");
+require_once("./model/repo/ReportedUserRepo.php");
 require_once("./model/repo/UserRepo.php");
 require_once("./model/repo/PollRepo.php");
 require_once("./model/repo/CommentRepo.php");
@@ -18,6 +19,7 @@ class ReportListController
 	private $htmlView; 
 	private $reportedPollRepo;
 	private $reportedCommentRepo;
+	private $reportedUserRepo;
 	private $userRepo;
 	private $pollRepo;
 	private $commentRepo;
@@ -27,8 +29,11 @@ class ReportListController
 	{
 		$this->reportListView = new \view\ReportListView();
 		$this->htmlView = $htmlView;
+
 		$this->reportedPollRepo = new \model\repository\ReportedPollRepo();
 		$this->reportedCommentRepo = new \model\repository\ReportedCommentRepo();
+		$this->reportedUserRepo = new \model\repository\ReportedUserRepo();
+
 		$this->userRepo = new \model\repository\UserRepo();
 		$this->pollRepo = new \model\repository\PollRepo();
 		$this->commentRepo = new \model\repository\CommentRepo();
@@ -55,22 +60,25 @@ class ReportListController
 				$this->reportedCommentRepo->delete($this->reportListView->getIgnoreCommentReport());
 			}
 
-			//delete poll
+			//ta bort undersökningen och spara medlem i lista över rapporterade medlemmar
 			if($this->reportListView->getPollToDelete())
 			{
 				$pollId = $this->reportListView->getPollToDelete();
-				$this->reportHandler->pollDeleted($pollId);
+				$reason = $this->reportListView->getDeletePollReason();
+				$this->reportHandler->pollDeleted($pollId, $reason);
 			}
 
-			//delete comment
+			//ta bort kommentaren och spara medlem i lista över rapporterade medlemmar
 			if($this->reportListView->getCommentToDelete())
 			{
 				$commentId = $this->reportListView->getCommentToDelete();
-				$this->reportHandler->commentDeleted($commentId);
+				$reason = $this->reportListView->getDeleteCommentReason();
+				$this->reportHandler->commentDeleted($commentId, $reason);
 			}
 
 			$pollReports = $this->reportedPollRepo->getAllReports();
 			$commentReports = $this->reportedCommentRepo->getAllReports();
+			$userReports = $this->reportedUserRepo->getAllReports();
 
 			switch($this->reportListView->getListRequest())
 			{
@@ -85,7 +93,8 @@ class ReportListController
 					$body = $this->reportListView->getCommentList($comments, $users, $commentReports);
 					break;
 				default:
-					$body = $this->reportListView->getUserList($polls, $comments);
+					$users = $this->getReportedUsers($userReports);
+					$body = $this->reportListView->getUserList($users, $userReports);
 			}
 
 		}
