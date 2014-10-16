@@ -38,8 +38,34 @@ class ReportListView
 		{
 			return $_POST[helpers\PostHandler::$DELETECOMMENT_COMMENTID];	
 		}
-		return false;
-		
+		return false;		
+	}
+
+	public function getUserToNominate()
+	{
+		if(isset($_POST[helpers\PostHandler::$NOMINATEUSER_USERID]))
+		{
+			return $_POST[helpers\PostHandler::$NOMINATEUSER_USERID];	
+		}
+		return false;	
+	}
+
+	public function getUserToDelete()
+	{
+		if(isset($_POST[helpers\PostHandler::$DELETEUSER_USERID]))
+		{
+			return $_POST[helpers\PostHandler::$DELETEUSER_USERID];	
+		}
+		return false;	
+	}
+
+	public function getIgnoreUserReport()
+	{
+		if(isset($_GET[helpers\GetHandler::$IGNOREUSER]))
+		{
+			return $_GET[helpers\GetHandler::$IGNOREUSER];	
+		}
+		return false;		
 	}
 
 	public function getIgnorePollReport()
@@ -202,8 +228,9 @@ class ReportListView
 
 	public function getUserList($users, $userReports)
 	{
-		$reportedTable = 
-		'<h2>Users nominated for deletion</h2>
+		$reportedTable = 	
+		'<h2>Users with 1 or more reports</h2>
+		<table>
 		<tr>
 			<th>Remove report</th> <th>User</th> <th>Reason</th> <th>Type</th> <th>Delete</th>
 		</tr>
@@ -211,7 +238,7 @@ class ReportListView
 
 
 		$nominatedTable = 
-		'<h2>Users with 1 or more reports</h2>
+		'<h2>Users nominated for deletion</h2>
 		<table>
 		<tr>
 			<th>Remove report</th> <th>User</th> <th>Reason</th> <th>Type</th> <th>Delete</th>
@@ -221,17 +248,50 @@ class ReportListView
 
 		foreach($userReports as $report)
 		{
-			//detta är de som ännu inte har fått en nominering att bli borttagna.
-			if(is_null($report->getNomination))
+			//hämta denna rapports användare.
+			$thisUser;
+			foreach($users as $user)
 			{
-				
+				if($user->getId() == $report->getUserId())
+				{
+					$thisUser = $user;
+					break;
+				}
+			}
+
+
+			//detta är de som ännu inte har fått en nominering att bli borttagna.
+			if(is_null($report->getNomination()))
+			{
+				$reportedTable .=
+				'<tr>
+					<td><a href="'.$_SERVER['REQUEST_URI'].'&'.helpers\GetHandler::$IGNOREUSER.'='.$report->getId().'">Ignore this report</a></td><td>'.$thisUser->getUserName().'</td> <td>'.$report->getCommentFromAdmin().'</td> <td>'.$report->getType().'</td> 
+					<td>
+						<form action="'.$_SERVER['REQUEST_URI'].'" method="post">
+							<input type="hidden" value='.$thisUser->getId().' name="'.helpers\PostHandler::$NOMINATEUSER_USERID.'">
+							<input type="submit" value="Nominate for deletion">
+						</form>
+					</td>
+				</tr>';					
 			}
 			else
 			{
+				$nominatedTable .=
+				'<tr>
+					<td><a href="'.$_SERVER['REQUEST_URI'].'&'.helpers\GetHandler::$IGNOREUSER.'='.$report->getId().'">Ignore this report</a></td><td>'.$thisUser->getUserName().'</td> <td>'.$report->getCommentFromAdmin().'</td> <td>'.$report->getType().'</td> 
+					<td>
+						<form action="'.$_SERVER['REQUEST_URI'].'" method="post">
+							<input type="hidden" value='.$thisUser->getId().' name="'.helpers\PostHandler::$DELETEUSER_USERID.'">
+							<input type="submit" value="Accept Deletion">
+						</form>
+					</td>
+				</tr>';		
 			}
 		}
+		$nominatedTable .= "</table>";
+		$reportedTable .= "</table>";
 
-		return $this->getContentHead();
+		return $this->getContentHead().$reportedTable. $nominatedTable;
 	}
 
 	

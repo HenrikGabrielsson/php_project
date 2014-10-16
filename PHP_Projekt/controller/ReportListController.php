@@ -54,11 +54,30 @@ class ReportListController
 				$this->reportedPollRepo->delete($this->reportListView->getIgnorePollReport());
 			}
 
+			//ignorera user report
+			if($this->reportListView->getIgnoreUserReport())
+			{
+				$this->reportedUserRepo->delete($this->reportListView->getIgnoreUserReport());
+			}
+
 			//ignorera comment report
 			if($this->reportListView->getIgnoreCommentReport())
 			{
 				$this->reportedCommentRepo->delete($this->reportListView->getIgnoreCommentReport());
 			}
+
+			//ta bort medlem om han/hon redan har en nominering för borttagning. Annars: nominera
+			if($this->reportListView->getUserToNominate())
+			{
+				$userId = $this->reportListView->getUserToNominate();
+				$this->reportHandler->nominateForDeletion($userId, $login->getId());
+			}	
+			//ta bort medlem om han/hon redan har en nominering för borttagning. Annars: nominera
+			if($this->reportListView->getUserToDelete())
+			{
+				$userId = $this->reportListView->getUserToDelete();
+				$this->reportHandler->deleteUser($userId, $login->getId());
+			}				
 
 			//ta bort undersökningen och spara medlem i lista över rapporterade medlemmar
 			if($this->reportListView->getPollToDelete())

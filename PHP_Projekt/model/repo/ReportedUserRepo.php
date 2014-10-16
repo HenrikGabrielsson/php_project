@@ -42,6 +42,20 @@ class ReportedUserRepo extends \model\repository\Repository
 		return $result;				
 	}
 
+
+	public function nominateForDeletion($reportId, $adminId)
+	{
+		$sql = "UPDATE reportedUser SET ".$this->nominatedForDeletionBy." = ? WHERE ".$this->reportedUserId."=?";
+		$params = array($adminId, $reportId);
+		
+		$this->connect();
+		
+		$query = $this->dbConnection->prepare($sql);
+		$result = $query->execute($params);
+		
+		return $result;			
+	}
+
 	public function getAllReports()
 	{
 		//array som ska returneras

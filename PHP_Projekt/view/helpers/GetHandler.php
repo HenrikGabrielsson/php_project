@@ -21,6 +21,7 @@ class GetHandler
 
 	public static $IGNOREPOLL = "ignorePoll";
 	public static $IGNORECOMMENT = "ignoreComment";
+	public static $IGNOREUSER = "ignoreUser";
 
 
 	//olika "views"

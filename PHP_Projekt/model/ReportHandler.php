@@ -122,6 +122,52 @@ class ReportHandler
 		$this->commentRepo->delete($commentId);
 	}
 
+	//ta bort en användare
+	public function deleteUser($userId, $adminId)
+	{
+
+		$reports = $this->reportedUserRepo->getAllReports();
+
+		//ta bort alla som har rapporterat denna användare
+		foreach($reports as $report)
+		{
+			if($report->getUserId() == $userId)
+			{
+
+				//Det får inte vara samma som tar bort användaren som nominerade den för borttagning
+				if($report->getNomination() == $adminId)
+				{
+					return;
+				}
+				//annars tas rapporterna bort en efter en.
+				else
+				{
+					$this->reportedUserRepo->delete($report->getId());
+				}
+			}
+		}
+		//die!
+
+		$this->userRepo->delete($userId);
+	}
+
+
+	public function nominateForDeletion($userId, $adminId)
+	{
+		$reports = $this->reportedUserRepo->getAllReports();
+
+		//uppdatera alla reports
+		foreach($reports as $report)
+		{
+			if($report->getUserId() == $userId)
+			{
+				$this->reportedUserRepo->nominateForDeletion($report->getId(), $adminId);
+			}
+		}
+	}
+
+
+
 	private function validateReason($reason)
 	{
 		$reason = htmlspecialchars($reason);
