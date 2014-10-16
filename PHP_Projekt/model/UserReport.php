@@ -41,6 +41,6 @@ class UserReport
 
 	public function getNomination()
 	{
-		return $this->nomination;
+		return $this->nominatedForDeletionBy;
 	}
 }
