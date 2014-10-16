@@ -8,4 +8,6 @@ class SessionHandler
 	public static $USERNAME = "username"; 
 	public static $USERID = "id";
 	public static $ISADMIN = "isAdmin";
+	public static $IP = "ip";
+	public static $USERAGENT = "userAgent";
 }

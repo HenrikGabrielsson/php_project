@@ -43,13 +43,26 @@ class ReportListController
 		//endast Admins får komma hit.
 		if($login->getIsAdmin())
 		{
+			//ignorera poll report
+			if($this->reportListView->getIgnorePollReport())
+			{
+				$this->reportedPollRepo->delete($this->reportListView->getIgnorePollReport());
+			}
 
+			//ignorera comment report
+			if($this->reportListView->getIgnoreCommentReport())
+			{
+				$this->reportedCommentRepo->delete($this->reportListView->getIgnoreCommentReport());
+			}
+
+			//delete poll
 			if($this->reportListView->getPollToDelete())
 			{
 				$pollId = $this->reportListView->getPollToDelete();
 				$this->reportHandler->pollDeleted($pollId);
 			}
 
+			//delete comment
 			if($this->reportListView->getCommentToDelete())
 			{
 				$commentId = $this->reportListView->getCommentToDelete();

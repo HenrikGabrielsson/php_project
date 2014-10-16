@@ -27,6 +27,9 @@ class LoginHandler
 	private $errorList = array();
 
 	private $repo;
+
+	private $ip;
+	private $userAgent;
 	
 
 	public function __construct()
@@ -35,6 +38,15 @@ class LoginHandler
 		$this->repo = new repository\UserRepo();
 	}
 
+	public function setCurrentIP($ip)
+	{
+		$this->ip = $ip;
+	}
+
+	public function setCurrentUserAgent($ua)
+	{
+		$this->userAgent = $ua;
+	}
 
 
 	public function attemptLogin($username, $password)
@@ -58,7 +70,6 @@ class LoginHandler
 		//försöker hämta användaren från databasen.
 
 		$user = $this->repo->getUserByName($username);
-
 
 
 		//Om användaren hittades och om lösenordet matchar 
@@ -93,7 +104,11 @@ class LoginHandler
 	{
 		if (isset($_SESSION[helpers\SessionHandler::$LOGGEDIN]))
 		{
-			return true;
+			//jämför det sparade ip-numret/user agent med den nuvarande för att se så det är samma person bakom.
+			if($_SESSION[helpers\SessionHandler::$IP] == $this->ip && $_SESSION[helpers\SessionHandler::$USERAGENT] == $this->userAgent)
+			{
+				return true;
+			} 
 		}
 		return false;
 	}
@@ -103,12 +118,15 @@ class LoginHandler
 		return $this->errorList;
 	}
 
-	public static function loginUser($username, $id, $isAdmin)
+	public function loginUser($username, $id, $isAdmin)
 	{
 		$_SESSION[helpers\SessionHandler::$USERNAME] = $username;
 		$_SESSION[helpers\SessionHandler::$ISADMIN] = $isAdmin;
 		$_SESSION[helpers\SessionHandler::$USERID] = $id;
 		$_SESSION[helpers\SessionHandler::$LOGGEDIN] = true;
+
+		$_SESSION[helpers\SessionHandler::$IP] = $this->ip;
+		$_SESSION[helpers\SessionHandler::$USERAGENT]  = $this->userAgent;
 	}
 
 	public function logout()

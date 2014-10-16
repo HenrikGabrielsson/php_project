@@ -26,6 +26,16 @@ class LoginView
     	return $_POST[helpers\PostHandler::$LOGINPASSWORD];
     }
 
+    public function getIP()
+    {
+        return $_SERVER["REMOTE_ADDR"];
+    }
+
+    public function getUserAgent()
+    {
+        return $_SERVER["HTTP_USER_AGENT"];
+    }
+
 	public function userWantsToLogin()
 	{
 		return isset($_GET[helpers\GetHandler::$LOGIN]);
@@ -42,7 +52,7 @@ class LoginView
 
     	$loginDiv = '<div id="loginBox">';
 
-        if($this->login->getIsLoggedIn())
+        if($this->login->getIsLoggedIn($this->getIP(), $this->getUserAgent()))
         {
         	$loginDiv .= 
             $this->makeFeedBack().

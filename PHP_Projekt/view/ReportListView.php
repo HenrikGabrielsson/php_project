@@ -32,6 +32,24 @@ class ReportListView
 		
 	}
 
+	public function getIgnorePollReport()
+	{
+		if(isset($_GET[helpers\GetHandler::$IGNOREPOLL]))
+		{
+			return $_GET[helpers\GetHandler::$IGNOREPOLL];	
+		}
+		return false;		
+	}
+
+	public function getIgnoreCommentReport()
+	{
+		if(isset($_GET[helpers\GetHandler::$IGNORECOMMENT]))
+		{
+			return $_GET[helpers\GetHandler::$IGNORECOMMENT];	
+		}
+		return false;		
+	}
+
 	public function getTitle()
 	{
 		return "Reported things";
@@ -50,7 +68,7 @@ class ReportListView
 
 		$table = '<table>
 			<tr>
-				<th>Poll</th> <th>Reason</th> <th>Creator</th> <th>Delete</th>
+				<th>Remove report</th> <th>Poll</th> <th>Reason</th> <th>Creator</th> <th>Delete</th>
 			</tr>';
 
 		foreach ($reports as $report) 
@@ -80,7 +98,7 @@ class ReportListView
 			//här lägger vi till nästa rad i tabellen.
 			$table .= 
 			'<tr>
-				<td>'.$thisPoll->getQuestion().'</td> <td>'.$report->getCommentFromReporter().'</td> <td>'.$thisUser->getUserName().'</td> 
+				<td><a href="'.$_SERVER['REQUEST_URI'].'&'.helpers\GetHandler::$IGNOREPOLL.'='.$report->getId().'">Ignore this report</a></td> <td>'.$thisPoll->getQuestion().'</td> <td>'.$report->getCommentFromReporter().'</td> <td>'.$thisUser->getUserName().'</td> 
 				<td>
 					<form action="'.$_SERVER['REQUEST_URI'].'" method="post">
 						<input type="hidden" value='.$thisPoll->getId().' name="'.helpers\PostHandler::$DELETEPOLL_POLLID.'">
@@ -108,7 +126,7 @@ class ReportListView
 
 		$table = '<table>
 			<tr>
-				<th>Comment</th> <th>Reason</th> <th>CommentWriter</th> <th>Delete</th>
+				<th>Remove report</th> <th>Comment</th> <th>Reason</th> <th>CommentWriter</th> <th>Delete</th>
 			</tr>';
 
 		foreach ($reports as $report) 
@@ -138,7 +156,7 @@ class ReportListView
 			//här lägger vi till nästa rad i tabellen.
 			$table .= 
 			'<tr>
-				<td>'.$thisComment->getComment().'</td> <td>'.$report->getCommentFromReporter().'</td> <td>'.$thisUser->getUserName().'</td> 
+				<td><a href="'.$_SERVER['REQUEST_URI'].'&'.helpers\GetHandler::$IGNORECOMMENT.'='.$report->getId().'">Ignore this report</a></td><td>'.$thisComment->getComment().'</td> <td>'.$report->getCommentFromReporter().'</td> <td>'.$thisUser->getUserName().'</td> 
 				<td>
 					<form action="'.$_SERVER['REQUEST_URI'].'" method="post">
 						<input type="hidden" value='.$thisComment->getId().' name="'.helpers\PostHandler::$DELETECOMMENT_COMMENTID.'">

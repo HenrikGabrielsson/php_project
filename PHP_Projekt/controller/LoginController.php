@@ -23,6 +23,10 @@ class LoginController
 
 	public function checkForLogin()
 	{
+
+		$this->login->setCurrentIP($this->loginView->getIP());
+		$this->login->setCurrentUserAgent($this->loginView->getUserAgent());
+
 		//kollar om användaren är inloggad
 		if($this->login->getIsLoggedIn())
 		{

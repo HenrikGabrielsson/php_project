@@ -23,6 +23,7 @@ class HomePageView
 		$this->regView = new RegistrationView();
 	}
 
+
 	public function getTitle()
 	{
 		return "Create polls, vote and share your opinion";

@@ -8,6 +8,7 @@ class GetHandler
 	public static $LOGOUT = "logout";
 	public static $VIEW  = "view";
 	public static $ID = "id";
+	public static $VOTE = "vote";
 	public static $SHOWRESULT = "showResults";
 	public static $REGISTER = "register";
 	public static $CREATE = "create";
@@ -16,6 +17,8 @@ class GetHandler
 	public static $POLLLIST = "poll";
 	public static $COMMENTLIST = "comment";
 	public static $USERLIST = "user";
+	public static $IGNOREPOLL = "ignorePoll";
+	public static $IGNORECOMMENT = "ignoreComment";
 
 
 	//olika "views"
@@ -27,5 +30,5 @@ class GetHandler
 	public static $VIEWSEARCH = "search";
 	public static $VIEWREPORT = "report";
 
-	public static $VOTE = "vote";
+	
 }
