@@ -23,8 +23,10 @@ class ReportHandler
 
 	//errors
 	public $longReason = "longReason";
+	public $noReason = "noReason";
 	public $noComment = "noComment";
 	public $noPoll = "noPoll";
+	public $sameAdmin = "sameAdmin";
 
 	private $errorList = array();
 
@@ -46,7 +48,7 @@ class ReportHandler
 	public function reportComment($comment, $reason)
 	{
 		$reason = htmlspecialchars($reason);
-		$validReason = $this->validateReason($reason);
+		$validReason = $this->validateReason($reason, false);
 		$validComment = $this->validateComment($comment);
 
 		if($validComment && $validReason)
@@ -64,7 +66,7 @@ class ReportHandler
 	{
 
 		$reason = htmlspecialchars($reason);
-		$validReason = $this->validateReason($reason);
+		$validReason = $this->validateReason($reason, false);
 		$validPoll = $this->validatePoll($poll);
 
 		if($validPoll && $validReason)
@@ -79,6 +81,11 @@ class ReportHandler
 	public function pollDeleted($pollId, $reason)
 	{
 		$reports = $this->reportedPollRepo->getAllReports();
+
+		if(!$this->validateReason($reason, true))
+		{
+			return false;
+		}
 
 		//ta bort alla som har rapporterat denna poll
 		foreach($reports as $report)
@@ -97,11 +104,18 @@ class ReportHandler
 
 		//ta bort poll
 		$this->pollRepo->delete($pollId);
+
+		return true;
 	}
 
 	public function commentDeleted($commentId, $reason)
 	{
 		$reports = $this->reportedCommentRepo->getAllReports();
+
+		if(!$this->validateReason($reason, true))
+		{
+			return false;
+		}
 
 		//ta bort alla som har rapporterat denna comment
 		foreach($reports as $report)
@@ -120,6 +134,8 @@ class ReportHandler
 
 		//ta bort comment
 		$this->commentRepo->delete($commentId);
+
+		return true;
 	}
 
 	//ta bort en användare
@@ -137,7 +153,8 @@ class ReportHandler
 				//Det får inte vara samma som tar bort användaren som nominerade den för borttagning
 				if($report->getNomination() == $adminId)
 				{
-					return;
+					$this->errorList[] = $this->sameAdmin;
+					return false;
 				}
 				//annars tas rapporterna bort en efter en.
 				else
@@ -146,9 +163,9 @@ class ReportHandler
 				}
 			}
 		}
-		//die!
-
+		//die!!
 		$this->userRepo->delete($userId);
+		return true;
 	}
 
 
@@ -164,13 +181,21 @@ class ReportHandler
 				$this->reportedUserRepo->nominateForDeletion($report->getId(), $adminId);
 			}
 		}
+		return true;
 	}
 
 
 
-	private function validateReason($reason)
+	private function validateReason($reason, $mandatory)
 	{
 		$reason = htmlspecialchars($reason);
+
+		//om reason inte är valfritt och den är tom:
+		if($mandatory && strlen(trim($reason)) == 0)
+		{
+			$this->errorList[] = $this->noReason;
+			return false;
+		}
 
 		if(strlen($reason) > 200)
 		{

@@ -27,9 +27,6 @@ class ReportListController
 
 	public function __construct($htmlView)
 	{
-		$this->reportListView = new \view\ReportListView();
-		$this->htmlView = $htmlView;
-
 		$this->reportedPollRepo = new \model\repository\ReportedPollRepo();
 		$this->reportedCommentRepo = new \model\repository\ReportedCommentRepo();
 		$this->reportedUserRepo = new \model\repository\ReportedUserRepo();
@@ -38,6 +35,9 @@ class ReportListController
 		$this->pollRepo = new \model\repository\PollRepo();
 		$this->commentRepo = new \model\repository\CommentRepo();
 		$this->reportHandler = new \model\ReportHandler();
+
+		$this->reportListView = new \view\ReportListView($this->reportHandler);
+		$this->htmlView = $htmlView;
 	}
 
 	public function getContent($login)
@@ -48,6 +48,7 @@ class ReportListController
 		//endast Admins får komma hit.
 		if($login->getIsAdmin())
 		{
+			$feedback;
 			//ignorera poll report
 			if($this->reportListView->getIgnorePollReport())
 			{
@@ -66,17 +67,31 @@ class ReportListController
 				$this->reportedCommentRepo->delete($this->reportListView->getIgnoreCommentReport());
 			}
 
-			//ta bort medlem om han/hon redan har en nominering för borttagning. Annars: nominera
+			//nominera en user för borttagning. (ingen borttagnin sker här.)
 			if($this->reportListView->getUserToNominate())
 			{
 				$userId = $this->reportListView->getUserToNominate();
-				$this->reportHandler->nominateForDeletion($userId, $login->getId());
+				if($this->reportHandler->nominateForDeletion($userId, $login->getId()))
+				{
+					$feedback = "You have successfully nominated this user for deletion. Another admin must confirm before deletion.";
+				}
+				else 
+				{
+					$feedback = $this->reportHandler->getErrorList();
+				}
 			}	
-			//ta bort medlem om han/hon redan har en nominering för borttagning. Annars: nominera
+			//ta bort medlem om han/hon redan har en nominering för borttagning
 			if($this->reportListView->getUserToDelete())
 			{
 				$userId = $this->reportListView->getUserToDelete();
-				$this->reportHandler->deleteUser($userId, $login->getId());
+				if($this->reportHandler->deleteUser($userId, $login->getId()))
+				{
+					$feedback = "User deleted";
+				}
+				else
+				{
+					$feedback = $this->reportHandler->getErrorList();
+				}
 			}				
 
 			//ta bort undersökningen och spara medlem i lista över rapporterade medlemmar
@@ -84,7 +99,14 @@ class ReportListController
 			{
 				$pollId = $this->reportListView->getPollToDelete();
 				$reason = $this->reportListView->getDeletePollReason();
-				$this->reportHandler->pollDeleted($pollId, $reason);
+				if($this->reportHandler->pollDeleted($pollId, $reason))
+				{
+					$feedback = "Poll has been deleted. User is added to the reported Users list.";
+				}
+				else
+				{
+					$feedback = $this->reportHandler->getErrorList();
+				}
 			}
 
 			//ta bort kommentaren och spara medlem i lista över rapporterade medlemmar
@@ -92,7 +114,14 @@ class ReportListController
 			{
 				$commentId = $this->reportListView->getCommentToDelete();
 				$reason = $this->reportListView->getDeleteCommentReason();
-				$this->reportHandler->commentDeleted($commentId, $reason);
+				if($this->reportHandler->commentDeleted($commentId, $reason))
+				{
+					$feedback = "Poll has been deleted. User is added to the reported Users list.";
+				}
+				else
+				{
+					$feedback = $this->reportHandler->getErrorList();
+				}
 			}
 
 			$pollReports = $this->reportedPollRepo->getAllReports();
@@ -104,16 +133,16 @@ class ReportListController
 				case \view\helpers\GetHandler::$POLLLIST:	
 					$polls = $this->getReportedPolls($pollReports);
 					$users = $this->getReportedUsers($pollReports);
-					$body = $this->reportListView->getPollList($polls, $users, $pollReports);
+					$body = $this->reportListView->getPollList($polls, $users, $pollReports, $feedback);
 					break;
 				case \view\helpers\GetHandler::$COMMENTLIST:
 					$comments = $this->getReportedComments($commentReports);
 					$users = $this->getReportedUsers($commentReports);
-					$body = $this->reportListView->getCommentList($comments, $users, $commentReports);
+					$body = $this->reportListView->getCommentList($comments, $users, $commentReports, $feedback);
 					break;
 				default:
 					$users = $this->getReportedUsers($userReports);
-					$body = $this->reportListView->getUserList($users, $userReports);
+					$body = $this->reportListView->getUserList($users, $userReports, $feedback);
 			}
 
 		}

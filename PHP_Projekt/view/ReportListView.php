@@ -7,6 +7,13 @@ require_once("./view/helpers/PostHandler.php");
 
 class ReportListView
 {
+	private $reportHandler;
+
+	public function __construct($reportHandler)
+	{
+		$this->reportHandler = $reportHandler;
+	}
+
 	public function getListRequest()
 	{
 		return $_GET[helpers\GetHandler::$LIST];
@@ -99,7 +106,7 @@ class ReportListView
 		";
 	}
 
-	public function getContentHead()
+	private function getContentHead($feedback)
 	{
 		return 
 		'<h1>The Reports Lists</h1>
@@ -107,13 +114,17 @@ class ReportListView
 			<li><a href="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWREPORT.'&'.helpers\GetHandler::$LIST.'='.helpers\GetHandler::$USERLIST.'">Reported Users</a></li>
 			<li><a href="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWREPORT.'&'.helpers\GetHandler::$LIST.'='.helpers\GetHandler::$POLLLIST.'">Reported Polls</a></li>
 			<li><a href="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWREPORT.'&'.helpers\GetHandler::$LIST.'='.helpers\GetHandler::$COMMENTLIST.'">Reported Comments</a></li>
-		</ul>';
+		</ul>'
+		.$this->makeFeedback($feedback);
+
 	}
 
-	public function getPollList($polls, $users, $reports)
+	public function getPollList($polls, $users, $reports, $feedback)
 	{
 
-		$table = '<table>
+		$table = 
+		'
+		<table>
 			<tr>
 				<th>Remove report</th> <th>Poll</th> <th>Reason</th> <th>Creator</th> <th>Delete</th>
 			</tr>';
@@ -165,13 +176,14 @@ class ReportListView
 		<p>There are currently '.count($polls).' polls that has been reported as offensive.</p>
 		'.$table;
 
-		return $this->getContentHead().$bodyContent;
+		return $this->getContentHead($feedback).$bodyContent;
 	}
 
-	public function getCommentList($comments, $users, $reports)
+	public function getCommentList($comments, $users, $reports, $feedback)
 	{
 
-		$table = '<table>
+		$table = 
+		'<table>
 			<tr>
 				<th>Remove report</th> <th>Comment</th> <th>Reason</th> <th>CommentWriter</th> <th>Delete</th>
 			</tr>';
@@ -223,10 +235,10 @@ class ReportListView
 		<p>There are currently '.count($comments).' comments that has been reported as offensive.</p>
 		'.$table;
 		
-		return $this->getContentHead().$bodyContent;
+		return $this->getContentHead($feedback).$bodyContent;
 	}
 
-	public function getUserList($users, $userReports)
+	public function getUserList($users, $userReports, $feedback)
 	{
 		$reportedTable = 	
 		'<h2>Users with 1 or more reports</h2>
@@ -291,7 +303,45 @@ class ReportListView
 		$nominatedTable .= "</table>";
 		$reportedTable .= "</table>";
 
-		return $this->getContentHead().$reportedTable. $nominatedTable;
+		return $this->getContentHead($feedback).$reportedTable. $nominatedTable;
+	}
+
+	private function makeFeedback($feedback)
+	{
+		$retString = '<div id="feedback">';  
+
+		if(is_array($feedback))
+		{		
+			$retString = "<ul>";
+			if(in_array($this->reportHandler->longReason, $feedback))
+	        {
+	            $retString .= "<li>The reason you wrote was too long. Maximum number of characters is 200.</li>";
+	        }
+	     	if(in_array($this->reportHandler->noReason, $feedback))
+	        {
+	            $retString .= "<li>You must add a reason for your choice..</li>";
+	        }
+			if(in_array($this->reportHandler->noComment, $feedback))
+	        {
+	            $retString .= "<li>This comment doesn't exist.</li>";
+	        }
+	     	if(in_array($this->reportHandler->noPoll, $feedback))
+	        {
+	            $retString .= "<li>This poll doesn't exist..</li>";
+	        }
+			if(in_array($this->reportHandler->sameAdmin, $feedback))
+	        {
+	            $retString .= "<li>Another admin must delete the user.</li>";
+	        }
+
+	    }
+
+	    else
+	    {
+	    	$retString = '<p>'.$feedback.'</p>';
+	    }
+
+        return $retString . "</div>";
 	}
 
 	
