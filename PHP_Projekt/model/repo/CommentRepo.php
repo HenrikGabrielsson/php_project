@@ -8,6 +8,8 @@ require_once("./model/Comment.php");
 class CommentRepo extends \model\repository\Repository
 {
 
+	private $commentTable = "comment";
+
 	//databasens kolumnnamn
 	private $commentId = "commentId";
 	private $pollId = "pollId";
@@ -17,7 +19,7 @@ class CommentRepo extends \model\repository\Repository
 
 	public function add(\model\Comment $comment)
 	{
-		$sql = "INSERT INTO comment(".$this->pollId.", ".$this->userId.", ".$this->comment.", ".$this->commentTime.")
+		$sql = "INSERT INTO ".$this->commentTable."(".$this->pollId.", ".$this->userId.", ".$this->comment.", ".$this->commentTime.")
 		VALUES (?,?,?,?);";
 		$params = array($comment->getPollId(), $comment->getUserId(), $comment->getComment(), $comment->getCommentTime());
 		
@@ -31,7 +33,7 @@ class CommentRepo extends \model\repository\Repository
 
 	public function delete($commentId)
 	{
-		$sql = "DELETE FROM comment WHERE ".$this->commentId." = ?";
+		$sql = "DELETE FROM ".$this->commentTable." WHERE ".$this->commentId." = ?";
 		$params = array($commentId);
 		
 		$this->connect();
@@ -53,7 +55,7 @@ class CommentRepo extends \model\repository\Repository
 		//array som ska returneras
 		$retComments = array();
 		
-		$sql = "SELECT * FROM comment WHERE ".$this->userId."=? " . $limit;
+		$sql = "SELECT * FROM ".$this->commentTable." WHERE ".$this->userId."=? " . $limit;
 		$params = array($userId);
 		
 		$this->connect();
@@ -90,7 +92,7 @@ class CommentRepo extends \model\repository\Repository
 		//array som ska returneras
 		$retComments = array();
 		
-		$sql = "SELECT * FROM comment WHERE ".$this->pollId."=? ORDER BY ".$this->commentTime." DESC";
+		$sql = "SELECT * FROM ".$this->commentTable." WHERE ".$this->pollId."=? ORDER BY ".$this->commentTime." DESC";
 		$params = array($pollId);
 		
 		$this->connect();
@@ -124,7 +126,7 @@ class CommentRepo extends \model\repository\Repository
 
 	public function getCommentById($commentId)
 	{
-		$sql = "SELECT * FROM comment WHERE ".$this->commentId."=?";
+		$sql = "SELECT * FROM ".$this->commentTable." WHERE ".$this->commentId."=?";
 		$params = array($commentId);
 		
 		$this->connect();

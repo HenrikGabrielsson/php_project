@@ -37,7 +37,7 @@ class CategoryView
 			foreach($this->polls as $poll)
 			{
 				$pollList .= 
-				'<li><a href="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWPOLL.'&'.helpers\GetHandler::$ID.'='.$poll->getId().'">
+				'<li><a href="?'.helpers\GetHandler::setView.'='.helpers\GetHandler::$VIEWPOLL.'&'.helpers\GetHandler::$ID.'='.$poll->getId().'">
 				'.$poll->getQuestion().'</a></li>';
 			}
 			$pollList .= '</ul>';

@@ -8,13 +8,14 @@ require_once("./model/Category.php");
 class CategoryRepo extends \model\repository\Repository
 {
 
+	private $categoryTable = "category";
 
 	private $categoryId = "categoryId";
 	private $categoryName = "categoryName";
 
 	public function getCategoryById($id)
 	{
-		$sql = "SELECT * FROM category WHERE ".$this->categoryId."=?";
+		$sql = "SELECT * FROM ".$this->categoryTable." WHERE ".$this->categoryId."=?";
 		$params = array($id);
 		
 		$this->connect();
@@ -31,7 +32,6 @@ class CategoryRepo extends \model\repository\Repository
 		}
 
 		return $result;
-
 	}
 
 	public function getAllCategories()
@@ -39,7 +39,7 @@ class CategoryRepo extends \model\repository\Repository
 		//array som ska returneras
 		$catArray = array();
 		
-		$sql = "SELECT * FROM category";
+		$sql = "SELECT * FROM ".$this->categoryTable."";
 		$params = array();
 		
 		$this->connect();

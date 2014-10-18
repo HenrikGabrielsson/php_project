@@ -8,6 +8,8 @@ require_once("./model/CommentReport.php");
 class ReportedCommentRepo extends \model\repository\Repository
 {
 
+	private $reportedCommentTable = "reportedComment";
+
 	//databasens kolumnnamn
 	private $reportedCommentId = "reportedCommentId";
 	private $userId = "userId";
@@ -16,7 +18,7 @@ class ReportedCommentRepo extends \model\repository\Repository
 
 	public function add(\model\CommentReport $commentReport)
 	{
-		$sql = "INSERT INTO reportedComment(".$this->userId.", ".$this->commentId.", ".$this->commentFromReporter.")
+		$sql = "INSERT INTO ".$this->reportedCommentTable."(".$this->userId.", ".$this->commentId.", ".$this->commentFromReporter.")
 		VALUES (?,?,?);";
 		$params = array($commentReport->getUserId(), $commentReport->getCommentId(), $commentReport->getCommentFromReporter());
 		
@@ -30,7 +32,7 @@ class ReportedCommentRepo extends \model\repository\Repository
 
 	public function delete($reportId)
 	{
-		$sql = "DELETE FROM reportedComment WHERE ".$this->reportedCommentId." = ?";
+		$sql = "DELETE FROM ".$this->reportedCommentTable." WHERE ".$this->reportedCommentId." = ?";
 		$params = array($reportId);
 		
 		$this->connect();
@@ -46,7 +48,7 @@ class ReportedCommentRepo extends \model\repository\Repository
 		//array som ska returneras
 		$retArray = array();
 
-		$sql = "SELECT * FROM reportedComment";
+		$sql = "SELECT * FROM ".$this->reportedCommentTable;
 
 		$this->connect();
 		

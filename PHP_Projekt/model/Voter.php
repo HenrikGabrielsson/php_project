@@ -24,6 +24,5 @@ class Voter
 		{
 			$this->pollRepo->addVote($answer, $ip);
 		}
-
 	}
 }

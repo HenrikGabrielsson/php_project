@@ -7,6 +7,7 @@ require_once("./model/PollReport.php");
 
 class ReportedPollRepo extends \model\repository\Repository
 {
+	private $reportedPollTable = "reportedPoll";
 
 	//databasens kolumnnamn
 	private $reportedPollId = "reportedPollId";
@@ -16,7 +17,7 @@ class ReportedPollRepo extends \model\repository\Repository
 
 	public function add(\model\PollReport $pollReport)
 	{
-		$sql = "INSERT INTO reportedPoll(".$this->userId.", ".$this->pollId.", ".$this->commentFromReporter.")
+		$sql = "INSERT INTO ".$this->reportedPollTable."(".$this->userId.", ".$this->pollId.", ".$this->commentFromReporter.")
 		VALUES (?,?,?);";
 		$params = array($pollReport->getUserId(), $pollReport->getPollId(), $pollReport->getCommentFromReporter());
 		
@@ -30,7 +31,7 @@ class ReportedPollRepo extends \model\repository\Repository
 
 	public function delete($reportId)
 	{
-		$sql = "DELETE FROM reportedPoll WHERE ".$this->reportedPollId." = ?";
+		$sql = "DELETE FROM ".$this->reportedPollTable." WHERE ".$this->reportedPollId." = ?";
 		$params = array($reportId);
 		
 		$this->connect();
@@ -46,7 +47,7 @@ class ReportedPollRepo extends \model\repository\Repository
 		//array som ska returneras
 		$retArray = array();
 
-		$sql = "SELECT * FROM reportedPoll";
+		$sql = "SELECT * FROM ".$this->reportedPollTable;
 
 		$this->connect();
 		

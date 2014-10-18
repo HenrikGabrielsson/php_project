@@ -7,6 +7,9 @@ require_once("./model/User.php");
 
 class UserRepo extends \model\repository\Repository
 {
+
+	private $userTable = "user";
+
 	//fältnamn i databasen
 	private $userId = "userId";            
     private $userName = "userName";     
@@ -21,7 +24,7 @@ class UserRepo extends \model\repository\Repository
 	{		
 		
 		//skapar en sql sats och parametrar som ska skickas med.
-		$sql = 'SELECT * FROM user WHERE '.$this->userId.' = ? ';
+		$sql = 'SELECT * FROM '.$this->userTable.' WHERE '.$this->userId.' = ? ';
 		$params = array($id);
 		
 		$this->connect();
@@ -57,7 +60,7 @@ class UserRepo extends \model\repository\Repository
 	//hämtar en användare baserat på ett givet namn. 
 	public function getUserByName($username)
 	{
-		$sql = 'SELECT * FROM `user` WHERE '.$this->userName.' = BINARY ?';
+		$sql = 'SELECT * FROM '.$this->userTable.' WHERE '.$this->userName.' = BINARY ?';
 		$params = array($username);
 
 		$this->connect();
@@ -91,7 +94,7 @@ class UserRepo extends \model\repository\Repository
 	//hämtar en användare baserat på ett givet email.
 	public function getUserByEmail($email)
 	{
-		$sql = 'SELECT * FROM `user` WHERE '.$this->email.' = ?';
+		$sql = 'SELECT * FROM '.$this->userTable.' WHERE '.$this->email.' = ?';
 		$params = array($email);
 
 		$this->connect();
@@ -125,7 +128,7 @@ class UserRepo extends \model\repository\Repository
 	public function add(\model\User $user)
 	{
 		
-		$sql = "INSERT INTO user(".$this->userName.",".$this->email.",".$this->dateAdded.",".$this->admin.",".$this->password.",".$this->salt.") VALUES(?,?,?,?,?,?)";
+		$sql = "INSERT INTO ".$this->userTable."(".$this->userName.",".$this->email.",".$this->dateAdded.",".$this->admin.",".$this->password.",".$this->salt.") VALUES(?,?,?,?,?,?)";
 		$params = array($user->getUserName(), $user->getEmail(), $user->getDateAdded(), $user->getAdmin(), $user->getPassword(), $user->getSalt());
 
 		$this->connect();
@@ -138,7 +141,7 @@ class UserRepo extends \model\repository\Repository
 	
 	public function delete($id)
 	{
-		$sql = "DELETE FROM user WHERE ".$this->userId." = ?";
+		$sql = "DELETE FROM ".$this->userTable." WHERE ".$this->userId." = ?";
 		$params = array($id);
 		
 		$this->connect();
@@ -150,20 +153,6 @@ class UserRepo extends \model\repository\Repository
 		
 	}
 	
-	public function update(\model\User $user)
-	{
-		$sql = "UPDATE user SET 
-		".$this->userName."=?, ".$this->email ."=?, ".$this->password."=?,".$this->salt."=?,".$this->admin."=? 
-		WHERE ".$this->userId ."=?";
-		$params = array($user->getUserName(), $user->getEmail(), $user->getPassword(), $user->getSalt(), $user->getAdmin(), $user->getId());
-		
-		$this->connect();
-		
-		$query = $this->dbConnection->prepare($sql);
-		$result = $query->execute($params);
-		
-		return $result;
-	}
 }
 
 

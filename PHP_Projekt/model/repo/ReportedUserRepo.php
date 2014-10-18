@@ -7,6 +7,7 @@ require_once("./model/UserReport.php");
 
 class ReportedUserRepo extends \model\repository\Repository
 {
+	private $reportedUserTable = "reportedUser";
 
 	//databasens kolumnnamn
 	private $reportedUserId = "reportedUserId";
@@ -17,7 +18,7 @@ class ReportedUserRepo extends \model\repository\Repository
 
 	public function add(\model\UserReport $userReport)
 	{
-		$sql = "INSERT INTO reportedUser(".$this->userId.", ".$this->type.",".$this->commentFromAdmin.")
+		$sql = "INSERT INTO ".$this->reportedUserTable."(".$this->userId.", ".$this->type.",".$this->commentFromAdmin.")
 		VALUES (?,?,?);";
 		$params = array($userReport->getUserId(), $userReport->getType(), $userReport->getCommentFromAdmin());
 		
@@ -31,7 +32,7 @@ class ReportedUserRepo extends \model\repository\Repository
 
 	public function delete($reportId)
 	{
-		$sql = "DELETE FROM reportedUser WHERE ".$this->reportedUserId." = ?";
+		$sql = "DELETE FROM ".$this->reportedUserTable." WHERE ".$this->reportedUserId." = ?";
 		$params = array($reportId);
 		
 		$this->connect();
@@ -45,7 +46,7 @@ class ReportedUserRepo extends \model\repository\Repository
 
 	public function nominateForDeletion($reportId, $adminId)
 	{
-		$sql = "UPDATE reportedUser SET ".$this->nominatedForDeletionBy." = ? WHERE ".$this->reportedUserId."=?";
+		$sql = "UPDATE ".$this->reportedUserTable." SET ".$this->nominatedForDeletionBy." = ? WHERE ".$this->reportedUserId."=?";
 		$params = array($adminId, $reportId);
 		
 		$this->connect();
@@ -61,7 +62,7 @@ class ReportedUserRepo extends \model\repository\Repository
 		//array som ska returneras
 		$retArray = array();
 
-		$sql = "SELECT * FROM reportedUser";
+		$sql = "SELECT * FROM ".$this->reportedUserTable;
 
 		$this->connect();
 		

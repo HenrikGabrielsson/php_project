@@ -2,8 +2,6 @@
 
 namespace model;
 
-require_once("./model/repo/CategoryRepo.php");
-
 class Category
 {
 	private $repo;
@@ -13,8 +11,6 @@ class Category
 
 	public function __construct($id, $name)
 	{
-		$this->repo = new \model\repository\CategoryRepo();
-
 		$this->id = $id;
 		$this->categoryName = $name;
 	}

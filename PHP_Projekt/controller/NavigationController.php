@@ -18,6 +18,7 @@ require_once("./view/helpers/GetHandler.php");
 require_once("./view/NavigationView.php");
 require_once("./view/SidebarView.php");
 
+
 class NavigationController
 {
     private $loginHandler;
