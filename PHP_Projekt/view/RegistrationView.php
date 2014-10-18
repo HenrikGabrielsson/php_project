@@ -78,7 +78,7 @@ class RegistrationView
 			<label for="regPassword2">Password again:</label>
 				<input type="password" name="'.helpers\PostHandler::$REGPASSWORD2.'" id="regPassword2" placeholder="Password again" />
 
-			<input type="submit" value="Registrera">
+			<input type="submit" value="Register">
 		</form>
 		';		
 	}

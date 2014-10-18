@@ -242,17 +242,21 @@ class PollView
 		if($this->login->getIsLoggedIn())
 		{
 			return '
+			<div id="commentForm">
 			<form action="'.$_SERVER['REQUEST_URI'].'" method="post">
 				<textarea maxlength="1000" cols="100" rows="5" name="'.helpers\PostHandler::$COMMENT.'" id="comment">'.$feedback.'
 				</textarea>
 				<input type="submit" value="Send Comment">
 			</form>	
+			</div>
 			';
 		}
 		else
 		{
 			return 
-			'<p>Login to make a comment</p>';
+			'<div id="commentForm">
+			<p>Login to make a comment</p>
+			</div>';
 		}
 	}
 
@@ -360,10 +364,10 @@ class PollView
 
 	    else
 	    {
-	    	$retString = '<p>'.$feedback.'</p>';
+	    	$retString .= '<p>'.$feedback.'</p>';
 	    }
 
-        return $retString . "</div>";
+        return $retString . '</div>';
 	}
 }
 

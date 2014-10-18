@@ -26,16 +26,16 @@ class HTMLView
                 <div id="container">
                     <div id="header">
                         <div id="logo">
-                        <a href="."><img src="image/logo.png" alt="Welcome to PHP Polls"></a>
+                            <a href="."><img src="image/logo.png" alt="Welcome to PHP Polls"></a>
                         </div>
                         <div id="search">
-                        <form method="get">
-                            <input type="hidden"  name="'.helpers\GetHandler::$VIEW.'" value="'.helpers\GetHandler::$VIEWSEARCH.'" >
+                            <form method="get">
+                                <input type="hidden"  name="'.helpers\GetHandler::$VIEW.'" value="'.helpers\GetHandler::$VIEWSEARCH.'" >
+                                
+                                <input type="text" id="search" placeholder="search" name="'.helpers\GetHandler::$SEARCHWORDS.'">
+                                <input type="submit" value="Search">
 
-                            <label for="searchbox">Search for poll:</label><input type="text" id="search" placeholder="search" name="'.helpers\GetHandler::$SEARCHWORDS.'">
-                            <input type="submit" value="Search">
-
-                        </form>
+                            </form>
                         </div>
 
                         '.$this->loginBox.'

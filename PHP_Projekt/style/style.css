@@ -4,14 +4,25 @@ html {
 body {
     background:linear-gradient(#DDDDDD, #FFFFFF);
     height:100%;
+    font-family:"Lucida Sans Unicode";
 }
+
+h1 {
+    color: #D52A57;
+}
+
+input {
+    display: block;
+}
+
 
 
 /*Huvudelement*******************************/
 #container {
     min-width:600px;
-    width:80%;
-    margin:auto;
+    max-width:1000px;
+    min-height:50%;
+    margin:40px auto auto auto;
     overflow:auto;
 }
 
@@ -23,12 +34,27 @@ body {
 
 #content {
     width:100%;
-    min-height:600px;
     float:right;
+
+}
+
+#logo {
+    max-width:350px;
+    float:left;
 }
 
 #main_content {
     width:70%;
+    margin:10px 40px 10px 40px;
+    float:right;
+}
+
+#main_content ul {
+    list-style-type: none;
+}
+
+#main_content li {
+    margin-top:10px;
 }
 
 
@@ -42,13 +68,55 @@ body {
 #sidebar {
     float:left;
     width:10%;
-    min-width:100px;
+    min-width:150px;
+    height:100%;
+
+    background-color:#D52A57;
+    border-radius: 15px;
+
+    color:white;
+}
+
+#sidebar ul {
+    list-style-type: none;
+    padding-left: -20px;
+}
+
+#sidebar p {
+    padding-left: 20px;
+}
+#sidebar a:link {
+    color:white;
+}
+
+#sidebar a:visited {
+    color:white;
+}
+
+#sidebar a:hover {
+    color:#DDDDDD;
+}
+
+#sidebar h2 {
+    margin-left:10px;
+    font-size:20px;
+}
+
+#search {
+    margin-left:60px;
+    float:left;
+}
+
+#loginBox {
+    float:right;
 }
 
 
 /*För undersökningen********************************/
 #pollForm {
-
+    border: 1px solid #D52A57; 
+    border-radius: 15px; 
+    width:500px;
 }
 
 .pollResults {

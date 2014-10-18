@@ -67,7 +67,7 @@ class LoginView
             '<form id="loginForm" method="post" action="?login">
             <label for="loginName">Username:</label><input type="text" name="'.helpers\PostHandler::$LOGINNAME.'" id="loginName" placeholder="Username" />
             <label for="loginPassword">Password:</label><input type="password" name="'.helpers\PostHandler::$LOGINPASSWORD.'" id="loginPassword" placeholder="Password" />
-            <input type="submit" value="Logga in" />
+            <input type="submit" value="Log in" />
 
             </form>
             <p><a href="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$REGISTER.'">Register</a></p>';
