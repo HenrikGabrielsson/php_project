@@ -2,7 +2,8 @@
 
 namespace controller;
 
-require_once("model/LoginHandler.php");
+require_once("./model/LoginHandler.php");
+require_once("./model/repo/CategoryRepo.php");
 
 require_once("controller/LoginController.php");
 require_once("controller/HomeController.php");
@@ -25,13 +26,15 @@ class NavigationController
     private $navView;
     private $htmlView;
     private $sidebarView;
+    private $catRepo;
     
     public function __construct($htmlView)
     {
+        $this->catRepo = new \model\repository\CategoryRepo();
         $this->loginHandler = new \model\LoginHandler();
         $this->htmlView = $htmlView;
         $this->navView = new \view\NavigationView();
-        $this->sidebarView = new \view\sidebarView();
+        $this->sidebarView = new \view\sidebarView($this->catRepo->getAllCategories());
     }
     
     //kollar url och anropar sedan en lämplig controller 

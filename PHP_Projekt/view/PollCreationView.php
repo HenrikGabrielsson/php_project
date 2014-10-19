@@ -2,16 +2,13 @@
 
 namespace view;
 
-require_once("./model/repo/CategoryRepo.php");
-
-
 class PollCreationView
 {
-	private $catRepo;
+	private $categories;
 
-	public function __construct()
+	public function __construct($categories)
 	{
-		$this->catRepo = new \model\repository\CategoryRepo();
+		$this->categories = $categories;
 	}
 
 	public function userWantsToCreatePoll()
@@ -75,7 +72,7 @@ class PollCreationView
 
 		$categories ="";
 
-		foreach($this->catRepo->getAllCategories() as $category)
+		foreach($this->categories as $category)
 		{
 			$categories .= '<option value="'.$category->getId().'">'.$category->getCategoryName().'</option>';
 		}

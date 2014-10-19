@@ -2,8 +2,6 @@
 
 namespace view;
 
-require_once("./view/helpers/GetHandler.php");
-
 class NavigationView
 {
 

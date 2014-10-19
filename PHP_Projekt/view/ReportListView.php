@@ -2,9 +2,6 @@
 
 namespace view;
 
-require_once("./view/helpers/GetHandler.php");
-require_once("./view/helpers/PostHandler.php");
-
 class ReportListView
 {
 

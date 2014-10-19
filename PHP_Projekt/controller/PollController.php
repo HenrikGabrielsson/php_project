@@ -2,9 +2,7 @@
 
 namespace controller;
 
-require_once("./view/HTMLView.php");
 require_once("./view/PollView.php");
-require_once("./model/Poll.php");
 require_once("./model/repo/PollRepo.php");
 require_once("./model/repo/UserRepo.php");
 require_once("./model/Voter.php");
@@ -23,10 +21,11 @@ class PollController
 
 	public function __construct($htmlView)
 	{
-		$this->pollRepo = new \model\repository\PollRepo();
-		$this->userRepo = new \model\repository\UserRepo();
 		$this->htmlView = $htmlView;
 
+		$this->pollRepo = new \model\repository\PollRepo();
+		$this->userRepo = new \model\repository\UserRepo();
+		
 		$this->voter = new \model\Voter($this->pollRepo);
 		$this->commentHandler = new \model\CommentHandler();
 		$this->reportHandler = new \model\ReportHandler();

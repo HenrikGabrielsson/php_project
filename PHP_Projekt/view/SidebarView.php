@@ -4,21 +4,18 @@ namespace view;
 
 require_once("./model/repo/CategoryRepo.php");
 require_once("./model/Category.php");
-require_once("./view/helpers/GetHandler.php");
 
 class SidebarView
 {
-	private $repo;
+	private $categories;
 
-	public function __construct()
+	public function __construct($categories)
 	{
-		$this->repo = new \model\repository\CategoryRepo();
+		$this->categories = $categories;
 	}
 
 	public function getSidebarContent($login)
 	{
-		$categories = $this->repo->getAllCategories();
-
 		//om användaren är inloggad så visas en create poll-länk
 		$createPoll = "";
 		if($login->getIsLoggedIn())
@@ -41,7 +38,7 @@ class SidebarView
 		'<h2>Categories</h2>
 		<ul id="sidebarList">
 		';
-		foreach($categories as $category)
+		foreach($this->categories as $category)
 		{
 			$link = "?". helpers\GetHandler::$VIEW ."=" .helpers\GetHandler::$VIEWCATEGORY ."&". helpers\GetHandler::$ID ."=". $category->getId();
 			$sidebar .=

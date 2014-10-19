@@ -2,8 +2,6 @@
 
 namespace view;
 
-require_once("Settings.php");
-
 class HTMLView 
 {
     private $loginBox;

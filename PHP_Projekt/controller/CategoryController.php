@@ -7,14 +7,13 @@ require_once("./view/CategoryView.php");
 
 require_once("./model/repo/PollRepo.php");
 require_once("./model/repo/CategoryRepo.php");
-require_once("./model/Poll.php");
-require_once("./model/Category.php");
 
 class CategoryController
 {
 
 	private $htmlView;
 	private $categoryView; 
+
 	private $categoryRepo;
 	private $pollRepo;
 
@@ -37,6 +36,5 @@ class CategoryController
 		$title = $this->categoryView->getTitle();
 		$body = $this->categoryView->getBody();
 		$this->htmlView->showHTML($title, $body);
-
 	}
 }

@@ -6,10 +6,6 @@ require_once("./view/helpers/PostHandler.php");
 
 class SearchView
 {
-	public function __construct()
-	{
-
-	}
 
 	public function getTitle()
 	{

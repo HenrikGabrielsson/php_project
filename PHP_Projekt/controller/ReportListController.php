@@ -11,8 +11,6 @@ require_once("./model/repo/PollRepo.php");
 require_once("./model/repo/CommentRepo.php");
 require_once("./model/ReportHandler.php");
 
-require_once("./view/helpers/GetHandler.php");
-
 class ReportListController
 {
 	private $reportListView;

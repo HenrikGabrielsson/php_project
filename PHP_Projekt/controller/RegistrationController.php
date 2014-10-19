@@ -2,7 +2,6 @@
 
 namespace controller;
 
-require_once("./view/HTMLView.php");
 require_once("./view/RegistrationView.php");
 require_once("./view/helpers/GetHandler.php");
 
@@ -10,13 +9,11 @@ class RegistrationController
 {
 	private $htmlView;
 	private $regView;
-	private $loginHandler;
 
 	public function __construct($htmlView)
 	{
 		$this->htmlView = $htmlView;
 		$this->regView = new \view\RegistrationView();
-		$this->loginHandler = new \model\LoginHandler();
 	}
 
 	public function getContent($id, $login)
@@ -32,7 +29,7 @@ class RegistrationController
 			$pass2 = $this->regView->getPassword2();
 
 			//försöker registrera. Om det lyckas så visas inte formuläret, utan en sida som berättar att allt gick bra.
-			$success = $this->loginHandler->attemptRegister($username, $email, $pass1, $pass2);
+			$success = $login->attemptRegister($username, $email, $pass1, $pass2);
 
 			if($success)
 			{
@@ -43,7 +40,7 @@ class RegistrationController
 		}
 
 		//Om en registrering misslyckas så visas formuläret igen med feedback.
-		$feedback = $this->loginHandler->getErrorList();
+		$feedback = $login->getErrorList();
 
 		$body = $this->regView->getRegister($feedback);
 

@@ -3,7 +3,6 @@
 namespace view;
 
 require_once("./view/helpers/DiagramMaker.php");
-require_once("./view/helpers/GetHandler.php");
 
 class PollView
 {

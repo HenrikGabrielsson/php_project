@@ -2,10 +2,6 @@
 
 namespace view;
 
-require_once("./model/Category.php");
-require_once("./model/Poll.php");
-require_once("./view/helpers/GetHandler.php");
-
 class CategoryView
 {
 
@@ -37,7 +33,7 @@ class CategoryView
 			foreach($this->polls as $poll)
 			{
 				$pollList .= 
-				'<li><a href="?'.helpers\GetHandler::setView.'='.helpers\GetHandler::$VIEWPOLL.'&'.helpers\GetHandler::$ID.'='.$poll->getId().'">
+				'<li><a href="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWPOLL.'&'.helpers\GetHandler::$ID.'='.$poll->getId().'">
 				'.$poll->getQuestion().'</a></li>';
 			}
 			$pollList .= '</ul>';

@@ -2,12 +2,10 @@
 
 namespace controller;
 
-require_once("./view/HTMLView.php");
 require_once("./view/UserView.php");
 require_once("./model/repo/UserRepo.php");
 require_once("./model/repo/PollRepo.php");
 require_once("./model/repo/CommentRepo.php");
-require_once("./model/User.php");
 
 class UserController
 {

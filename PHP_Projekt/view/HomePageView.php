@@ -2,25 +2,14 @@
 
 namespace view;
 
-require_once("./view/RegistrationView.php");
-require_once("./view/PollCreationView.php");
-require_once("./model/PollCreator.php");
-
 class HomePageView
 {
 
-	private $regView;
-	private $createView;
-	private $pollCreator;
-	private $pollRepo;
+	private $recentPolls;
 
-	public function __construct($pollRepo)
+	public function __construct($recentPolls)
 	{
-		$this->pollCreator = new \model\PollCreator();
-		$this->pollRepo = $pollRepo;
-
-		$this->createView = new PollCreationView($this->pollCreator);
-		$this->regView = new RegistrationView();
+		$this->recentPolls = $recentPolls;
 	}
 
 
@@ -35,21 +24,27 @@ class HomePageView
 
 		if($loggedIn)
 		{
-			$body .= $this->createView->getForm($this->pollCreator);
+			$body .= 
+			'<div id="homeAdvert">
+				<p><a href="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWCREATEPOLL.'">Click here</a> to create a new poll and get the people\'s opinion on something!</p>
+			</div>';
 		}
 
 		else 
 		{
-			$body .= $this->regView->getForm();
+			$body .= 
+			'<div id="homeAdvert">
+				<p><a href="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWREGISTER.'">Click here</a> to register. When you register you can create polls 
+				and let people share their opinion in whatever question you wonder about. You can even share the poll on your own blog or website! Awesome, isn\'t it??</p>
+			</div>';
 
 		}
 
 		$body .= 
 		'<h2>Recent polls</h2>
 		<div id="recentPolls">';
-		$recentPolls = $this->pollRepo->getLatestPolls(3);
 		
-		foreach($recentPolls as $poll)
+		foreach($this->recentPolls as $poll)
 		{
 			$body .= 
 			'<li>

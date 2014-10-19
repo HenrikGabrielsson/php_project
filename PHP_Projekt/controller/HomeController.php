@@ -3,7 +3,6 @@
 namespace controller;
 
 require_once("./view/HomePageView.php");
-require_once("./view/HTMLView.php");
 require_once("./model/repo/PollRepo.php");
 
 class HomeController
@@ -16,7 +15,7 @@ class HomeController
 	{
 		$this->htmlView = $htmlView;
 		$this->pollRepo = new \model\repository\PollRepo();
-		$this->homeView = new \view\HomePageView($this->pollRepo);
+		$this->homeView = new \view\HomePageView($this->pollRepo->getLatestPolls(3));
 		
 	}
 

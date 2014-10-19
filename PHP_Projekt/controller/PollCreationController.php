@@ -2,22 +2,24 @@
 
 namespace controller;
 
-require_once("./view/HTMLView.php");
 require_once("./view/PollCreationView.php");
 require_once("./model/PollCreator.php");
-require_once("./model/Poll.php");
+require_once("./model/repo/CategoryRepo.php");
 
 class PollCreationController
 {
 	private $htmlView;
 	private $pollCreationView;
 	private $pollCreator;
+	private $catRepo;
 
 	public function __construct($htmlView)
 	{
 		$this->htmlView = $htmlView;
+		
+		$this->catRepo = new \model\repository\CategoryRepo();
 		$this->pollCreator = new \model\PollCreator();
-		$this->pollCreationView = new \view\PollCreationView();	
+		$this->pollCreationView = new \view\PollCreationView($this->catRepo->getAllCategories());	
 	}
 
 	public function getContent($id, $login)
