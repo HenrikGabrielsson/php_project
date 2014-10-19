@@ -10,6 +10,8 @@ class CommentRepo extends \model\repository\Repository
 
 	private $commentTable = "comment";
 
+	private $deleteCommentProc = "deleteComment";
+
 	//databasens kolumnnamn
 	private $commentId = "commentId";
 	private $pollId = "pollId";
@@ -33,7 +35,7 @@ class CommentRepo extends \model\repository\Repository
 
 	public function delete($commentId)
 	{
-		$sql = "DELETE FROM ".$this->commentTable." WHERE ".$this->commentId." = ?";
+		$sql = "CALL ".$this->deleteCommentProc."(?)";
 		$params = array($commentId);
 		
 		$this->connect();

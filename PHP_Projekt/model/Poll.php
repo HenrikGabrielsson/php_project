@@ -2,8 +2,6 @@
 
 namespace model;
 
-require_once("./model/repo/PollRepo.php");
-
 class Poll
 {
 	private $id;					//unikt id

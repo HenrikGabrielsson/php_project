@@ -7,12 +7,6 @@ require_once("./view/helpers/PostHandler.php");
 
 class ReportListView
 {
-	private $reportHandler;
-
-	public function __construct($reportHandler)
-	{
-		$this->reportHandler = $reportHandler;
-	}
 
 	public function getListRequest()
 	{
@@ -313,23 +307,23 @@ class ReportListView
 		if(is_array($feedback))
 		{		
 			$retString = "<ul>";
-			if(in_array($this->reportHandler->longReason, $feedback))
+			if(in_array(\model\ReportHandler::LONGREASON, $feedback))
 	        {
 	            $retString .= "<li>The reason you wrote was too long. Maximum number of characters is 200.</li>";
 	        }
-	     	if(in_array($this->reportHandler->noReason, $feedback))
+	     	if(in_array(\model\ReportHandler::NOREASON, $feedback))
 	        {
 	            $retString .= "<li>You must add a reason for your choice..</li>";
 	        }
-			if(in_array($this->reportHandler->noComment, $feedback))
+			if(in_array(\model\ReportHandler::NOCOMMENT, $feedback))
 	        {
 	            $retString .= "<li>This comment doesn't exist.</li>";
 	        }
-	     	if(in_array($this->reportHandler->noPoll, $feedback))
+	     	if(in_array(\model\ReportHandler::NOPOLL, $feedback))
 	        {
 	            $retString .= "<li>This poll doesn't exist..</li>";
 	        }
-			if(in_array($this->reportHandler->sameAdmin, $feedback))
+			if(in_array(\model\ReportHandler::SAMEADMIN, $feedback))
 	        {
 	            $retString .= "<li>Another admin must delete the user.</li>";
 	        }

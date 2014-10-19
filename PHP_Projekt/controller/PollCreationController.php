@@ -17,7 +17,7 @@ class PollCreationController
 	{
 		$this->htmlView = $htmlView;
 		$this->pollCreator = new \model\PollCreator();
-		$this->pollCreationView = new \view\PollCreationView($this->pollCreator);	
+		$this->pollCreationView = new \view\PollCreationView();	
 	}
 
 	public function getContent($id, $login)

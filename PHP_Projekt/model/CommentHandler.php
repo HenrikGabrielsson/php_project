@@ -13,9 +13,9 @@ class CommentHandler
 
 
 	//errors
-	public $shortComment = "shortComment";
-	public $longComment = "longComment";
-	public $pollDoesNotExist = "pollDoesNotExist";
+	const SHORTCOMMENT = "shortComment";
+	const LONGCOMMENT = "longComment";
+	const POLLDOESNOTEXIST = "pollDoesNotExist";
 
 	private $errorList = array();
 
@@ -77,13 +77,13 @@ class CommentHandler
 		//kommentaren får inte vara tom eller bara innehålla "blanka" tecken.
 		if (strlen(trim($comment)) == 0)
 		{
-			$this->errorList[] = $this->shortComment;
+			$this->errorList[] = self::SHORTCOMMENT;
 		}
 
 		//kommentaren får inte vara längre än 100 tecken;
 		else if(strlen($comment) > 100)
 		{
-			$this->errorList[] = $this->longComment;
+			$this->errorList[] = self::LONGCOMMENT;
 		}
 
 		return $comment;
@@ -93,7 +93,7 @@ class CommentHandler
 	{		
 		if($this->pollRepo->getPollById($pollId) == false)
 		{
-			$this->errorList[] = $this->pollDoesNotExist;
+			$this->errorList[] = self::POLLDOESNOTEXIST;
 		}
 	}
 }

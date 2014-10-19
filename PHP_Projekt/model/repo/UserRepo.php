@@ -8,7 +8,11 @@ require_once("./model/User.php");
 class UserRepo extends \model\repository\Repository
 {
 
+	//tabellnamn
 	private $userTable = "user";
+
+	//namn på stored procedures
+	private $deleteUserProc = "deleteUser";	//tar bort användare + dess polls och comments samt eventuella reports på dessa
 
 	//fältnamn i databasen
 	private $userId = "userId";            
@@ -124,7 +128,6 @@ class UserRepo extends \model\repository\Repository
 		return $user;
 	}	
 
-
 	public function add(\model\User $user)
 	{
 		
@@ -139,9 +142,10 @@ class UserRepo extends \model\repository\Repository
 		return $result;		
 	}
 	
+	
 	public function delete($id)
 	{
-		$sql = "DELETE FROM ".$this->userTable." WHERE ".$this->userId." = ?";
+		$sql = "CALL ".$this->deleteUserProc."(?) ";
 		$params = array($id);
 		
 		$this->connect();

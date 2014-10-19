@@ -36,7 +36,7 @@ class ReportListController
 		$this->commentRepo = new \model\repository\CommentRepo();
 		$this->reportHandler = new \model\ReportHandler();
 
-		$this->reportListView = new \view\ReportListView($this->reportHandler);
+		$this->reportListView = new \view\ReportListView();
 		$this->htmlView = $htmlView;
 	}
 

@@ -8,12 +8,10 @@ require_once("./model/repo/CategoryRepo.php");
 class PollCreationView
 {
 	private $catRepo;
-	private $pollCreator;
 
-	public function __construct($pollCreator)
+	public function __construct()
 	{
 		$this->catRepo = new \model\repository\CategoryRepo();
-		$this->pollCreator = $pollCreator;
 	}
 
 	public function userWantsToCreatePoll()
@@ -122,31 +120,31 @@ class PollCreationView
 
 		$feedback .= '<ol>';
 
-		if(in_array($this->pollCreator->shortQuestion, $feedbackArray))
+		if(in_array(\model\Pollcreator::SHORTQUESTION, $feedbackArray))
         {
             $feedback .= "<li>You must write a quesion.</li>";
         }	
-		if(in_array($this->pollCreator->longQuestion, $feedbackArray))
+		if(in_array(\model\Pollcreator::LONGQUESTION, $feedbackArray))
         {
             $feedback .= "<li>Your question can't be longer than 100 characters.</li>";
         }      
-        if(in_array($this->pollCreator->tooManyAnswers, $feedbackArray))
+        if(in_array(\model\Pollcreator::TOOMANYANSWERS, $feedbackArray))
         {
             $feedback .= "<li>You can have a maximum of 10 answers for one question.</li>";
         }
-        if(in_array($this->pollCreator->tooFewAnswers, $feedbackArray))
+        if(in_array(\model\Pollcreator::TOOFEWANSWERS, $feedbackArray))
         {
             $feedback .= "<li>A question must have at least 2 answers.</li>";
         }   
-        if(in_array($this->pollCreator->longAnswer, $feedbackArray))
+        if(in_array(\model\Pollcreator::LONGANSWER, $feedbackArray))
         {
             $feedback .= "<li>An answer can't be longer than 100 characters.</li>";
         }   
-        if(in_array($this->pollCreator->notPublicOrPrivate, $feedbackArray))
+        if(in_array(\model\Pollcreator::NOTPUBLICORPRIVATE, $feedbackArray))
         {
             $feedback .= "<li>Decide if you want your poll to be public or private.</li>";
         }
-        if(in_array($this->pollCreator->categoryDoesNotExist, $feedbackArray))
+        if(in_array(\model\Pollcreator::CATEGORYDOESNOTEXIST, $feedbackArray))
         {
             $feedback .= "<li>Pick a category.</li>";
         }

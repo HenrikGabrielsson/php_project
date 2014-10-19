@@ -57,6 +57,42 @@ class ReportedUserRepo extends \model\repository\Repository
 		return $result;			
 	}
 
+	public function getAllReportsOnUser($userId)
+	{
+		//array som ska returneras
+		$retArray = array();
+
+		$sql = "SELECT * FROM ".$this->reportedUserTable ." WHERE ".$this->userId." =?" ;
+		$params = array($userId);
+
+		$this->connect();
+		
+		$query = $this->dbConnection->prepare($sql);
+		$query->execute($params);	
+		
+		//hämta alla rader
+		$reports = $query->fetchAll();
+		
+		//om det kom några polls
+		if($reports)
+		{
+			foreach($reports as $report)
+			{
+				//skapa alla objekt				
+				$retArray[] = new \model\UserReport
+				(
+					$report[$this->userId],
+					$report[$this->type],
+					$report[$this->commentFromAdmin],
+					$report[$this->nominatedForDeletionBy],
+					$report[$this->reportedUserId]					
+				);
+			}
+			
+		return $retArray;
+		}	
+	}
+
 	public function getAllReports()
 	{
 		//array som ska returneras

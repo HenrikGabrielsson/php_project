@@ -335,27 +335,27 @@ class PollView
 		{
 			
 			$retString = "<ul>";
-			if(in_array($this->reportHandler->longReason, $feedback))
+			if(in_array(\model\ReportHandler::LONGREASON, $feedback))
 	        {
 	            $retString .= "<li>The reason you wrote was too long. Maximum number of characters is 200.</li>";
 	        }
-	     	if(in_array($this->reportHandler->noComment, $feedback))
+	     	if(in_array(\model\ReportHandler::NOCOMMENT, $feedback))
 	        {
 	            $retString .= "<li>This comment doesn't exist.</li>";
 	        }
-	       	if(in_array($this->reportHandler->noPoll, $feedback))
+	       	if(in_array(\model\ReportHandler::NOPOLL, $feedback))
 	        {
 	            $retString .= "<li>This poll doesn't exist.</li>";
 	        }
-			if(in_array($this->commentHandler->shortComment, $feedback))
+			if(in_array(\model\CommentHandler::SHORTCOMMENT, $feedback))
 	        {
 	            $retString .= "<li>You have to write something.</li>";
 	        }	
-			if(in_array($this->commentHandler->longComment, $feedback))
+			if(in_array(\model\CommentHandler::LONGCOMMENT, $feedback))
 	        {
 	            $retString .= "<li>Your comment was too long. The maximum Length is 1000 characters. </li>";
 	        }      
-	        if(in_array($this->commentHandler->pollDoesNotExist, $feedback))
+	        if(in_array(\model\CommentHandler::POLLDOESNOTEXIST, $feedback))
 	        {
 	            $retString .= "<li>The poll does not exist.</li>";
 	        }

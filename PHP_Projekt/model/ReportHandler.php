@@ -22,11 +22,11 @@ class ReportHandler
 	private $userRepo;
 
 	//errors
-	public $longReason = "longReason";
-	public $noReason = "noReason";
-	public $noComment = "noComment";
-	public $noPoll = "noPoll";
-	public $sameAdmin = "sameAdmin";
+	const LONGREASON = "longReason";
+	const NOREASON = "noReason";
+	const NOCOMMENT = "noComment";
+	const NOPOLL = "noPoll";
+	const SAMEADMIN = "sameAdmin";
 
 	private $errorList = array();
 
@@ -87,15 +87,6 @@ class ReportHandler
 			return false;
 		}
 
-		//ta bort alla som har rapporterat denna poll
-		foreach($reports as $report)
-		{
-			if($report->getPollId() == $pollId)
-			{
-				$this->reportedPollRepo->delete($report->getId());
-			}
-		}
-
 		$poll = $this->pollRepo->getPollById($pollId);
 
 		//lägg till rapport på medlem
@@ -117,15 +108,6 @@ class ReportHandler
 			return false;
 		}
 
-		//ta bort alla som har rapporterat denna comment
-		foreach($reports as $report)
-		{
-			if($report->getCommentId() == $commentId)
-			{
-				$this->reportedCommentRepo->delete($report->getId());
-			}
-		}
-
 		$comment = $this->commentRepo->getCommentById($commentId);
 
 		//lägg till rapport på medlem
@@ -142,27 +124,18 @@ class ReportHandler
 	public function deleteUser($userId, $adminId)
 	{
 
-		$reports = $this->reportedUserRepo->getAllReports();
+		$reports = $this->reportedUserRepo->getAllReportsOnUser($userId);
 
-		//ta bort alla som har rapporterat denna användare
 		foreach($reports as $report)
 		{
-			if($report->getUserId() == $userId)
-			{
-
 				//Det får inte vara samma som tar bort användaren som nominerade den för borttagning
 				if($report->getNomination() == $adminId)
 				{
-					$this->errorList[] = $this->sameAdmin;
+					$this->errorList[] = self::SAMEADMIN;
 					return false;
 				}
-				//annars tas rapporterna bort en efter en.
-				else
-				{
-					$this->reportedUserRepo->delete($report->getId());
-				}
-			}
 		}
+		
 		//die!!
 		$this->userRepo->delete($userId);
 		return true;
@@ -193,13 +166,13 @@ class ReportHandler
 		//om reason inte är valfritt och den är tom:
 		if($mandatory && strlen(trim($reason)) == 0)
 		{
-			$this->errorList[] = $this->noReason;
+			$this->errorList[] = self::NOREASON;
 			return false;
 		}
 
 		if(strlen($reason) > 200)
 		{
-			$this->errorList[] = $this->longReason;
+			$this->errorList[] = self::LONGREASON;
 			return false;
 		}
 		return true;
@@ -209,7 +182,7 @@ class ReportHandler
 	{		
 		if(is_null($poll))
 		{
-			$this->errorList[] = $this->noPoll;
+			$this->errorList[] = self::NOPOLL;
 			return false;
 		}	
 		return true;
@@ -220,7 +193,7 @@ class ReportHandler
 	{
 		if(is_null($comment))
 		{
-			$this->errorList[] = $this->noComment;
+			$this->errorList[] = self::NOCOMMENT;
 			return false;
 		}	
 		return true;

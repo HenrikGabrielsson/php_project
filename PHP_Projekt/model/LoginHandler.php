@@ -10,19 +10,19 @@ class LoginHandler
 
 	//Namn på fel. Läggs till i errorList om de har blivit sanna.
 	//fel vid login
-	public $noNameError = "noName";
-	public $noPasswordError = "noPassword";
-	public $wrongCredentialsError = "wrongCredentials";
+	const NONAME = "noName";
+	const NOPASSWORD = "noPassword";
+	const WRONGCREDENTIALS = "wrongCredentials";
 
 	//fel vid registrering
-	public $shortName = "shortName";
-	public $longName = "longName"; 
-	public $illegalChars = "illegalChars";
-	public $nameAlreadyInUse = "nameAlreadyInUse";
-	public $shortPassword = "shortPassword";
-	public $noMatchPasswords = "noMatchPasswords";
-	public $emailAlreadyInUse = "emailAlreadyInUse";
-	public $noValidEmail = "noValidEmail";
+	const SHORTNAME = "shortName";
+	const LONGNAME = "longName"; 
+	const ILLEGALCHARS = "illegalChars";
+	const NAMEALREADYINUSE = "nameAlreadyInUse";
+	const SHORTPASSWORD = "shortPassword";
+	const NOMATCHPASSWORDS = "noMatchPasswords";
+	const EMAILALREADYINUSE = "emailAlreadyInUse";
+	const NOVALIDEMAIL = "noValidEmail";
 
 	private $errorList = array();
 
@@ -53,12 +53,12 @@ class LoginHandler
 	{
 		if($username == "")
 		{
-			$this->errorList[] = $this->noNameError;
+			$this->errorList[] = self::NONAME;
 		}
 
 		if($password == "")
 		{
-			$this->errorList[] = $this->noPasswordError;
+			$this->errorList[] = self::NOPASSWORD;
 		}
 
 		//om något fält inte är ifyllt så meddelas användaren om detta och databasen anropas aldrig.
@@ -79,7 +79,7 @@ class LoginHandler
 		}
 		else
 		{
-			$this->errorList[] = $this->wrongCredentialsError;
+			$this->errorList[] = self::WRONGCREDENTIALS;
 			return;
 		}
 	}
@@ -183,17 +183,17 @@ class LoginHandler
 		//för kort namn eller för långt namn
 		if(strlen($username) < 3)
 		{
-			$this->errorList[] = $this->shortName;
+			$this->errorList[] = self::SHORTNAME;
 		}
 		if(strlen($username) > 25)
 		{
-			$this->errorList[] = $this->longName;
+			$this->errorList[] = self::LONGNAME;
 		}
 
 		//html-taggar i namnet. Olagligt
 		if(strlen($username) !== strlen(strip_tags($username))) 
 		{
-			$this->errorList[] = $this->illegalChars;
+			$this->errorList[] = self::ILLEGALCHARS;
 		}
 
 		//om några fel hittas. Detta för att inte öppna databasen i onödan i nästa test.
@@ -205,7 +205,7 @@ class LoginHandler
 		//kollar om namnet redan finns
 		if($this->repo->getUserByName($username) !== NULL)
 		{
-			$this->errorList[] = $this->nameAlreadyInUse;
+			$this->errorList[] = self::NAMEALREADYINUSE;
 		}
 	}
 
@@ -216,13 +216,13 @@ class LoginHandler
 		//för kort lösenord
 		if(strlen($password1) < 6)
 		{
-			$this->errorList[] = $this->shortPassword;
+			$this->errorList[] = self::SHORTPASSWORD;
 		}
 
 		//lösenorden matchar inte varandra
 		if($password1 !== $password2)
 		{
-			$this->errorList[] = $this->noMatchPasswords;
+			$this->errorList[] = self::NOMATCHPASSWORDS;
 		}
 	}
 
@@ -231,7 +231,7 @@ class LoginHandler
 		//kollar så emailen är en riktig email-adress.
 		if(filter_var($email, FILTER_VALIDATE_EMAIL) === false)
 		{
-			$this->errorList[] = $this->noValidEmail;
+			$this->errorList[] = self::NOVALIDEMAIL;
 		}
 
 		//om några fel hittas. Detta för att inte öppna databasen i onödan i nästa test.
@@ -243,7 +243,7 @@ class LoginHandler
 		//kollar om emailen redan har ett konto
 		if($this->repo->getUserByEmail($email) !== NULL)
 		{
-			$this->errorList[] = $this->emailAlreadyInUse;
+			$this->errorList[] = self::EMAILALREADYINUSE;
 		}
 	}
 

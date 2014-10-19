@@ -84,17 +84,17 @@ class LoginView
 
         $feedback = "";
 
-        if(in_array($this->login->noNameError, $this->login->getErrorList()))
+        if(in_array(\model\LoginHandler::NONAME, $this->login->getErrorList()))
         {
             $feedback .= "<p>Please, fill out your username.</p>";
         }
 
-        if(in_array($this->login->noPasswordError, $this->login->getErrorList()))
+        if(in_array(\model\LoginHandler::NOPASSWORD, $this->login->getErrorList()))
         {
             $feedback .= "<p>Please, fill out your password.</p>";
         }       
 
-        else if(in_array($this->login->wrongCredentialsError, $this->login->getErrorList()))
+        else if(in_array(\model\LoginHandler::WRONGCREDENTIALS, $this->login->getErrorList()))
         {
             $feedback .= "<p>Your username and/or Password was incorrect. Please, try again.</p>";
         }

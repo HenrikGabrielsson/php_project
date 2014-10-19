@@ -13,13 +13,13 @@ class PollCreator
 	private $errorList;
 
 	//errors
-	public $shortQuestion = "shortQuestion"; 
-	public $longQuestion = "longQuestion";
-	public $tooManyAnswers = "tooManyAnswers";
-	public $tooFewAnswers = "tooFewAnswers";
-	public $longAnswer = "longAnswer";
-	public $notPublicOrPrivate = "notPublicOrPrivate";
-	public $categoryDoesNotExist = "categoryDoesNotExist";
+	const SHORTQUESTION = "shortQuestion"; 
+	const LONGQUESTION = "longQuestion";
+	const TOOMANYANSWERS = "tooManyAnswers";
+	const TOOFEWANSWERS = "tooFewAnswers";
+	const LONGANSWER = "longAnswer";
+	const NOTPUBLICORPRIVATE = "notPublicOrPrivate";
+	const CATEGORYDOESNOTEXIST = "categoryDoesNotExist";
 
 	private $categoryRepo;
 	private $pollRepo;
@@ -74,13 +74,13 @@ class PollCreator
 		//frågan får inte vara tom eller bara innehålla "blanka" tecken.
 		if (strlen(trim($question)) == 0)
 		{
-			$this->errorList[] = $this->shortQuestion;
+			$this->errorList[] = self::SHORTQUESTION;
 		}
 
 		//frågan får inte vara längre än 100 tecken;
 		else if(strlen($question) > 100)
 		{
-			$this->errorList[] = $this->longQuestion;
+			$this->errorList[] = self::LONGQUESTION;
 		}
 
 		return $question;
@@ -103,28 +103,22 @@ class PollCreator
 			//koll ifall svaret är för långt
 			if(strlen($ans) > 100)
 			{
-				$this->errorList[] = $this->longAnswer;
+				$this->errorList[] = self::LONGANSWER;
 			}
 		}
 		$answers = $tempArray;
 
 		//inga svar
-		if(is_null($answers))
+		if(count($answers) < 2)
 		{
-			$this->errorList[] = $this->tooFewAnswers;
+			$this->errorList[] = self::TOOFEWANSWERS;
 		}
 
 		//för många svar
 		if(count($answers) > 10)
 		{
-			$this->errorList[] = $this->tooManyAnswers;
+			$this->errorList[] = self::TOOMANYANSWERS;
 		} 
-
-		//för få svar
-		if(count($answers) < 2)
-		{
-			$this->errorList[] = $this->tooFewAnswers;
-		}
 
 		return $answers;
 	}
@@ -133,7 +127,7 @@ class PollCreator
 	{
 		if($this->categoryRepo->getCategoryById($cat) == false)
 		{
-			$this->errorList[] = $this->categoryDoesNotExist;
+			$this->errorList[] = self::CATEGORYDOESNOTEXIST;
 		} 
 	}
 
@@ -142,7 +136,7 @@ class PollCreator
 		//kollar så inte värdet är annat än 1 eller 0 eller om den är null
 		if(($public != 0 && $public != 1) || is_null($public))
 		{
-			$this->errorList[] = $this->notPublicOrPrivate;
+			$this->errorList[] =self::NOTPUBLICORPRIVATE;
 		}
 	}
 }
