@@ -128,7 +128,7 @@ class PollView
 				<input type="hidden" name="'.helpers\GetHandler::$SHOWRESULT.'" />
 				<input type="submit" value="Vote" id="postPoll" />
 			</form>
-			<p><a href="'.$_SERVER['REQUEST_URI'].'&'.helpers\GetHandler::$SHOWRESULT.'">See results</a> without voting.</p>
+			<p><a href="'.\Settings::$ROOT .'?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWPOLL.'&'.helpers\GetHandler::$ID.'='.$this->poll->getId().'&'.helpers\GetHandler::$SHOWRESULT.'">See results</a> without voting.</p>
 			';
 	}
 
@@ -216,7 +216,7 @@ class PollView
 
 		$pollheader =  
 			'<h1>'.$this->poll->getQuestion().'</h1>
-			<p>Created by: <a href="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWUSER.
+			<p>Created by: <a href="'.\Settings::$ROOT.'?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWUSER.
 			'&'.helpers\GetHandler::$ID.'='.$this->owner->getId().'">'.$this->owner->getUserName().'</a></p>
 			';	
 

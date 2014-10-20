@@ -41,7 +41,6 @@ class RegistrationView
 
 	public function getRegister($feedback)
 	{
-
 		$body = 
 		'<h1>Registration</h1>
 
