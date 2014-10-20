@@ -11,7 +11,14 @@ class CategoryView
 	public function __construct($category, $polls)
 	{
 		$this->category = $category;
-		$this->polls = $polls;
+		if($polls)
+		{
+			$this->polls = $polls;
+		}
+		else
+		{
+			$this->polls = null;
+		}
 	}
 
 	public function getTitle()
@@ -21,7 +28,6 @@ class CategoryView
 	
 	public function getBody()
 	{
-
 		$body = 
 		'<h1>'.$this->category->getCategoryName().'</h1>
 		<p>There are currently '.count($this->polls).' polls in this category.</p>';;
@@ -38,8 +44,6 @@ class CategoryView
 			}
 			$pollList .= '</ul>';
 		}
-		
-
 		return $body . $pollList;
 	}
 }

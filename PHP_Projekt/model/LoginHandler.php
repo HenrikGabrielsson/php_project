@@ -203,7 +203,7 @@ class LoginHandler
 		}		
 
 		//kollar om namnet redan finns
-		if($this->repo->getUserByName($username) !== NULL)
+		if($this->repo->getUserByName($username) !== false)
 		{
 			$this->errorList[] = self::NAMEALREADYINUSE;
 		}
@@ -241,7 +241,7 @@ class LoginHandler
 		}	
 
 		//kollar om emailen redan har ett konto
-		if($this->repo->getUserByEmail($email) !== NULL)
+		if($this->repo->getUserByEmail($email) !== false)
 		{
 			$this->errorList[] = self::EMAILALREADYINUSE;
 		}

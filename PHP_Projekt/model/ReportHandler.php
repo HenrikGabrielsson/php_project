@@ -91,6 +91,7 @@ class ReportHandler
 
 		//lägg till rapport på medlem
 		$userReport = new userReport($poll->getCreator(), "poll", $reason);
+		
 		$this->reportedUserRepo->add($userReport);
 
 		//ta bort poll

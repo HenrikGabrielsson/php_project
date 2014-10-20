@@ -2,9 +2,6 @@
 
 namespace view;
 
-require_once("./model/repo/CategoryRepo.php");
-require_once("./model/Category.php");
-
 class SidebarView
 {
 	private $categories;

@@ -39,17 +39,24 @@ class UserController
 		if($id == $login->getId())
 		{
 			//även privata polls visas
-			$polls = $this->pollRepo->getAllPollsFromUser($user->getId(), false, true);
-			$comments = $this->commentRepo->getCommentsFromUser($user->getId(), false);
- 
+			$ownPolls = $this->pollRepo->getAllPollsFromUser($user->getId(), false, true);
 		}
 		else
 		{
-			$polls = $this->pollRepo->getAllPollsFromUser($user->getId(), false);
-			$comments = $this->commentRepo->getCommentsFromUser($user->getId(), false);	
+			//bara publika polls
+			$ownPolls = $this->pollRepo->getAllPollsFromUser($user->getId(), false);	
 		}
 
-		$this->userView = new \view\UserView($user, $polls, $comments);
+		$comments = $this->commentRepo->getCommentsFromUser($user->getId(), false);
+
+		//hämta de polls som användaren har kommenterat i.
+		$pollsCommentedIn = array();
+		foreach($comments as $comment)
+		{
+			$pollsCommentedIn[] = $this->pollRepo->getPollById($comment->getPollId());
+		}
+
+		$this->userView = new \view\UserView($user, $ownPolls, $pollsCommentedIn, $comments);
 
 		$title = $this->userView->getTitle();
 		$body = $this->userView->getBody();

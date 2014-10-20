@@ -88,9 +88,9 @@ class ReportedUserRepo extends \model\repository\Repository
 					$report[$this->reportedUserId]					
 				);
 			}
-			
-		return $retArray;
+			return $retArray;
 		}	
+		return false;
 	}
 
 	public function getAllReports()
@@ -123,9 +123,9 @@ class ReportedUserRepo extends \model\repository\Repository
 					$report[$this->reportedUserId]					
 				);
 			}
-			
-		return $retArray;
+			return $retArray;
 		}	
+		return false;
 	}
 
 }

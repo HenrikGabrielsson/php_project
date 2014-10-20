@@ -5,14 +5,18 @@ namespace view;
 class UserView
 {
 	private $user;
-	private $polls;
+	private $ownPolls;
+
+	private $pollsCommentedIn;
 	private $comments;
 
-	public function __construct($user, $polls, $comments)
+	public function __construct($user, $ownPolls, $pollsCommentedIn, $comments)
 	{
 		$this->user = $user;
-		$this->polls = $polls;
+		$this->ownPolls = $ownPolls;
+
 		$this->comments = $comments;
+		$this->pollsCommentedIn = $pollsCommentedIn;
 	}
 
 	public function getTitle()
@@ -36,7 +40,7 @@ class UserView
 		'<h2>Created polls</h2>
 		<ul>';
 
-		foreach ($this->polls as $poll) {
+		foreach ($this->ownPolls as $poll) {
 			$pollList .= 
 			'<li>
 				<a href="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWPOLL.'&'.helpers\GetHandler::$ID.'='.$poll->getId().'">
@@ -53,13 +57,21 @@ class UserView
 		'<h2>Written comments</h2>
 		<ul>';
 
-		foreach ($this->comments as $comment) {
+		foreach ($this->comments as $comment) 
+		{
+			//hämta den poll som kommentaren ligger i.
+			foreach($this->pollsCommentedIn as $poll)
+			{
+				if($poll && $poll->getId() === $comment->getPollId())
+				{
+					$thisPoll = $poll;
+					break;	
+				}
+			}
 			$commentList .=
-			'<li>In <a href="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWPOLL.'&'.helpers\GetHandler::$ID.'='.$comment->getPollId().'">this poll</a>
-			<p>At '.$comment->getCommentTime(). $this->user->getUserName().' wrote:</p>
-
-			<p>'.$comment->getComment().'</p>
-
+			'<li>In <a href="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWPOLL.'&'.helpers\GetHandler::$ID.'='.$thisPoll->getId().'">'.$thisPoll->getQuestion().'</a>
+				<p>At '.$comment->getCommentTime(). $this->user->getUserName().' wrote:</p>
+				<p>'.$comment->getComment().'</p>
 			</li>'; 
 
 		}

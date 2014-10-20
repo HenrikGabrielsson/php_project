@@ -71,9 +71,9 @@ class ReportedPollRepo extends \model\repository\Repository
 					$report[$this->reportedPollId]					
 				);
 			}
-			
-		return $retArray;
+			return $retArray;
 		}	
+		return false;
 	}
 
 }

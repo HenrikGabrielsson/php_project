@@ -72,9 +72,9 @@ class ReportedCommentRepo extends \model\repository\Repository
 					$report[$this->reportedCommentId]				
 				);
 			}
-			
-		return $retArray;
+			return $retArray;
 		}	
+		return false;
 	}
 
 }

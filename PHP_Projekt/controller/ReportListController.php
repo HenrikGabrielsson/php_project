@@ -153,52 +153,57 @@ class ReportListController
 	}
 
 
-
 	private function getReportedUsers($reports)
 	{
 		$users = array();
-		foreach ($reports as $report) 
+		if($reports)
 		{
-			//om undersökningen inte redan är tillagd.
-			if(array_key_exists($report->getUserId(), $users) == false)
+			foreach ($reports as $report) 
 			{
-				$users[$report->getUserId()] = $this->userRepo->getUserById($report->getUserId());
-			}				
+				//om undersökningen inte redan är tillagd.
+				if(array_key_exists($report->getUserId(), $users) == false)
+				{
+					$users[$report->getUserId()] = $this->userRepo->getUserById($report->getUserId());
+				}				
+			}
+			return array_values($users);
 		}
-		return array_values($users);
 	}
-
 
 
 	private function getReportedPolls($reports)
 	{
 		$polls = array();
-		foreach($reports as $report)
-		{
-			//om undersökningen inte redan är tillagd.
-			if(array_key_exists($report->getPollId(), $polls) == false)
-			{
-				$polls[$report->getPollId()] = $this->pollRepo->getPollById($report->getPollId());
-			}	
-		}
-		return array_values($polls);
-	}
 
+		if($reports)
+		{
+			foreach($reports as $report)
+			{
+				//om undersökningen inte redan är tillagd.
+				if(array_key_exists($report->getPollId(), $polls) == false)
+				{
+					$polls[$report->getPollId()] = $this->pollRepo->getPollById($report->getPollId());
+				}	
+			}
+			return array_values($polls);
+		}
+	}
 
 
 	private function getReportedComments($reports)
 	{
 		$comments = array();
-		foreach($reports as $report)
+		if($reports)
 		{
-			//om kommentaren inte redan är tillagd.
-			if(array_key_exists($report->getCommentId(), $comments) == false)
+			foreach($reports as $report)
 			{
-				$comments[$report->getCommentId()] = $this->commentRepo->getCommentById($report->getCommentId());
-			}	
+				//om kommentaren inte redan är tillagd.
+				if(array_key_exists($report->getCommentId(), $comments) == false)
+				{
+					$comments[$report->getCommentId()] = $this->commentRepo->getCommentById($report->getCommentId());
+				}	
+			}
+			return array_values($comments);
 		}
-
-		return array_values($comments);
 	}
-	
 }
