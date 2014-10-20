@@ -51,10 +51,28 @@ class PollController
 		//om undersökningen är privat så kan bara skaparen se den.
 		if($poll->getPublic() == false && $poll->getCreator() !== $login->getId())
 		{
+			//om användaren röstade i en privat poll
+			if($poll->getPublic() == false && $this->pollView->userVoted())
+			{
+				$title = $this->pollView->privateVoteTitle();
+				$body = $this->pollView->PrivateVotePage();
+				$this->htmlView->showHTML($title, $body);
+				die();
+			}
+
 			$title = $this->pollView->denyTitle();
 			$body = $this->pollView->denyPage();
 			$this->htmlView->showHTML($title, $body);
 			return;
+		}
+
+		//om användaren röstade i en privat poll
+		if($poll->getPublic() == false && $this->pollView->userVoted())
+		{
+			$title = $this->pollView->privateVoteTitle();
+			$body = $this->pollView->PrivateVotePage();
+			$this->htmlView->showHTML($title, $body);
+			die();
 		}
 
 		//om användaren vill se resultat eller frågan där de kan rösta
@@ -86,8 +104,9 @@ class PollController
 
 				//uppdaterna med den nya rösten
 				$poll = $this->pollRepo->getPollById($id);
-				$this->pollView = new \view\PollView($poll, $owner, $login, $this->commentHandler, $this->reportHandler);
 
+				//uppdatera undersökningsvyn med den nya rösten.
+				$this->pollView = new \view\PollView($poll, $owner, $login, $this->commentHandler, $this->reportHandler);
 			}
 
 			//om användaren har rapporterat en undersökning

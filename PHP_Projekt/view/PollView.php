@@ -298,7 +298,20 @@ class PollView
 		}
 
 		return $retHTML . '</div>';
+	}
 
+	public function privateVoteTitle()
+	{
+		return "Thanks for the vote";
+	}
+
+	public function privateVotePage()
+	{
+		return 
+		'<h1>Thanks for the vote!</h1>
+		<p>This poll is private so we can not show you the result. But thanks for the vote. 
+			Maybe if you ask the owner nicely, he will show you the results. </p>
+		';
 	}
 
 	private function convertToPercentage($answers)
