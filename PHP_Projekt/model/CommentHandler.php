@@ -17,7 +17,9 @@ class CommentHandler
 	const LONGCOMMENT = "longComment";
 	const POLLDOESNOTEXIST = "pollDoesNotExist";
 
-	private $errorList = array();
+	const COMMENTSAVED = "commentSaved";
+
+	private $feedbackList = array();
 
 	private $commentRepo;
 	private $pollRepo;
@@ -30,9 +32,9 @@ class CommentHandler
 		$this->userRepo = new \model\repository\UserRepo();
 	}
 
-	public function getErrorList()
+	public function getFeedbackList()
 	{
-		return $this->errorList;
+		return $this->feedbackList;
 	}
 
 	public function getCommentsInPoll($pollId)
@@ -57,16 +59,16 @@ class CommentHandler
 		$this->validatePoll($pollId);
 
 		//om det finns fel.
-		if(count($this->errorList) > 0)
+		if(count($this->feedbackList) > 0)
 		{
-			return false;
+			return;
 		}
 
 		//skapar kommentaren och sparar den i databasen
 		$comment = new Comment($comment, $pollId, $_SESSION[helpers\SessionHandler::$USERID], date("Y-m-d H:i:s"));
 		$this->commentRepo->add($comment);
 
-		return true;
+		$this->feedbackList[] = self::COMMENTSAVED;	
 	}
 
 	private function validateComment($comment)
@@ -77,13 +79,13 @@ class CommentHandler
 		//kommentaren får inte vara tom eller bara innehålla "blanka" tecken.
 		if (strlen(trim($comment)) == 0)
 		{
-			$this->errorList[] = self::SHORTCOMMENT;
+			$this->feedbackList[] = self::SHORTCOMMENT;
 		}
 
 		//kommentaren får inte vara längre än 100 tecken;
 		else if(strlen($comment) > 100)
 		{
-			$this->errorList[] = self::LONGCOMMENT;
+			$this->feedbackList[] = self::LONGCOMMENT;
 		}
 
 		return $comment;
@@ -93,7 +95,7 @@ class CommentHandler
 	{		
 		if($this->pollRepo->getPollById($pollId) == false)
 		{
-			$this->errorList[] = self::POLLDOESNOTEXIST;
+			$this->feedbackList[] = self::POLLDOESNOTEXIST;
 		}
 	}
 }

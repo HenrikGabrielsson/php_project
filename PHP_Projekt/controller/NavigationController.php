@@ -15,7 +15,6 @@ require_once("controller/PollCreationController.php");
 require_once("controller/SearchController.php");
 require_once("controller/ReportListController.php");
 
-require_once("./view/helpers/GetHandler.php");
 require_once("./view/NavigationView.php");
 require_once("./view/SidebarView.php");
 

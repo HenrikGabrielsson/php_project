@@ -82,14 +82,9 @@ class PollController
 			{
 				$comment = $this->pollView->getComment();
 
-				if($this->commentHandler->attemptCreateComment($comment, $id))
-				{
-					$feedback = "Thank you for your comment.";
-				}
-				else
-				{
-					$feedback = $this->commentHandler->getErrorList();
-				}
+				$this->commentHandler->attemptCreateComment($comment, $id);
+
+				$feedback = $this->commentHandler->getFeedbackList();
 			}
 
 			//om användaren har röstat så skickas detta till modellen
@@ -99,8 +94,6 @@ class PollController
 				$answer = $this->pollView->getAnswer();
 
 				$this->voter->addNewVote($answer,$ip);
-
-				$feedback = "Thank you for your vote.";
 
 				//uppdaterna med den nya rösten
 				$poll = $this->pollRepo->getPollById($id);
@@ -114,14 +107,9 @@ class PollController
 			{
 				$reportReason = $this->pollView->getPollReportReason();
 
-				if($this->reportHandler->reportPoll($poll, $reportReason))
-				{
-					$feedback = "Thank you reporting this poll. We will have a look at it.";
-				}
-				else
-				{
-					$feedback = $this->reportHandler->getErrorList();
-				}
+				$this->reportHandler->reportPoll($poll, $reportReason);
+
+				$feedback = $this->reportHandler->getFeedbackList();
 			}
 
 			//om användaren har rapporterat en kommentar
@@ -132,15 +120,9 @@ class PollController
 
 				$comment = $this->commentHandler->getComment($commentId);
 
+				$this->reportHandler->reportComment($comment, $reportReason);
 
-				if($this->reportHandler->reportComment($comment, $reportReason))
-				{
-					$feedback = "Thank you reporting this comment. We will have a look at it.";
-				}
-				else
-				{
-					$feedback = $this->reportHandler->getErrorList();
-				}
+				$feedback = $this->reportHandler->getFeedbackList();
 			}
 
 			$body = $this->pollView->getResultPage($feedback);

@@ -94,7 +94,7 @@ class PollView
 		return $this->poll->getQuestion();
 	}
 
-	public function getResultPage($feedback = "")
+	public function getResultPage($feedback = null)
 	{    
 		return 
 			$this->getTitleAndCreator().
@@ -265,36 +265,39 @@ class PollView
 
 		$retHTML = '<div id="comments">';
 
-		foreach ($comments as $comment) 
+		if($comments)
 		{
-			$writer = $this->commentHandler->getCommentWriter($comment);
-
-			$retHTML .= 
-			'<div class="comment">
-				<div class="commentHead">
-					<p>'.$comment->getCommentTime().'</p><p><a href="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWUSER.
-					'&'.helpers\GetHandler::$ID.'='.$comment->getUserId().'">'. $writer->getUserName().'</a>';
-
-
-			if($this->login->getIsLoggedIn())
+			foreach ($comments as $comment) 
 			{
-				$retHTML .= 
-				'
-					<input type="button" value="Report this comment" class="showCommentReportForm" style="display:none">
-					<form method="post" action="'.$_SERVER['REQUEST_URI'].'" class="reportComment">
-						<input type="hidden" name="'.helpers\PostHandler::$COMMENTREPORT_ID.'" value="'.$comment->getId().'">
-						<input type="text" maxlength="200" name="'.helpers\PostHandler::$COMMENTREPORT_REASON.'" placeholder="(optional) Write a comment. Why did you report this?" />
-						<input type="submit" value="Report">
-					</form>
-				';
-			}
+				$writer = $this->commentHandler->getCommentWriter($comment);
 
-			$retHTML .=
-			'</div>
-				<div class="commentBody">
-					'.$comment->getComment().'
-				</div>
-			</div>';
+				$retHTML .= 
+				'<div class="comment">
+					<div class="commentHead">
+						<p>'.$comment->getCommentTime().'</p><p><a href="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWUSER.
+						'&'.helpers\GetHandler::$ID.'='.$comment->getUserId().'">'. $writer->getUserName().'</a>';
+
+
+				if($this->login->getIsLoggedIn())
+				{
+					$retHTML .= 
+					'
+						<input type="button" value="Report this comment" class="showCommentReportForm" style="display:none">
+						<form method="post" action="'.$_SERVER['REQUEST_URI'].'" class="reportComment">
+							<input type="hidden" name="'.helpers\PostHandler::$COMMENTREPORT_ID.'" value="'.$comment->getId().'">
+							<input type="text" maxlength="200" name="'.helpers\PostHandler::$COMMENTREPORT_REASON.'" placeholder="(optional) Write a comment. Why did you report this?" />
+							<input type="submit" value="Report">
+						</form>
+					';
+				}
+
+				$retHTML .=
+				'</div>
+					<div class="commentBody">
+						'.$comment->getComment().'
+					</div>
+				</div>';
+			}
 		}
 
 		return $retHTML . '</div>';
@@ -371,12 +374,29 @@ class PollView
 	        {
 	            $retString .= "<li>The poll does not exist.</li>";
 	        }
+	        if(in_array(\model\CommentHandler::COMMENTSAVED, $feedback))
+	        {
+	            $retString .= "<li>Thanks for the comment.</li>";
+	        }	        
+   
+	        //rättmeddelanden
+	        if(in_array(\model\ReportHandler::REPORTEDPOLL, $feedback) || in_array(\model\ReportHandler::REPORTEDCOMMENT, $feedback))
+	        {
+	            $retString .= "<li>Thanks for reporting this. We will take a look at it.</li>";
+	        }	     
+
 	        $retString .="</ul>";
 	    }
 
 	    else
 	    {
 	    	$retString .= '<p>'.$feedback.'</p>';
+
+	    	//om användaren har röstat
+	    	if($this->userVoted())
+	        {
+	        	$retString .= "<p>Thanks for the vote.</p>";
+	        }
 	    }
 
         return $retString . '</div>';

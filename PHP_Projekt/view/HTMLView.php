@@ -2,6 +2,9 @@
 
 namespace view;
 
+require_once("./view/helpers/PostHandler.php");
+require_once("./view/helpers/GetHandler.php");
+
 class HTMLView 
 {
     private $loginBox;

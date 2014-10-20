@@ -332,6 +332,25 @@ class ReportListView
 	        {
 	            $retString .= "<li>Another admin must delete the user.</li>";
 	        }
+
+	     	//inte fel utan rättmeddelandwen
+	     	if(in_array(\model\ReportHandler::POLLDELETED, $feedback))
+	        {
+	            $retString .= "<li>The poll has been deleted.Thanks for the help.</li>";
+	        }
+	     	if(in_array(\model\ReportHandler::COMMENTDELETED, $feedback))
+	        {
+	            $retString .= "<li>The comment has been deleted.Thanks for the help.</li>";
+	        }	
+	     	if(in_array(\model\ReportHandler::USERDELETED, $feedback))
+	        {
+	            $retString .= "<li>The user has been deleted.Thanks for the help.</li>";
+	        }	
+	     	if(in_array(\model\ReportHandler::USERNOMINATED, $feedback))
+	        {
+	            $retString .= "<li>You want to delete this user. Someone else must confirm first. Thanks for the help.</li>";
+	        }	
+
 	    }
 
 	    else

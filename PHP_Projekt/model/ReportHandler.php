@@ -28,7 +28,15 @@ class ReportHandler
 	const NOPOLL = "noPoll";
 	const SAMEADMIN = "sameAdmin";
 
-	private $errorList = array();
+	//success
+	const REPORTEDPOLL = "reportedPoll";
+	const REPORTEDCOMMENT = "reportedComment";
+	const USERNOMINATED = "userNominated";
+	const USERDELETED = "userDeleted";
+	const POLLDELETED = "pollDeleted";
+	const COMMENTDELETED = "commentDeleted";
+
+	private $feedbackList = array();
 
 	public function __construct()
 	{
@@ -40,9 +48,9 @@ class ReportHandler
 		$this->userRepo = new repository\UserRepo();
 	}
 
-	public function getErrorList()
+	public function getFeedbackList()
 	{
-		return $this->errorList;
+		return $this->feedbackList;
 	}	
 
 	public function reportComment($comment, $reason)
@@ -55,11 +63,8 @@ class ReportHandler
 		{
 			$report = new CommentReport($comment->getUserId(), $comment->getId(), $reason);
 			$this->reportedCommentRepo->add($report);
-			return true;
+			$this->feedbackList[] = self::REPORTEDCOMMENT;
 		}
-		return false;
-		
-
 	}
 
 	public function reportPoll($poll, $reason)
@@ -73,9 +78,8 @@ class ReportHandler
 		{
 			$report = new PollReport($poll->getCreator(), $poll->getId(), $reason);
 			$this->reportedPollRepo->add($report);
-			return true;
+			$this->feedbackList[] = self::REPORTEDPOLL;
 		}
-		return false;
 	}
 
 	public function pollDeleted($pollId, $reason)
@@ -84,7 +88,7 @@ class ReportHandler
 
 		if(!$this->validateReason($reason, true))
 		{
-			return false;
+			return;
 		}
 
 		$poll = $this->pollRepo->getPollById($pollId);
@@ -97,7 +101,8 @@ class ReportHandler
 		//ta bort poll
 		$this->pollRepo->delete($pollId);
 
-		return true;
+		$this->feedbackList[] = self::POLLDELETED;
+		
 	}
 
 	public function commentDeleted($commentId, $reason)
@@ -106,7 +111,7 @@ class ReportHandler
 
 		if(!$this->validateReason($reason, true))
 		{
-			return false;
+			return;
 		}
 
 		$comment = $this->commentRepo->getCommentById($commentId);
@@ -118,7 +123,7 @@ class ReportHandler
 		//ta bort comment
 		$this->commentRepo->delete($commentId);
 
-		return true;
+		$this->feedbackList[] = self::COMMENTDELETED;
 	}
 
 	//ta bort en användare
@@ -132,14 +137,14 @@ class ReportHandler
 				//Det får inte vara samma som tar bort användaren som nominerade den för borttagning
 				if($report->getNomination() == $adminId)
 				{
-					$this->errorList[] = self::SAMEADMIN;
-					return false;
+					$this->feedbackList[] = self::SAMEADMIN;
+					return;
 				}
 		}
 		
 		//die!!
 		$this->userRepo->delete($userId);
-		return true;
+		$this->feedbackList[] = self::USERDELETED;
 	}
 
 
@@ -155,7 +160,7 @@ class ReportHandler
 				$this->reportedUserRepo->nominateForDeletion($report->getId(), $adminId);
 			}
 		}
-		return true;
+		$this->feedbackList[] = self::USERNOMINATED;
 	}
 
 
@@ -167,13 +172,13 @@ class ReportHandler
 		//om reason inte är valfritt och den är tom:
 		if($mandatory && strlen(trim($reason)) == 0)
 		{
-			$this->errorList[] = self::NOREASON;
+			$this->feedbackList[] = self::NOREASON;
 			return false;
 		}
 
 		if(strlen($reason) > 200)
 		{
-			$this->errorList[] = self::LONGREASON;
+			$this->feedbackList[] = self::LONGREASON;
 			return false;
 		}
 		return true;
@@ -183,7 +188,7 @@ class ReportHandler
 	{		
 		if(is_null($poll))
 		{
-			$this->errorList[] = self::NOPOLL;
+			$this->feedbackList[] = self::NOPOLL;
 			return false;
 		}	
 		return true;
@@ -194,7 +199,7 @@ class ReportHandler
 	{
 		if(is_null($comment))
 		{
-			$this->errorList[] = self::NOCOMMENT;
+			$this->feedbackList[] = self::NOCOMMENT;
 			return false;
 		}	
 		return true;
