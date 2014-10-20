@@ -73,7 +73,7 @@ class LoginHandler
 
 
 		//Om användaren hittades och om lösenordet matchar 
-		if(isset($user) && $this->checkPassword($password, $user->getPassword(), $user->getSalt()))
+		if($user && $this->checkPassword($password, $user->getPassword(), $user->getSalt()))
 		{
 			$this->loginUser($user->getUsername(), $user->getId(), $user->getAdmin());
 		}
