@@ -111,6 +111,7 @@ class PollRepo extends \model\repository\Repository
 			
 		return $retPolls;
 		}	
+		return false;
 	}
 	
 	public function getPollById($id)
@@ -149,7 +150,7 @@ class PollRepo extends \model\repository\Repository
 				return $poll;
 			}
 		}
-		return null;
+		return false;
 	}
 	
 	public function getAllPollsFromUser($userId, $getAll, $includePrivate = false)
@@ -200,9 +201,9 @@ class PollRepo extends \model\repository\Repository
 				
 			}
 			
-		return $retPolls;
+			return $retPolls;
 		}
-		
+		return false;
 	}
 
 	public function getLatestPolls($numberOfPolls)
@@ -247,10 +248,9 @@ class PollRepo extends \model\repository\Repository
 				);
 				
 			}
-		}
-			
-		return $retPolls;
-
+			return $retPolls;
+		}			
+		return false;
 	}
 	
 	public function getAllPollsInCategory($categoryId)
@@ -290,8 +290,9 @@ class PollRepo extends \model\repository\Repository
 					$poll[$this->pollId]						
 				);		
 			}		
-		return $retPolls;
+			return $retPolls;
 		}
+		return false;
 	}
 	
 	public function addVote($answerId, $ip)

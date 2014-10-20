@@ -25,8 +25,7 @@ class UserRepo extends \model\repository\Repository
 
 	//hämta en användare
 	public function getUserById($id)
-	{		
-		
+	{				
 		//skapar en sql sats och parametrar som ska skickas med.
 		$sql = 'SELECT * FROM '.$this->userTable.' WHERE '.$this->userId.' = ? ';
 		$params = array($id);
@@ -55,9 +54,9 @@ class UserRepo extends \model\repository\Repository
 				$result[$this->admin],
 				$result[$this->userId]
 			);
-		}
-		
-		return $user;
+			return $user;
+		}	
+		return false;
 		
 	}
 
@@ -89,9 +88,9 @@ class UserRepo extends \model\repository\Repository
 				$result[$this->admin],
 				$result[$this->userId]
 			);
+			return $user;
 		}
-
-		return $user;
+		return false;
 	}
 
 
@@ -123,9 +122,9 @@ class UserRepo extends \model\repository\Repository
 				$result[$this->admin],
 				$result[$this->userId]
 			);
+			return $user;
 		}
-
-		return $user;
+		return false;		
 	}	
 
 	public function add(\model\User $user)
@@ -153,11 +152,6 @@ class UserRepo extends \model\repository\Repository
 		$query = $this->dbConnection->prepare($sql);
 		$result = $query->execute($params);
 		
-		return $result;
-		
+		return $result;		
 	}
-	
 }
-
-
-

@@ -64,11 +64,11 @@ class NavigationController
                 break;
             case \view\helpers\GetHandler::$VIEWREGISTER:
                 $controller = new RegistrationController($this->htmlView);
-                $controller->getContent($this->navView->getId(), $this->loginHandler);
+                $controller->getContent($this->loginHandler);
                 break;
             case \view\helpers\GetHandler::$VIEWCREATEPOLL:
                 $controller = new PollCreationController($this->htmlView);
-                $controller->getContent($this->navView->getId(), $this->loginHandler);
+                $controller->getContent($this->loginHandler);
                 break;
             case \view\helpers\GetHandler::$VIEWSEARCH:
                 $controller = new SearchController($this->htmlView);
@@ -80,7 +80,7 @@ class NavigationController
                 break;
             default:
                 $controller = new HomeController($this->htmlView);
-                $controller->getContent($this->navView->getId(), $this->loginHandler);
+                $controller->getContent($this->loginHandler);
         }
  
     }

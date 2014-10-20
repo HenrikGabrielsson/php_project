@@ -70,4 +70,16 @@ class HTMLView
     {
         $this->sidebarContent = $sidebarContent;
     }
+
+    public function showErrorPage()
+    {
+        $title = "We couldn't the page!";
+        $body = 
+        '<h1>Strange...</h1>
+        <p>We couldn\'t find the page you were looking for. Check the URL for errors and try again. It\'s also possible that the page has been deleted. Sorry about that.
+        </p>
+        ';
+
+        $this->showHTML($title, $body);
+    }
 }

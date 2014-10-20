@@ -52,7 +52,7 @@ class LoginView
         {
         	$loginDiv .= 
             $this->makeFeedBack().
-            '<p>You are logged in as '.$this->login->getUser().'.</p>
+            '<p>You are logged in as <a href="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWUSER.'&'.helpers\GetHandler::$ID.'='.$this->login->getId().'">'.$this->login->getUser().'</a>.</p>
             <p><a href="?'.helpers\GetHandler::$LOGOUT.'">Log out</a></p>
             ';
         }

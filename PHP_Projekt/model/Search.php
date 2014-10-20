@@ -2,8 +2,6 @@
 
 namespace model;
 
-require_once("./model/Poll.php");
-
 class Search
 {
 	private $pollRepo;

@@ -16,7 +16,7 @@ class RegistrationController
 		$this->regView = new \view\RegistrationView();
 	}
 
-	public function getContent($id, $login)
+	public function getContent($login)
 	{
 
 		$title = $this->regView->getTitle();

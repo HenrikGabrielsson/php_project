@@ -2,7 +2,6 @@
 
 namespace controller;
 
-require_once("./view/HTMLView.php");
 require_once("./view/CategoryView.php");
 
 require_once("./model/repo/PollRepo.php");
@@ -30,6 +29,13 @@ class CategoryController
 		$polls = $this->pollRepo->getAllPollsInCategory($id);
 		$category = $this->categoryRepo->getCategoryById($id);
 
+		//kategori valdes inte/hittades inte
+		if($category === false)
+		{
+			$this->htmlView->showErrorPage();
+			die();
+		}
+		
 		$this->categoryView = new \view\CategoryView($category, $polls);
 
 		//hämta titel och body och visa i htmlView.

@@ -11,7 +11,10 @@ class UserController
 {
 	private $htmlView;
 	private $userView;
+	
 	private $userRepo;
+	private $pollRepo;
+	private $commentRepo;
 
 	public function __construct($htmlView)
 	{
@@ -24,6 +27,13 @@ class UserController
 	public function getContent($id, $login)
 	{
 		$user = $this->userRepo->getUserById($id);
+
+		//om användaren inte hittas/ej anges
+		if($user === false)
+		{
+			$this->htmlView->showErrorPage();
+			die();
+		}
 
 		//om den inloggade användaren kollar på sin egen sida så ser den lite annorlunda ut
 		if($id == $login->getId())

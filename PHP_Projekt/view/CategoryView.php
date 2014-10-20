@@ -18,7 +18,7 @@ class CategoryView
 	{
 		return $this->category->getCategoryName();
 	}
-
+	
 	public function getBody()
 	{
 

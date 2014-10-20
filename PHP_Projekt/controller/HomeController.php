@@ -19,7 +19,7 @@ class HomeController
 		
 	}
 
-	public function getContent($id, $login)
+	public function getContent($login)
 	{
 		$title = $this->homeView->getTitle();
 

@@ -22,7 +22,7 @@ class PollCreationController
 		$this->pollCreationView = new \view\PollCreationView($this->catRepo->getAllCategories());	
 	}
 
-	public function getContent($id, $login)
+	public function getContent($login)
 	{
 		$title = $this->pollCreationView->getTitle();
 		$body;

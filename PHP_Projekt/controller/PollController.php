@@ -35,6 +35,15 @@ class PollController
 	public function getContent($id, $login)
 	{	
 		$poll = $this->pollRepo->getPollById($id);
+
+
+		//undersökningen valdes inte/hittades inte
+		if($poll === false)
+		{
+			$this->htmlView->showErrorPage();
+			die();
+		}
+
 		$owner = $this->userRepo->getUserById($poll->getCreator());
 
 		$this->pollView = new \view\PollView($poll, $owner, $login, $this->commentHandler, $this->reportHandler);
