@@ -6,8 +6,8 @@ class Category
 {
 	private $repo;
 
-	private $id;
-	private $categoryName;
+	private $id;			//kategorins id
+	private $categoryName;	//Kategorins namn
 
 	public function __construct($id, $name)
 	{

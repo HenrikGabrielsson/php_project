@@ -4,11 +4,11 @@ namespace model;
 
 class UserReport
 {
-	private $reportedUserId;
-	private $userId;
-	private $type;
-	private $commentFromAdmin;
-	private $nominatedForDeletionBy;
+	private $reportedUserId;			//unikt id
+	private $userId;					//användares unika id
+	private $type;						//typ av rapportering som ledde till att en rapportering gjordes på användare
+	private $commentFromAdmin;			//kommentar från admin gjorde rapporteringen
+	private $nominatedForDeletionBy;	//Om användaren har nominerats till bortttagning, id på admin som gjorde nomineringen
 
 	public function __construct($userId, $type, $commentFromAdmin, $nominatedForDeletionBy = null, $reportedUserId = null)
 	{

@@ -11,12 +11,18 @@ class Search
 		$this->pollRepo = new repository\pollRepo();
 	}
 
+	/**
+	* hämta sökresultat efter att ha fått sökord
+	* @param 	array 		array med sökord
+	* @return 	array 		array med matchande polls. 	
+	*/
 	public function getSearchResults($searchArr)
 	{
-		$allPolls = $this->pollRepo->getAllPublicPolls();
 
+		$allPolls = $this->pollRepo->getAllPublicPolls();
 		$matchingPolls = array();
 
+		//kolla igenom alla polls och hämta ut de som matchar
 		foreach ($allPolls as $poll) 
 		{
 			$match = false;

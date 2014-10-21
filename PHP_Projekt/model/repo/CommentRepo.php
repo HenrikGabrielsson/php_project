@@ -19,6 +19,8 @@ class CommentRepo extends \model\repository\Repository
 	private $comment = "comment";
 	private $commentTime = "commentTime";
 
+
+	//lägg till en Kommentar
 	public function add(\model\Comment $comment)
 	{
 		$sql = "INSERT INTO ".$this->commentTable."(".$this->pollId.", ".$this->userId.", ".$this->comment.", ".$this->commentTime.")
@@ -33,6 +35,7 @@ class CommentRepo extends \model\repository\Repository
 		return $result;
 	}
 
+	//Ta bort en kommentar (/)by id)
 	public function delete($commentId)
 	{
 		$sql = "CALL ".$this->deleteCommentProc."(?)";
@@ -46,6 +49,11 @@ class CommentRepo extends \model\repository\Repository
 		return $result;		
 	}
 
+	/**
+	* Hämta kommentarer gjorda av en användare
+	* @param int 	id på användaren
+	* @param bool 	ska alla hämtas. Annars bara de 10 första
+	*/
 	public function getCommentsFromUser($userId, $getAll)
 	{
 
@@ -89,6 +97,7 @@ class CommentRepo extends \model\repository\Repository
 		}			
 	}
 
+	//hämta alla kommentarer i angiven poll
 	public function getCommentsInPoll($pollId)
 	{
 		//array som ska returneras
@@ -126,6 +135,7 @@ class CommentRepo extends \model\repository\Repository
 		}		
 	}
 
+	//hämta en specifik kommentar
 	public function getCommentById($commentId)
 	{
 		$sql = "SELECT * FROM ".$this->commentTable." WHERE ".$this->commentId."=?";

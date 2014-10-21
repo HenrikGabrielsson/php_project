@@ -32,10 +32,16 @@ class PollController
 
 	}
 
-	public function getContent($id, $login)
+	/**
+	*	Hämtar innehållet som ska visas och fyller htmlViewn med det.
+	* @param login 	En loginhandler som berättar vissa saker om den inloggade användaren.
+	* @param id   	id på den in poll som ska visas upp.
+	*/
+	public function getContent($id, \model\LoginHandler $login)
 	{	
-		$poll = $this->pollRepo->getPollById($id);
 
+		//hämta aktuell poll för sidan
+		$poll = $this->pollRepo->getPollById($id);
 
 		//undersökningen valdes inte/hittades inte
 		if($poll === false)
@@ -66,7 +72,7 @@ class PollController
 			return;
 		}
 
-		//om användaren röstade i en privat poll
+		//om användaren röstade i en privat poll (shared)
 		if($poll->getPublic() == false && $this->pollView->userVoted())
 		{
 			$title = $this->pollView->privateVoteTitle();
@@ -127,6 +133,8 @@ class PollController
 
 			$body = $this->pollView->getResultPage($feedback);
 		}
+
+		//sidan där man kan rösta visas annars
 		else
 		{
 			$body = $this->pollView->getForm();

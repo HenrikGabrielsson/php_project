@@ -20,11 +20,17 @@ class PollView
 		$this->login = $login;
 	}
 
+	/**
+	*	@return 	string 	title på sidan när användaren inte får komma åt innehållet
+	*/
 	public function denyTitle()
 	{
 		return "Access Denied";
 	}
 
+	/**
+	*	@return 	string 	content på sidan när användaren inte får komma åt innehållet
+	*/
 	public function denyPage()
 	{
 		return 
@@ -34,66 +40,109 @@ class PollView
 		';
 	}
 
+	/**
+	*	@return 	int 	id på det som användaren röstade på 
+	*/
 	public function getAnswer()
 	{
 		return $_GET[helpers\GetHandler::$VOTE];
 	}
 
+
+	/**
+	*	@return 	string 	hämtar kommentar som användaren gjorde
+	*/
 	public function getComment()
 	{
 		return $_POST[helpers\PostHandler::$COMMENT];
 	}
 
+	/**
+	*	@return 	string 	hämtar ip
+	*/
 	public function getClient()
 	{
 		return $_SERVER["REMOTE_ADDR"];
 	}
 
+	/**
+	*	@return 	string 	title på sidan när användaren inte får komma åt innehållet
+	*/
 	public function userWantsResults()
 	{
 		return isset($_GET[helpers\GetHandler::$SHOWRESULT]);
 	}
 
+	/**
+	*	@return 	bool 	om användaren har röstat
+	*/
 	public function userVoted()
 	{
 		return isset($_GET[helpers\GetHandler::$VOTE]);
 	}
 
+
+	/**
+	*	@return 	bool 	om användaren har kommenterat
+	*/
 	public function userCommented()
 	{
 		return isset($_POST[helpers\PostHandler::$COMMENT]);
 	}
 
+	/**
+	*	@return 	bool 	om användaren har rapporterat kommentar
+	*/
 	public function userReportedComment()
 	{
 		return isset($_POST[helpers\PostHandler::$COMMENTREPORT_ID]);
 	}
 
+	/**
+	*	@return 	int 	hämtar id på rapporterad kommentar
+	*/
 	public function getCommentReportId()
 	{
 		return $_POST[helpers\PostHandler::$COMMENTREPORT_ID];
 	}
 
+
+	/**
+	*	@return 	string 	om användaren har lämnat en anledning till rapporterad kommentar
+	*/
 	public function getCommentReportReason()
 	{
 		return $_POST[helpers\PostHandler::$COMMENTREPORT_REASON];
 	}
 
+	/**
+	*	@return 	bool 	om användaren har lämnat en anledning till rapporterad poll
+	*/
 	public function userReportedPoll()
 	{
 		return isset($_POST[helpers\PostHandler::$POLLREPORT_REASON]);
 	}
 
+	/**
+	*	@return 	string 	användarens anledning till rapporterad poll
+	*/
 	public function getPollReportReason()
 	{
 		return $_POST[helpers\PostHandler::$POLLREPORT_REASON];
 	}
 
+	/**
+	*	@return 	string 	sidans titel.
+	*/	
 	public function getTitle()
 	{
 		return $this->poll->getQuestion();
 	}
 
+	/**
+	*	denna lilla funktion hämtar in allt som ska ingå i resultatsidan för en undersökning. 
+	*	@return 	string 	sidans innehåll sammansatt.
+	*/
 	public function getResultPage($feedback = null)
 	{    
 		return 
@@ -103,6 +152,12 @@ class PollView
 			$this->getCommentSection();
 	}
 
+
+	/**
+	*	hämtar in formulär där anädnaren kan rösta i en poll
+	* 	@param 		bool 	om delaknappen inte ska visas. default= false (knappen visas)
+	*	@return 	string 	html-form
+	*/
 	public function getForm($ignoreShare = false)
 	{
 		//loopar ut alla alternativ som radioknappar
@@ -111,6 +166,7 @@ class PollView
 			$alternatives .= '<label for="'.$answer->getId().'" >'.$answer->getAnswer().': </label><input type="radio" name="'.helpers\GetHandler::$VOTE.'" id="'.$answer->getId().'" value="'.$answer->getId().'" />';
 		}
 
+		//hämta delen där användaren kan kopiera kod för att visa undersökningen på sin egen sida.
 		$share = "";
 		if($ignoreShare == false)	
 		{
@@ -132,6 +188,9 @@ class PollView
 			';
 	}
 
+	/**
+	*	@return 	string 	returnerar ett textfält och en knapp för om användaren vill dela undersökningen.
+	*/
 	private function getShare()
 	{
 		$shareCode = 
@@ -144,6 +203,10 @@ class PollView
 		return $shareCode;
 	}
 
+	/**
+	*	Här skapas resultatet för rösterna i undersökningen.
+	*	@return 	string 	html för den del som ska visa resultatet.
+	*/
 	public function getResults()
 	{
 		$answers = $this->poll->getAnswers();
@@ -154,7 +217,7 @@ class PollView
 		//färgerna som används i diagrammet
 		$colors = \view\helpers\DiagramMaker::getDiagramColors();
 
-		//om inga röster har gjorts i undersökningen så ritas diagrammet
+		//om röster har gjorts i undersökningen så ritas diagrammet
 		if($percentageArr)
 		{
 			//rita ett cirkeldiagram som är 200 X 200 px
@@ -165,6 +228,7 @@ class PollView
 			$image = "No votes yet.";
 		}
 
+		//skriver ut förklaringen till diagrammet, med färg, procent, och svar.
 		$resultList = "";
 		for($i = 0; $i < count($answers); $i++)
 		{
@@ -192,6 +256,10 @@ class PollView
 		</div>';	
 	}
 
+	/**
+	*	Formulär där man kan rapportera poll.
+	* 	@return string 	html-form för att rapportera poll.
+	*/
 	public function getReportPoll()
 	{
 		$reportForm = "";
@@ -211,6 +279,9 @@ class PollView
 		return $reportForm;
 	}
 
+	/**
+	*	@return 	string 	titel på undersökning och länk till skaparens användarsida
+	*/
 	public function getTitleAndCreator()
 	{
 
@@ -220,11 +291,12 @@ class PollView
 			'&'.helpers\GetHandler::$ID.'='.$this->owner->getId().'">'.$this->owner->getUserName().'</a></p>
 			';	
 
-
 		return $pollheader;
-
 	}
 
+	/**
+	*	@return 	string 	hämtar delarna där man kan kommentera och läsa kommentarer från andra.
+	*/
 	public function getCommentSection()
 	{
 		return 
@@ -236,6 +308,9 @@ class PollView
 		';
 	}
 
+	/**
+	*	@return 	string 	om man är inloggad: ett formulär för att lämna kommentarer på undersöknignens resultat.
+	*/
 	public function getCommentForm()
 	{
 		if($this->login->getIsLoggedIn())
@@ -250,6 +325,7 @@ class PollView
 			</div>
 			';
 		}
+		//Vid utloggad visas inget formulär.
 		else
 		{
 			return 
@@ -259,16 +335,23 @@ class PollView
 		}
 	}
 
+	/**
+	*	Denna funktion hämtar in alla kommentarer som gjort s på undersöknigen och visar dem på sidan.
+	*	@return 	string 	html för delen med kommentarerna.
+	*/
 	private function getComments()
 	{
+		//hämtar kommentarer för denna undersökning.
 		$comments = $this->commentHandler->getCommentsInPoll($this->poll->getId());
 
 		$retHTML = '<div id="comments">';
 
+		// om det finns kommentarer
 		if($comments)
 		{
 			foreach ($comments as $comment) 
 			{
+				//hämta kommentarens författare
 				$writer = $this->commentHandler->getCommentWriter($comment);
 
 				$retHTML .= 
@@ -278,6 +361,7 @@ class PollView
 						'&'.helpers\GetHandler::$ID.'='.$comment->getUserId().'">'. $writer->getUserName().'</a>';
 
 
+				//rapporteringsfunktion för inloggade.
 				if($this->login->getIsLoggedIn())
 				{
 					$retHTML .= 
@@ -303,11 +387,17 @@ class PollView
 		return $retHTML . '</div>';
 	}
 
+	/**
+	*	@return 	string 	sidans titel om man har röstat i privat poll.
+	*/
 	public function privateVoteTitle()
 	{
 		return "Thanks for the vote";
 	}
 
+	/**
+	*	@return 	string 	sidans innehåll om man röstat i privat poll.
+	*/
 	public function privateVotePage()
 	{
 		return 
@@ -317,6 +407,10 @@ class PollView
 		';
 	}
 
+	/**
+	*	@param 		array 	alla svar som gjort i undersökning
+	*	@return 	array 	alla i svar i procent-format.
+	*/
 	private function convertToPercentage($answers)
 	{
 		$retArr = array();
@@ -342,6 +436,11 @@ class PollView
 		return $retArr;
 	}
 
+	/**
+	*	Funktion som skapar feedback efter att ha fått en lista med konstanter.
+	*	@param 	string/array 	feedback
+	*	@return string 			html-list med feedback.
+	*/
 	public function makeFeedback($feedback)
 	{
 		$retString = '<div id="feedback">';  

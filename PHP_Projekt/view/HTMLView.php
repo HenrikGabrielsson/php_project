@@ -10,7 +10,12 @@ class HTMLView
     private $loginBox;
     private $sidebarContent;
     
-    //funktion som visar innehållet på sidan. tar emot titeln och bodyn till sidan som ska visas
+    /**
+    *   Funktion som skriver ut HTML på sidan efter att andra controllers har lagt till innehåll i den.
+    *   
+    *   @param  title   Det som ska stå innanför title-taggarna
+    *   @param  body    Det som ska stå på sidans maincontent      
+    */
     public function showHTML($title, $body)
     {
         echo 
@@ -64,19 +69,31 @@ class HTMLView
         ';
     }
 
+    /**
+    *   Funktion som bestämmer hur inloggningsområdet ska se ut
+    *   @param loginBox     html-sträng. Login-rutan
+    */
     public function setLoginBox($loginBox)
     {
         $this->loginBox = $loginBox;
     }
 
+    /**
+    *   Funktion som bestämmer hur sidofältet ska se ut
+    *   @param sidebarContent     HTML-sträng. Sidofältet
+    */
     public function setSidebarContent($sidebarContent)
     {
         $this->sidebarContent = $sidebarContent;
     }
 
+    /**
+    *   Skapar en generisk Error-page till html-sidan
+    *   Kallar på ShowHTML för att lägga till innnehåll och titel på den färdiga mallen.
+    */
     public function showErrorPage()
     {
-        $title = "We couldn't the page!";
+        $title = "We couldn't find the page!";
         $body = 
         '<h1>Strange...</h1>
         <p>We couldn\'t find the page you were looking for. Check the URL for errors and try again. It\'s also possible that the page has been deleted. Sorry about that.

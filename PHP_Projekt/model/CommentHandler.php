@@ -17,6 +17,7 @@ class CommentHandler
 	const LONGCOMMENT = "longComment";
 	const POLLDOESNOTEXIST = "pollDoesNotExist";
 
+	//success-feedback
 	const COMMENTSAVED = "commentSaved";
 
 	private $feedbackList = array();
@@ -32,26 +33,44 @@ class CommentHandler
 		$this->userRepo = new \model\repository\UserRepo();
 	}
 
+	//hämta listan med eventuell feedback
 	public function getFeedbackList()
 	{
 		return $this->feedbackList;
 	}
 
+	/**
+	*	@param 	int 	id till en poll
+	* 	@return array 	array med kommentarer som hör till en poll
+	*/
 	public function getCommentsInPoll($pollId)
 	{
 		return $this->commentRepo->getCommentsInPoll($pollId);
 	}
 
+	/**
+	*	@param 	int 	id på den comment som ska hämtas
+	*	@return Comment den kommentar som hittades
+	*/
 	public function getComment($id)
 	{
 		return $this->commentRepo->getCommentById($id);
 	}
 
+	/**
+	*	@param 	int 	id på den comment där skrivaren ska hämtas
+	*	@return User 	den användare som hittades
+	*/	
 	public function getCommentWriter($comment)
 	{
 		return $this->userRepo->getUserById($comment->getUserId());
 	}
 
+	/**
+	* Här valideras en kommentar och sparas sedan om den är ok
+	* @param 	string 	kommentaren
+	* @param 	int 	id på den poll där kommentaren skrevs.
+	*/
 	public function attemptCreateComment($comment, $pollId)
 	{
 		//validering
@@ -71,6 +90,11 @@ class CommentHandler
 		$this->feedbackList[] = self::COMMENTSAVED;	
 	}
 
+	/*
+	*	Validerar en kommentar
+	* 	@param 	string 	kommentar som ska valideras
+	* 	@return string 	validerar och eventuellt lite modifierad kommentar (escape på html)
+	*/
 	private function validateComment($comment)
 	{
 		//html-taggar är ok, men de ska skrivas ut normalt.
@@ -91,6 +115,10 @@ class CommentHandler
 		return $comment;
 	}
 
+	/**
+	*	kollar så en poll finns.
+	* 	@param int 	id på poll som ska finnas.
+	*/
 	private function validatePoll($pollId)
 	{		
 		if($this->pollRepo->getPollById($pollId) == false)

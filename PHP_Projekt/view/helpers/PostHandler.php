@@ -2,6 +2,7 @@
 
 namespace view\helpers;
 
+//namn på Post-parametrar
 class PostHandler
 {
 	public static $LOGINNAME = "LoginName";

@@ -59,7 +59,7 @@ class PollRepo extends \model\repository\Repository
 		return $result;
 	}
 	
-	
+	//ta bort en undersökning
 	public function delete($id)
 	{
 		$sql = "CALL ".$this->deletePollProc."(?)";
@@ -73,6 +73,10 @@ class PollRepo extends \model\repository\Repository
 		return $result;
 	}
 
+	/**
+	*hämta alla undersökningar
+	*@return array 	array innehållande undersökningsobjekt
+	*/
 	public function getAllPublicPolls()
 	{
 		//array som ska returneras
@@ -114,6 +118,7 @@ class PollRepo extends \model\repository\Repository
 		return false;
 	}
 	
+	//hämta specifik undersökning
 	public function getPollById($id)
 	{
 
@@ -153,6 +158,13 @@ class PollRepo extends \model\repository\Repository
 		return false;
 	}
 	
+	/**
+	* Hämta alla polls från specificerad användare
+	* @param 	int 	användarens id
+	* @param 	bool 	ska alla hämtas? annars bara 10 första.
+	* @param 	bool 	ska även privata polls hämtas?
+	* @return 	array 	array med Poll-objekt
+	*/
 	public function getAllPollsFromUser($userId, $getAll, $includePrivate = false)
 	{
 		//array som ska returneras
@@ -206,6 +218,11 @@ class PollRepo extends \model\repository\Repository
 		return false;
 	}
 
+	/**
+	* Hämtar de senast skapade undersökningarna
+	* @param 	int 	hur många som ska hämtas
+	* @return 	array 	array med Poll-objekt
+	*/
 	public function getLatestPolls($numberOfPolls)
 	{
 		if(!is_int($numberOfPolls))
@@ -253,6 +270,11 @@ class PollRepo extends \model\repository\Repository
 		return false;
 	}
 	
+	/**
+	* Hämta alla undersökningar i vald kategori
+	* @param 	int 	id på kategori
+	* @return 	array 	array med Poll-objekt
+	*/
 	public function getAllPollsInCategory($categoryId)
 	{
 		//array som ska returneras
@@ -295,6 +317,7 @@ class PollRepo extends \model\repository\Repository
 		return false;
 	}
 	
+	//lägg till ny röst
 	public function addVote($answerId, $ip)
 	{
 
@@ -308,6 +331,7 @@ class PollRepo extends \model\repository\Repository
 		return $query->execute($params);
 	}
 
+	//uppdatera existerande röst med nytt svar
 	public function updateVote($answerId, $voteId)
 	{
 		$sql = "UPDATE ".$this->voteTable." SET ".$this->answerId."=? WHERE ".$this->voteId."=?";
@@ -319,6 +343,11 @@ class PollRepo extends \model\repository\Repository
 		$result = $query->execute($params);		
 	}
 	
+	/**
+	* hämta alla svar tillhörande en poll
+	* @param 	int 	id på poll
+	* @return 	array 	array med Answer-objekt
+	*/
 	private function getAnswers($pollId)
 	{
 		$sql = "SELECT * FROM ".$this->answerTable." WHERE ".$this->pollId."=?";
@@ -346,7 +375,12 @@ class PollRepo extends \model\repository\Repository
 		
 	}
 	
-	//skickar tillbaka false om personen inte redan röstat. Annars skickas voteId på den förra rösten tillbaka.
+	/**
+	*skickar tillbaka false om personen inte redan röstat. Annars skickas voteId på den förra rösten tillbaka.
+	* @param 	int 		id på nytt svar
+	* @param 	string 		röstarens ip
+	* @return 	int/bool  	id på förra rösten, annars false
+	*/
 	public function alreadyVotedInPoll($answerId, $ip)
 	{		
 		
@@ -365,6 +399,10 @@ class PollRepo extends \model\repository\Repository
 		
 	}
 	
+	/**
+	* @param  int 	id på ett svar
+	* @return int 	antal röster på detta svar
+	*/
 	private function getVotes($answerId)
 	{
 		$sql = "SELECT COUNT(*) FROM ".$this->voteTable." WHERE ".$this->answerId."=?";
@@ -380,6 +418,12 @@ class PollRepo extends \model\repository\Repository
 		return $result[0];
 	}
 	
+	/**
+	* Lägg till svar på en undersökning
+	* @param 	int 	id på undersöknign
+	* @param 	array   array med svar (som strängar)
+	* @return 	bool 	om det funkade eller inte.
+	*/
 	private function addAnswers($pollId, $answers)
 	{
 		$params = array();

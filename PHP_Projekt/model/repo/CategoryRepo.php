@@ -13,6 +13,12 @@ class CategoryRepo extends \model\repository\Repository
 	private $categoryId = "categoryId";
 	private $categoryName = "categoryName";
 
+
+	/**
+	*Hämta en kategori efter ett id
+	* @param 	int 		id på kategorin
+	* @return 	Categroy	den hittade kategorin
+	*/
 	public function getCategoryById($id)
 	{
 		$sql = "SELECT * FROM ".$this->categoryTable." WHERE ".$this->categoryId."=?";
@@ -34,6 +40,10 @@ class CategoryRepo extends \model\repository\Repository
 		return $result;
 	}
 
+	/**
+	*hämta alla kategorier
+	*@return 	array 	array med alla kategorier (som category-objekt)
+	*/
 	public function getAllCategories()
 	{
 		//array som ska returneras

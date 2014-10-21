@@ -22,7 +22,11 @@ class PollCreationController
 		$this->pollCreationView = new \view\PollCreationView($this->catRepo->getAllCategories());	
 	}
 
-	public function getContent($login)
+	/**
+	*	Hämtar innehållet som ska visas och fyller htmlViewn med det.
+	* @param Login 	En loginhandler som berättar vissa saker om den inloggade användaren.
+	*/
+	public function getContent(\model\LoginHandler $login)
 	{
 		$title = $this->pollCreationView->getTitle();
 		$body;
@@ -33,13 +37,16 @@ class PollCreationController
 			$body = $this->pollCreationView->getNotLoggedIn();
 		}
 
+		//användaren vill försöka skapa en undersökning
 		else if($this->pollCreationView->userWantsToCreatePoll())
 		{
+			//hämta formulärdata
 			$question = $this->pollCreationView->getQuestion();
 			$answers = $this->pollCreationView->getAnswers();
 			$category = $this->pollCreationView->getCategory();
 			$public = $this->pollCreationView->getIsPublic();
 
+			//försöker skapa den och visar sedan feedback
 			$success = $this->pollCreator->attemptTocreate($question, $answers, $category, $public);
 
 			if($success)
@@ -54,8 +61,7 @@ class PollCreationController
 		}
 		else
 		{
-			$body = $this->pollCreationView->getCreate();
-
+			$body = $this->pollCreationView->getCreate($feedback);
 		}
 		
 		$this->htmlView->showHTML($title, $body);

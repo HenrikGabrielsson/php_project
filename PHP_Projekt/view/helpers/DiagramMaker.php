@@ -19,11 +19,23 @@ class DiagramMaker
 		array(125,146,126) //grå
 		);
 
+	/**
+	* @return skickar tillbaka alla färger som använts i diagrammet
+	*/
 	public static function getDiagramColors()
 	{
 		return self::$colors;
 	}
 
+
+	/**
+	*	Skapar en img-tagg med en bild på ett cirkeldiagram
+	* 	@param 	dataArr 	datan som ska presenteras i diagrammet
+	* 	@param  width   	bredden på diagrammet
+	* 	@param 	height 		höjden på diagrammet
+	*
+	* 	@return string 		skickar tillbaka en sträng som innehållet ett img-element med diagrammet.
+	*/
 	public static function drawCircleDiagram($dataArr, $width, $height)
 	{
 

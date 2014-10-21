@@ -15,6 +15,8 @@ class ReportedPollRepo extends \model\repository\Repository
 	private $pollId = "pollId";
 	private $commentFromReporter = "commentFromReporter";
 
+
+	//lägg till ny rapport på poll
 	public function add(\model\PollReport $pollReport)
 	{
 		$sql = "INSERT INTO ".$this->reportedPollTable."(".$this->userId.", ".$this->pollId.", ".$this->commentFromReporter.")
@@ -29,6 +31,7 @@ class ReportedPollRepo extends \model\repository\Repository
 		return $result;		
 	}
 
+	//ta bort rapport på poll
 	public function delete($reportId)
 	{
 		$sql = "DELETE FROM ".$this->reportedPollTable." WHERE ".$this->reportedPollId." = ?";
@@ -42,6 +45,10 @@ class ReportedPollRepo extends \model\repository\Repository
 		return $result;				
 	}
 
+	/**
+	* hämta alla rapporter på polls
+	* @return array 	array med PollReport-objekt
+	*/
 	public function getAllReports()
 	{
 		//array som ska returneras

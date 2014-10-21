@@ -24,7 +24,12 @@ class UserController
 		$this->commentRepo = new \model\repository\CommentRepo();
 	}
 
-	public function getContent($id, $login)
+	/**
+	*	Hämtar innehållet som ska visas och fyller htmlViewn med det.
+	* @param Login 	En loginhandler som berättar vissa saker om den inloggade användaren.
+	* @param id     Id på den aktuella användaren.
+	*/
+	public function getContent($id, \model\LoginHandler $login)
 	{
 		$user = $this->userRepo->getUserById($id);
 

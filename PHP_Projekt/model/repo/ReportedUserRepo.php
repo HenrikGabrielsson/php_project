@@ -16,6 +16,7 @@ class ReportedUserRepo extends \model\repository\Repository
 	private $nominatedForDeletionBy = "nominatedForDeletionBy";
 	private $commentFromAdmin = "commentFromAdmin";
 
+	//lägg till ny rapport på användare
 	public function add(\model\UserReport $userReport)
 	{
 		$sql = "INSERT INTO ".$this->reportedUserTable."(".$this->userId.", ".$this->type.",".$this->commentFromAdmin.")
@@ -30,6 +31,7 @@ class ReportedUserRepo extends \model\repository\Repository
 		return $result;		
 	}
 
+	//ta bort rapport på användare
 	public function delete($reportId)
 	{
 		$sql = "DELETE FROM ".$this->reportedUserTable." WHERE ".$this->reportedUserId." = ?";
@@ -43,7 +45,11 @@ class ReportedUserRepo extends \model\repository\Repository
 		return $result;				
 	}
 
-
+	/**
+	* nominera user för borttagning
+	* @param int 	id på UserReport
+	* @param int 	id på admin som gör detta val
+	*/
 	public function nominateForDeletion($reportId, $adminId)
 	{
 		$sql = "UPDATE ".$this->reportedUserTable." SET ".$this->nominatedForDeletionBy." = ? WHERE ".$this->reportedUserId."=?";
@@ -57,6 +63,11 @@ class ReportedUserRepo extends \model\repository\Repository
 		return $result;			
 	}
 
+	/**
+	* Hämta alla rapporter på specificerad användare
+	* @param 	int 	användarens id
+	* @return 	array 	array med UserReport-objekt 	
+	*/
 	public function getAllReportsOnUser($userId)
 	{
 		//array som ska returneras
@@ -93,6 +104,7 @@ class ReportedUserRepo extends \model\repository\Repository
 		return false;
 	}
 
+	//hämta alla UserReports
 	public function getAllReports()
 	{
 		//array som ska returneras

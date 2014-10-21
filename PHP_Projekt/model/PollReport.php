@@ -4,10 +4,10 @@ namespace model;
 
 class PollReport
 {
-	private $reportedPollId;
-	private $userId;
-	private $pollId;
-	private $commentFromReporter;
+	private $reportedPollId;		//unikt id
+	private $userId;				//undersökningens ägares unika id
+	private $pollId;				//undersökningens unika id
+	private $commentFromReporter;	//frivillig kommentar från rapportören
 
 	public function __construct($userId, $pollId, $commentFromReporter, $reportedPollId = null)
 	{

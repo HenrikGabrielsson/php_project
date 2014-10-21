@@ -38,17 +38,23 @@ class LoginHandler
 		$this->repo = new repository\UserRepo();
 	}
 
+	//Sätter IP på den inloggade
 	public function setCurrentIP($ip)
 	{
 		$this->ip = $ip;
 	}
 
+	//sätter user agent (mjukvara som används) på den inloggade
 	public function setCurrentUserAgent($ua)
 	{
 		$this->userAgent = $ua;
 	}
 
-
+	/**
+	* 	funktion som tar emot namn, lösenord och försöker sedan logga in personen
+	*	@param string 	namn på den som vill logga in
+	*	@param string 	lösenord.
+	*/
 	public function attemptLogin($username, $password)
 	{
 		if($username == "")
@@ -84,22 +90,25 @@ class LoginHandler
 		}
 	}
 
-
+	//hämta namn på den inloggade
 	public function getUser()
 	{
 		return $_SESSION[helpers\SessionHandler::$USERNAME];
 	}
 
+	//hämta om användaren är en admin eller inte
 	public function getIsAdmin()
 	{
 		return $_SESSION[helpers\SessionHandler::$ISADMIN];
 	}
 
+	//hämta den inloggades userID.
 	public function getId()
 	{
 		return $_SESSION[helpers\SessionHandler::$USERID];
 	}
 
+	//hämta om användaren är inloggad eller inte.
 	public function getIsLoggedIn()
 	{
 		if (isset($_SESSION[helpers\SessionHandler::$LOGGEDIN]))
@@ -113,11 +122,18 @@ class LoginHandler
 		return false;
 	}
 
+	//skicka lista med fel vid inloggning eller registrering
 	public function getErrorList()
 	{
 		return $this->errorList;
 	}
 
+	/**
+	*	logga in en användare genom att spara data i session
+	* 	@param  string 	namn på användare
+	* 	@param 	int 	unikt id på användare
+	*	@param 	bool 	admin eller inte.
+	*/
 	public function loginUser($username, $id, $isAdmin)
 	{
 		$_SESSION[helpers\SessionHandler::$USERNAME] = $username;
@@ -129,6 +145,7 @@ class LoginHandler
 		$_SESSION[helpers\SessionHandler::$USERAGENT]  = $this->userAgent;
 	}
 
+	//vid utloggning. Ta bort sessions
 	public function logout()
 	{
 		session_unset(); 
@@ -142,6 +159,13 @@ class LoginHandler
 		return $correctPassword == sha1($salt.md5($givenPassword));
 	}
 
+	/**
+	*	Försök registrera ny användare
+	* 	@param string 	namn som användaren vill ha
+	* 	@param string 	email som användaren vill sparas på
+	* 	@param string 	valt lösenord
+	* 	@param string 	lösenord igen, för att se så användaren kan skriva det 2 gånger
+	*/
 	public function attemptRegister($username, $email, $password1, $password2)
 	{
 
@@ -172,6 +196,7 @@ class LoginHandler
 
 	}
 
+	//kryptera lösenord innan det sparas 
 	private function hashPassword($password, $salt)
 	{
 		return sha1($salt.md5($password));

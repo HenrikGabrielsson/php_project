@@ -18,9 +18,12 @@ class LoginController
 		$this->htmlView = $htmlView;
 	}
 
+	/**
+	*	kollar om användaren är inloggad, vill logga ut/in etc.
+	*/
 	public function checkForLogin()
 	{
-
+		//hämtar lite info om användaren för att kunna skydda användaren mot sessionsstölder
 		$this->login->setCurrentIP($this->loginView->getIP());
 		$this->login->setCurrentUserAgent($this->loginView->getUserAgent());
 

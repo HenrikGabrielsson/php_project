@@ -9,12 +9,14 @@ require_once("./model/repo/CategoryRepo.php");
 
 class CategoryController
 {
-
+	//views
 	private $htmlView;
 	private $categoryView; 
 
+	//repos
 	private $categoryRepo;
 	private $pollRepo;
+
 
 	public function __construct($htmlView)
 	{
@@ -23,6 +25,9 @@ class CategoryController
 		$this->pollRepo = new \model\repository\PollRepo();
 	}
 
+	/**
+	*@param id på den kategori som ska visas.
+	*/
 	public function getContent($id)
 	{
 		//hämta alla polls i denna kategori.

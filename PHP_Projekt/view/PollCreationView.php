@@ -11,36 +11,59 @@ class PollCreationView
 		$this->categories = $categories;
 	}
 
+	/**
+	*	@return 	bool	om användaren vill skapa en poll
+	*/
 	public function userWantsToCreatePoll()
 	{
 		return isset($_GET[helpers\GetHandler::$CREATE]);	
 	}
 
+	/**
+	*	@return 	string 		sidans title
+	*/
 	public function getTitle()
 	{
 		return "Create a new poll";
 	}
 
+	/**
+	*	@return 	string	frågan som användaren skrivit
+	*/
 	public function getQuestion()
 	{
 		return $_POST[helpers\PostHandler::$CREATEQUESTION];
 	}
 
+
+	/**
+	*	@return 	array 	en array med svaren som användaren skrev in
+	*/
 	public function getAnswers()
 	{
 		return $_POST[helpers\PostHandler::$CREATEANSWER];
 	}
 
+
+	/**
+	*	@return 	int 	id på vald kategori
+	*/
 	public function getCategory()
 	{
 		return $_POST[helpers\PostHandler::$CREATECATEGORY];
 	}
 
+	/**
+	*	@return 	int 	om det är en publik eller privat poll.
+	*/
 	public function getIsPublic()
 	{
 		return $_POST[helpers\PostHandler::$CREATEPUBLIC];
 	}
 
+	/**
+	*	@return 	string 	innehåll om man inte är inloggad
+	*/
 	public function getNotLoggedIn()
 	{
 		return 
@@ -48,6 +71,9 @@ class PollCreationView
 		<p>You must log in before you can create a poll.</p>';
 	}
 
+	/**
+	*	@return 	string 	innehåll om man har lyckats skapa en undersökning
+	*/
 	public function getSuccessPage()
 	{
 		$body = 
@@ -56,6 +82,12 @@ class PollCreationView
 		return $body;
 	}
 
+	/**
+	*	Denna funktion kallar på rätt metoder för att ett formulär och eventuell feedback	
+	*
+	*	@param 		array 	lista med den typ av feedback som ska skrivas ut.
+	*	@return 	string 	formulär för att skapa en poll
+	*/
 	public function getCreate($feedback = null)
 	{
 		$body = 
@@ -67,16 +99,20 @@ class PollCreationView
 		return $body;
 	}
 
+	/**
+	*	@return string 	ett htmlformulär med allt som behövs för att skapa en poll.
+	*/
 	public function getForm()
 	{
-
 		$categories ="";
 
+		//skapar dropdown med kategorierna
 		foreach($this->categories as $category)
 		{
 			$categories .= '<option value="'.$category->getId().'">'.$category->getCategoryName().'</option>';
 		}
 
+		//skapar alla svarsfält.
 		$answerFields = '';
 		for($i = 1; $i <= 10; $i++)
 		{
@@ -85,6 +121,7 @@ class PollCreationView
 			<input type="text" id="createAnswer'.$i.'" maxlength="100" class="createAnswer" name="'.helpers\PostHandler::$CREATEANSWER.'[]">';
 		}
 
+		//resten av formuläret.
 		$form = 
 		'<form id="createPollForm" action="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWCREATEPOLL.'&'.helpers\GetHandler::$CREATE.'" method="post">
 
@@ -108,13 +145,21 @@ class PollCreationView
 		return $form;
 	}
 
+	/**
+	*	Denna funktion tar emot en array med konstanter som berättar vilken typ av feedback användaren bör få.
+	* 	@param 	array 	konstanter som berättar vilken feedback som ska ges.
+	*	@param 	string 	lista med feedback
+	*/
 	public function makeFeedback($feedbackArray)
 	{
+
+		//avsluta om den är tom.
 		if(is_null($feedbackArray))
 		{
 			return;
 		}
 
+		//fråga vilka konstanter som finns i listan och skriv ut feedback i en lista.
 		$feedback .= '<ol>';
 
 		if(in_array(\model\Pollcreator::SHORTQUESTION, $feedbackArray))
@@ -147,7 +192,6 @@ class PollCreationView
         }
 
         return $feedback . '</ol>';
-
 	}
 
 }

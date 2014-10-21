@@ -4,10 +4,10 @@ namespace model;
 
 class CommentReport
 {
-	private $reportedCommentId;
-	private $userId;
-	private $commentId;
-	private $commentFromReporter;
+	private $reportedCommentId;		//unikt id
+	private $userId;				//id på användare som rapporten gäller
+	private $commentId;				//den rapporterade kommentarens id
+	private $commentFromReporter;	//anledning angiven av rapportören (frivillig)
 
 	public function __construct($userId, $commentId, $commentFromReporter, $reportedCommentId = null)
 	{

@@ -38,7 +38,11 @@ class ReportListController
 		$this->htmlView = $htmlView;
 	}
 
-	public function getContent($login)
+	/**
+	*	Hämtar innehållet som ska visas och fyller htmlViewn med det.
+	* @param Login 	En loginhandler som berättar vissa saker om den inloggade användaren.
+	*/
+	public function getContent(\model\LoginHandler $login)	
 	{
 
 		$title = $this->reportListView->getTitle();
@@ -100,6 +104,8 @@ class ReportListController
 			$commentReports = $this->reportedCommentRepo->getAllReports();
 			$userReports = $this->reportedUserRepo->getAllReports();
 
+			//kollar vilken lista som ska hämtas. (users/polls/comments)
+
 			switch($this->reportListView->getListRequest())
 			{
 				case \view\helpers\GetHandler::$POLLLIST:	
@@ -126,7 +132,11 @@ class ReportListController
 		$this->htmlView->showHTML($title, $body);
 	}
 
-
+	/**
+	*	Hämtar alla UNIKA användare som inskickade rapporter gäller
+	* @param reports    reports som ska kollas.
+	* @return 			en array med alla user-objekt som fanns i rapporterna. inga dupliceringar.
+	*/
 	private function getReportedUsers($reports)
 	{
 		$users = array();
@@ -134,7 +144,7 @@ class ReportListController
 		{
 			foreach ($reports as $report) 
 			{
-				//om undersökningen inte redan är tillagd.
+				//om användaren inte redan är tillagd.
 				if(array_key_exists($report->getUserId(), $users) == false)
 				{
 					$users[$report->getUserId()] = $this->userRepo->getUserById($report->getUserId());
@@ -145,6 +155,11 @@ class ReportListController
 	}
 
 
+	/**
+	*	Hämtar alla UNIKA undersökningar som inskickade rapporter gäller
+	* @param reports    reports som ska kollas.
+	* @return 			en array med alla poll-objekt som fanns i rapporterna. inga dupliceringar.
+	*/
 	private function getReportedPolls($reports)
 	{
 		$polls = array();
@@ -163,7 +178,11 @@ class ReportListController
 		}
 	}
 
-
+	/**
+	*	Hämtar alla UNIKA kommentarer som inskickade rapporter gäller
+	* @param reports    reports som ska kollas.
+	* @return 			en array med alla comment-objekt som fanns i rapporterna. inga dupliceringar.
+	*/
 	private function getReportedComments($reports)
 	{
 		$comments = array();

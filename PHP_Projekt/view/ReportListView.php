@@ -5,11 +5,17 @@ namespace view;
 class ReportListView
 {
 
+	/**
+	*	@return 	string 	hämtar den lista som admin vill se
+	*/
 	public function getListRequest()
 	{
 		return $_GET[helpers\GetHandler::$LIST];
 	}
 
+	/**
+	*	@return 	int/bool 	hämtar id på poll som användare vill ta bort. false om det inte är valt.
+	*/
 	public function getPollToDelete()
 	{
 		if(isset($_POST[helpers\PostHandler::$DELETEPOLL_POLLID]))
@@ -17,19 +23,28 @@ class ReportListView
 			return $_POST[helpers\PostHandler::$DELETEPOLL_POLLID];	
 		}
 		return false;
-		
 	}
 
+
+	/**
+	*	@return 	string 	anledning till borttagning av poll
+	*/
 	public function getDeletePollReason()
 	{
 		return $_POST[helpers\PostHandler::$DELETEPOLL_REASON];
 	}
 
+	/**
+	*	@return 	string 	anledning till borttagning av comment
+	*/
 	public function getDeleteCommentReason()
 	{
 		return $_POST[helpers\PostHandler::$DELETECOMMENT_REASON];
 	}
 
+	/**
+	*	@return 	int/bool 	hämtar id på comment som användare vill ta bort. false om det inte är valt.
+	*/
 	public function getCommentToDelete()
 	{
 		if(isset($_POST[helpers\PostHandler::$DELETECOMMENT_COMMENTID]))
@@ -39,6 +54,9 @@ class ReportListView
 		return false;		
 	}
 
+	/**
+	*	@return 	int/bool 	hämtar id på user som användare vill ta bort. false om det inte är valt.
+	*/
 	public function getUserToNominate()
 	{
 		if(isset($_POST[helpers\PostHandler::$NOMINATEUSER_USERID]))
@@ -48,6 +66,9 @@ class ReportListView
 		return false;	
 	}
 
+	/**
+	*	@return 	int/bool 	hämtar id på user som användare vill ta bort (och gör). false om det inte är valt.
+	*/
 	public function getUserToDelete()
 	{
 		if(isset($_POST[helpers\PostHandler::$DELETEUSER_USERID]))
@@ -57,6 +78,9 @@ class ReportListView
 		return false;	
 	}
 
+	/**
+	*	@return 	int/bool 	hämtar id på userreport som användare vill ta bort. false om det inte är valt.
+	*/
 	public function getIgnoreUserReport()
 	{
 		if(isset($_GET[helpers\GetHandler::$IGNOREUSER]))
@@ -66,6 +90,9 @@ class ReportListView
 		return false;		
 	}
 
+	/**
+	*	@return 	int/bool 	hämtar id på pollreport som användare vill ta bort. false om det inte är valt.
+	*/
 	public function getIgnorePollReport()
 	{
 		if(isset($_GET[helpers\GetHandler::$IGNOREPOLL]))
@@ -75,6 +102,9 @@ class ReportListView
 		return false;		
 	}
 
+	/**
+	*	@return 	int/bool 	hämtar id på commentreport som användare vill ta bort. false om det inte är valt.
+	*/
 	public function getIgnoreCommentReport()
 	{
 		if(isset($_GET[helpers\GetHandler::$IGNORECOMMENT]))
@@ -84,11 +114,17 @@ class ReportListView
 		return false;		
 	}
 
+	/**
+	*	@return 	string	sidans title.
+	*/
 	public function getTitle()
 	{
 		return "Reported things";
 	}
 
+	/**
+	*	@return 	string	sidans innehåll om användaren inte har rätt att komma hit.
+	*/
 	public function denyPage()
 	{
 		return 
@@ -97,6 +133,11 @@ class ReportListView
 		";
 	}
 
+
+	/**
+	*	@param 		array 	array med feedback
+	*	@return 	string	innehåll för sidans huvud. Länkar till alla listor samt feedback visas gär.
+	*/
 	private function getContentHead($feedback)
 	{
 		return 
@@ -110,6 +151,14 @@ class ReportListView
 
 	}
 
+	/**
+	*	Visar en tabell med alla rapporterade undersökningar så en admin kan bestämma vad som ska göras med dom.
+	*	@param 		array 	alla undersökingar som nämns
+	* 	@param 		array 	alla users som nämns
+	*	@param 		array 	alla rapporter
+	* 	@param 		array 	eventuell feedback.
+	*	@return 	string 	hmtl-table för rapporterade undersökningar.
+	*/
 	public function getPollList($polls, $users, $reports, $feedback)
 	{
 
@@ -120,6 +169,7 @@ class ReportListView
 				<th>Remove report</th> <th>Poll</th> <th>Reason</th> <th>Creator</th> <th>Delete</th>
 			</tr>';
 
+		//om det finns några rapporter.
 		if($reports)
 		{
 			foreach ($reports as $report) 
@@ -173,6 +223,14 @@ class ReportListView
 		return $this->getContentHead($feedback).$bodyContent;
 	}
 
+	/**
+	*	Visar en tabell med alla rapporterade comments så en admin kan bestämma vad som ska göras med dom.
+	*	@param 		array 	alla comments som nämns
+	* 	@param 		array 	alla users som nämns
+	*	@param 		array 	alla rapporter
+	* 	@param 		array 	eventuell feedback.
+	*	@return 	string 	hmtl-table för rapporterade undersökningar.
+	*/	
 	public function getCommentList($comments, $users, $reports, $feedback)
 	{
 
@@ -182,6 +240,7 @@ class ReportListView
 				<th>Remove report</th> <th>Comment</th> <th>Reason</th> <th>CommentWriter</th> <th>Delete</th>
 			</tr>';
 
+		//om det finns några rapporter
 		if($reports)
 		{
 			foreach ($reports as $report) 
@@ -235,8 +294,17 @@ class ReportListView
 		return $this->getContentHead($feedback).$bodyContent;
 	}
 
+	/**
+	*	Visar två tabeller med alla rapporterade users så en admin kan bestämma vad som ska göras med dom.
+	*	@param 		array 	alla users som nämns
+	*	@param 		array 	alla rapporter
+	* 	@param 		array 	eventuell feedback.
+	*	@return 	string 	hmtl-table för rapporterade undersökningar.
+	*/
 	public function getUserList($users, $userReports, $feedback)
 	{
+
+		//tabell för rapporterade users. Inte nån risk borttagning än.
 		$reportedTable = 	
 		'<h2>Users with 1 or more reports</h2>
 		<table>
@@ -245,7 +313,7 @@ class ReportListView
 		</tr>
 		';
 
-
+		//tabell för rapporterade users, nominerade av en admin för att bli borttagna.
 		$nominatedTable = 
 		'<h2>Users nominated for deletion</h2>
 		<table>
@@ -254,6 +322,7 @@ class ReportListView
 		</tr>
 		';
 
+		//om det finns rapporter.
 		if($userReports)
 		{
 			foreach($userReports as $report)
@@ -284,6 +353,8 @@ class ReportListView
 						</td>
 					</tr>';					
 				}
+
+				//de med nomineringar.
 				else
 				{
 					$nominatedTable .=
@@ -305,58 +376,55 @@ class ReportListView
 		return $this->getContentHead($feedback).$reportedTable. $nominatedTable;
 	}
 
+
+	/**
+	*	Skapar feedbacklista
+	*	@param 	array 	array med konstanter som berättar vilken typ av feedback som bör ges.
+	*	@return string  html-lista med feedback.
+	*/
 	private function makeFeedback($feedback)
 	{
 		$retString = '<div id="feedback">';  
+	
+		$retString = "<ul>";
+		if(in_array(\model\ReportHandler::LONGREASON, $feedback))
+        {
+            $retString .= "<li>The reason you wrote was too long. Maximum number of characters is 200.</li>";
+        }
+     	if(in_array(\model\ReportHandler::NOREASON, $feedback))
+        {
+            $retString .= "<li>You must add a reason for your choice..</li>";
+        }
+		if(in_array(\model\ReportHandler::NOCOMMENT, $feedback))
+        {
+            $retString .= "<li>This comment doesn't exist.</li>";
+        }
+     	if(in_array(\model\ReportHandler::NOPOLL, $feedback))
+        {
+            $retString .= "<li>This poll doesn't exist..</li>";
+        }
+		if(in_array(\model\ReportHandler::SAMEADMIN, $feedback))
+        {
+            $retString .= "<li>Another admin must delete the user.</li>";
+        }
 
-		if(is_array($feedback))
-		{		
-			$retString = "<ul>";
-			if(in_array(\model\ReportHandler::LONGREASON, $feedback))
-	        {
-	            $retString .= "<li>The reason you wrote was too long. Maximum number of characters is 200.</li>";
-	        }
-	     	if(in_array(\model\ReportHandler::NOREASON, $feedback))
-	        {
-	            $retString .= "<li>You must add a reason for your choice..</li>";
-	        }
-			if(in_array(\model\ReportHandler::NOCOMMENT, $feedback))
-	        {
-	            $retString .= "<li>This comment doesn't exist.</li>";
-	        }
-	     	if(in_array(\model\ReportHandler::NOPOLL, $feedback))
-	        {
-	            $retString .= "<li>This poll doesn't exist..</li>";
-	        }
-			if(in_array(\model\ReportHandler::SAMEADMIN, $feedback))
-	        {
-	            $retString .= "<li>Another admin must delete the user.</li>";
-	        }
-
-	     	//inte fel utan rättmeddelandwen
-	     	if(in_array(\model\ReportHandler::POLLDELETED, $feedback))
-	        {
-	            $retString .= "<li>The poll has been deleted.Thanks for the help.</li>";
-	        }
-	     	if(in_array(\model\ReportHandler::COMMENTDELETED, $feedback))
-	        {
-	            $retString .= "<li>The comment has been deleted.Thanks for the help.</li>";
-	        }	
-	     	if(in_array(\model\ReportHandler::USERDELETED, $feedback))
-	        {
-	            $retString .= "<li>The user has been deleted.Thanks for the help.</li>";
-	        }	
-	     	if(in_array(\model\ReportHandler::USERNOMINATED, $feedback))
-	        {
-	            $retString .= "<li>You want to delete this user. Someone else must confirm first. Thanks for the help.</li>";
-	        }	
-
-	    }
-
-	    else
-	    {
-	    	$retString = '<p>'.$feedback.'</p>';
-	    }
+     	//inte fel utan rättmeddelandwen
+     	if(in_array(\model\ReportHandler::POLLDELETED, $feedback))
+        {
+            $retString .= "<li>The poll has been deleted.Thanks for the help.</li>";
+        }
+     	if(in_array(\model\ReportHandler::COMMENTDELETED, $feedback))
+        {
+            $retString .= "<li>The comment has been deleted.Thanks for the help.</li>";
+        }	
+     	if(in_array(\model\ReportHandler::USERDELETED, $feedback))
+        {
+            $retString .= "<li>The user has been deleted.Thanks for the help.</li>";
+        }	
+     	if(in_array(\model\ReportHandler::USERNOMINATED, $feedback))
+        {
+            $retString .= "<li>You want to delete this user. Someone else must confirm first. Thanks for the help.</li>";
+        }	
 
         return $retString . "</div>";
 	}

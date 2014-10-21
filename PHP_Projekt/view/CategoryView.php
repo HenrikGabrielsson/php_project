@@ -11,6 +11,8 @@ class CategoryView
 	public function __construct($category, $polls)
 	{
 		$this->category = $category;
+
+		//om det finns kategorier...annars blir polls null
 		if($polls)
 		{
 			$this->polls = $polls;
@@ -21,18 +23,28 @@ class CategoryView
 		}
 	}
 
+	/**
+	*	Hämta titel
+	*
+	* @return 	String 	det som ska stå i titeln
+	*/
 	public function getTitle()
 	{
 		return $this->category->getCategoryName();
 	}
 	
+	/**
+	*	Hämta sidans innehåll
+	* 	
+	* 	@return   String 	det som ska finnas på sidans main_content
+	*/
 	public function getBody()
 	{
 		$body = 
 		'<h1>'.$this->category->getCategoryName().'</h1>
 		<p>There are currently '.count($this->polls).' polls in this category.</p>';;
 
-		
+		// om det finns några polls i denna kategori så skrivs de ut
 		if(count($this->polls) > 0)
 		{
 			$pollList = '<ul>';

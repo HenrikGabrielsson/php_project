@@ -18,8 +18,12 @@ class SearchController
 		$this->search = new \model\Search();
 	}
 
+	/**
+	*	Hämtar innehållet som ska visas och fyller htmlViewn med det.
+	*/
 	public function getContent()
 	{
+		//hämtar in sökord från viewn och ber modellen hämta alla matchande undersökningar
 		$searchWords = $this->searchView->getSearchTerms();
 		$polls = $this->search->getSearchResults($searchWords);
 

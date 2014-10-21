@@ -4,31 +4,49 @@ namespace view;
 
 class RegistrationView
 {
+	/**
+	*	@return 	bool 	om användaren vill registrera sig.
+	*/
 	public function userWantsToRegister()
 	{
 		return isset($_GET[helpers\GetHandler::$REGISTER]);
 	}
 
+	/**
+	*	@return 	string 	namn som användaren vill registrera sig med
+	*/
 	public function getUsername()
 	{
 		return $_POST[helpers\PostHandler::$REGUSERNAME];
 	}
 
+	/**
+	*	@return 	string 	email som användaren vill registrera sig med
+	*/
 	public function getEmail()
 	{
 		return $_POST[helpers\PostHandler::$REGEMAIL];
 	}
 
+	/**
+	*	@return 	string 	lösenord som användaren vill registrera sig med
+	*/
 	public function getPassword1()
 	{
 		return $_POST[helpers\PostHandler::$REGPASSWORD1];
 	}
 
+	/**
+	*	@return 	string 	lösenord igen som användaren vill registrera sig med
+	*/
 	public function getPassword2()
 	{
 		return $_POST[helpers\PostHandler::$REGPASSWORD2];
 	}
 
+	/**
+	*	@return 	string 	innehåll om det lyckas.
+	*/
 	public function getSuccessPage()
 	{
 		$body = 
@@ -39,6 +57,9 @@ class RegistrationView
 		return $body;
 	}
 
+	/**
+	*	@return 	string 	html. sätter samman feedback och formulär.
+	*/
 	public function getRegister($feedback)
 	{
 		$body = 
@@ -50,6 +71,11 @@ class RegistrationView
 		return $body;
 	}
 
+
+	/**
+	*	Hämtar formuläret.
+	*	@return string 	formuläret.
+	*/
 	public function getForm()
 	{
 		return 
@@ -72,11 +98,19 @@ class RegistrationView
 		';		
 	}
 
+
+	/**
+	*	@return string 	sidans title.
+	*/
 	public function getTitle()
 	{
 		return "Registration";
 	}
 
+	/**
+	*	@param 	array 	array med konstanter som berättar vilken typ av feeback användaren bör få.
+	*	@return string 	html-lista med feedback.
+	*/
 	public function makeFeedback($feedbackArray)
 	{
 

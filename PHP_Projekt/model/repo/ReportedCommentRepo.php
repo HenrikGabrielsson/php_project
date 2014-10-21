@@ -16,6 +16,7 @@ class ReportedCommentRepo extends \model\repository\Repository
 	private $commentId = "commentId";
 	private $commentFromReporter = "commentFromReporter";
 
+	//lägg till ny rapport på kommentar
 	public function add(\model\CommentReport $commentReport)
 	{
 		$sql = "INSERT INTO ".$this->reportedCommentTable."(".$this->userId.", ".$this->commentId.", ".$this->commentFromReporter.")
@@ -30,6 +31,7 @@ class ReportedCommentRepo extends \model\repository\Repository
 		return $result;		
 	}
 
+	//ta bort rapport på kommentar
 	public function delete($reportId)
 	{
 		$sql = "DELETE FROM ".$this->reportedCommentTable." WHERE ".$this->reportedCommentId." = ?";
@@ -43,6 +45,10 @@ class ReportedCommentRepo extends \model\repository\Repository
 		return $result;				
 	}
 
+	/**
+	* hämta alla rapporter på kommentarer
+	* @return array 	array med CommentReport-objekt
+	*/
 	public function getAllReports()
 	{
 		//array som ska returneras

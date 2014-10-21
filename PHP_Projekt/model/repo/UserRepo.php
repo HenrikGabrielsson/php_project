@@ -127,6 +127,7 @@ class UserRepo extends \model\repository\Repository
 		return false;		
 	}	
 
+	//lägg till ny användare
 	public function add(\model\User $user)
 	{
 		
@@ -141,7 +142,7 @@ class UserRepo extends \model\repository\Repository
 		return $result;		
 	}
 	
-	
+	//ta bort användare
 	public function delete($id)
 	{
 		$sql = "CALL ".$this->deleteUserProc."(?) ";

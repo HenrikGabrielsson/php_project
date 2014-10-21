@@ -48,17 +48,25 @@ class ReportHandler
 		$this->userRepo = new repository\UserRepo();
 	}
 
+	//hämta liste med feedback
 	public function getFeedbackList()
 	{
 		return $this->feedbackList;
 	}	
 
+	/**
+	* rapportera en kommentar
+	* @param int 	id på rapporterad kommentar
+	* @param int 	anledning till rapportering
+	*/
 	public function reportComment($comment, $reason)
 	{
+		//validera allt
 		$reason = htmlspecialchars($reason);
 		$validReason = $this->validateReason($reason, false);
 		$validComment = $this->validateComment($comment);
 
+		//spara rapport om validering gick igenom
 		if($validComment && $validReason)
 		{
 			$report = new CommentReport($comment->getUserId(), $comment->getId(), $reason);
@@ -67,13 +75,19 @@ class ReportHandler
 		}
 	}
 
+	/**
+	* rapportera en poll
+	* @param int 	id på rapporterad poll
+	* @param int 	anledning till rapportering
+	*/	
 	public function reportPoll($poll, $reason)
 	{
-
+		//validera allt
 		$reason = htmlspecialchars($reason);
 		$validReason = $this->validateReason($reason, false);
 		$validPoll = $this->validatePoll($poll);
 
+		//spara rapport om validering gick igenom
 		if($validPoll && $validReason)
 		{
 			$report = new PollReport($poll->getCreator(), $poll->getId(), $reason);
@@ -82,6 +96,11 @@ class ReportHandler
 		}
 	}
 
+	/**
+	*	När man vill ta bort en poll
+	* 	@param int 		id på poll
+	* 	@param string 	anledning
+	*/
 	public function pollDeleted($pollId, $reason)
 	{
 		$reports = $this->reportedPollRepo->getAllReports();
@@ -105,6 +124,11 @@ class ReportHandler
 		
 	}
 
+	/**
+	*	När man vill ta bort en comment
+	* 	@param int 		id på comment
+	* 	@param string 	anledning
+	*/
 	public function commentDeleted($commentId, $reason)
 	{
 		$reports = $this->reportedCommentRepo->getAllReports();
@@ -126,7 +150,11 @@ class ReportHandler
 		$this->feedbackList[] = self::COMMENTDELETED;
 	}
 
-	//ta bort en användare
+	/**
+	*	När man vill ta bort en user
+	* 	@param int 		id på user
+	* 	@param int 		id på admin som gör det 
+	*/
 	public function deleteUser($userId, $adminId)
 	{
 
@@ -147,7 +175,11 @@ class ReportHandler
 		$this->feedbackList[] = self::USERDELETED;
 	}
 
-
+	/**
+	*	När man nominera en user till att bli borttagen
+	* 	@param int 		id på user
+	* 	@param int 		id på admin som gör nominering
+	*/
 	public function nominateForDeletion($userId, $adminId)
 	{
 		$reports = $this->reportedUserRepo->getAllReports();
@@ -163,8 +195,11 @@ class ReportHandler
 		$this->feedbackList[] = self::USERNOMINATED;
 	}
 
-
-
+	/**
+	*validera anledningen
+	* @param string 	anledning till borttagning
+	* @param bool 		är anledning obligatorisk
+	*/
 	private function validateReason($reason, $mandatory)
 	{
 		$reason = htmlspecialchars($reason);
@@ -184,6 +219,7 @@ class ReportHandler
 		return true;
 	}
 
+	//validera poll
 	private function validatePoll($poll)
 	{		
 		if(is_null($poll))
@@ -195,6 +231,7 @@ class ReportHandler
 		
 	}
 
+	//validera comment
 	private function validateComment($comment)
 	{
 		if(is_null($comment))

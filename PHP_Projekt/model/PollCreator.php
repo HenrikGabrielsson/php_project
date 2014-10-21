@@ -35,6 +35,13 @@ class PollCreator
 		return $this->errorList;
 	}
 
+	/**
+	* Funktion som används när användaren vill skapa en poll
+	* @param string 	frågan
+	* @param array 		array med svar
+	* @param int 		id på den valda kategorin
+	* @param bool 		ska det vara en publik/privat poll
+	*/
 	public function attemptToCreate($question, $answers, $category, $public)
 	{
 		//validera all input.
@@ -43,13 +50,13 @@ class PollCreator
 		$this->validatePublic($public);
 		$this->validateCategory($category);
 
-
 		//om det finns några fel så stoppar vi här.
 		if(count($this->errorList) > 0)
 		{
 			return false;
 		}
 
+		//skapa svarsobjekt att spara tillsammans med ny poll
 		$answer_objs = array();
 		foreach($answers as $answer)
 		{
@@ -58,13 +65,12 @@ class PollCreator
 
 		//en poll skapas om valideringen gick bra
 		$poll = new \model\Poll($question, $_SESSION[helpers\SessionHandler::$USERID], date("Y-m-d H:i:s"), $public, $category, $answer_objs);
-
-		$this->pollRepo->add($poll);
-
+		
 		//allt gick bra
 		return true;
 	}
 
+	//validera en fråga
 	private function validateQuestion($question)
 	{
 
@@ -86,6 +92,7 @@ class PollCreator
 		return $question;
 	}
 
+	//validera alla svarsalternativ
 	private function validateAnswers($answers)
 	{
 
@@ -123,6 +130,7 @@ class PollCreator
 		return $answers;
 	}
 
+	//validera kategorivalet
 	private function validateCategory($cat)
 	{
 		if($this->categoryRepo->getCategoryById($cat) == false)
@@ -131,6 +139,7 @@ class PollCreator
 		} 
 	}
 
+	//validera public/private
 	private function validatePublic($public)
 	{
 		//kollar så inte värdet är annat än 1 eller 0 eller om den är null

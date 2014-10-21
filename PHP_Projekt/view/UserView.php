@@ -19,11 +19,18 @@ class UserView
 		$this->pollsCommentedIn = $pollsCommentedIn;
 	}
 
+	/**
+	*@return string 	sidans title.
+	*/
 	public function getTitle()
 	{
 		return $this->user->getUserName();
 	}
 
+
+	/**
+	*@return string 	sidans content.
+	*/
 	public function getBody()
 	{
 		$content = 
@@ -34,6 +41,9 @@ class UserView
 		return $content;
 	}
 
+	/**
+	*	@return string 	Hämtar listan med undersökningar som användaren skapat. 
+	*/
 	public function getPollsList()
 	{
 		$pollList = 
@@ -51,6 +61,9 @@ class UserView
 		return $pollList . '</ul>';
 	}
 
+	/**
+	*	@return string 	Hämtar listan med comments som användaren skapat. 
+	*/
 	public function getCommentsList()
 	{
 		$commentList = 

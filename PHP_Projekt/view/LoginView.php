@@ -4,7 +4,6 @@ namespace view;
 
 class LoginView
 {
-
 	private $login;
 
 	public function __construct($login)
@@ -12,42 +11,66 @@ class LoginView
 		$this->login = $login;
 	} 
 
+
+    /**
+    *   @return     Hämta namn från login-fältet
+    */
 	public function getUsername()
     {
     	return $_POST[helpers\PostHandler::$LOGINNAME];
     }
 
+    /**
+    *   @return     Hämta lösenord från login-fältet
+    */
     public function getPassword()
     {
     	return $_POST[helpers\PostHandler::$LOGINPASSWORD];
     }
 
+    /**
+    *   @return     Hämta ip från användaren
+    */
     public function getIP()
     {
         return $_SERVER["REMOTE_ADDR"];
     }
 
+    /**
+    *   @return     Hämta info om mjukvaran som klienten använder.
+    */
     public function getUserAgent()
     {
         return $_SERVER["HTTP_USER_AGENT"];
     }
 
+    /**
+    *   @return     kollar om användaren vill logga in
+    */
 	public function userWantsToLogin()
 	{
 		return isset($_GET[helpers\GetHandler::$LOGIN]);
 	}
 
+    /**
+    *   @return     kollar om användaren vill logga ut.
+    */
     public function userWantsToLogout()
     {
         return isset($_GET[helpers\GetHandler::$LOGOUT]);
     }
 
-
+    /**
+    *   Denna funktion skapar innehållet i loginrutan som ska visas på alla sidor.
+    *
+    *   @return     string  inloggningsrutan.
+    */
 	public function createLoginBox()
     {
 
     	$loginDiv = '<div id="loginBox">';
 
+        //Namn på den inloggade och utloggningslänk
         if($this->login->getIsLoggedIn($this->getIP(), $this->getUserAgent()))
         {
         	$loginDiv .= 
@@ -56,6 +79,8 @@ class LoginView
             <p><a href="?'.helpers\GetHandler::$LOGOUT.'">Log out</a></p>
             ';
         }
+
+        //vid utloggad användare: inloggningsformulär
         else
         {
         	$loginDiv .= 
@@ -74,7 +99,10 @@ class LoginView
 
 
 
-    //funktion som skapar eventuell feedback efter att ha frågat modellen.
+    /**
+    *   funktion som skapar eventuell feedback efter att ha frågat modellen.
+    *   @return     string      html-lista med feedback.
+    */
     private function makeFeedBack()
     {
 

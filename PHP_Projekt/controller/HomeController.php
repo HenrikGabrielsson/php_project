@@ -19,7 +19,11 @@ class HomeController
 		
 	}
 
-	public function getContent($login)
+	/**
+	*	Hämtar innehållet som ska visas och fyller htmlViewn med det.
+	* @param Login 	En loginhandler som berättar vissa saker om den inloggade användaren.
+	*/
+	public function getContent(\model\LoginHandler $login)
 	{
 		$title = $this->homeView->getTitle();
 

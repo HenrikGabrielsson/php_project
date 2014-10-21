@@ -5,11 +5,19 @@ namespace view;
 class SearchView
 {
 
+	/**
+	*@return sidans title.
+	*/
 	public function getTitle()
 	{
 		return "SearchResults";
 	}
 
+	/**
+	* 	visar en lista över polls som matchade en sökning
+	* 	@param  	array 	alla polls 
+	* 	@return 	string  lista över matchande polls.
+	*/
 	public function getResults($polls)
 	{
 		$resultList = 
@@ -27,8 +35,12 @@ class SearchView
 		return $resultList . "</ul>";
 	}
 
+	/**
+	* @return 	array 	alla sökord hämtas.
+	*/
 	public function getSearchTerms()
 	{
+		//separerar sökorden vid mellanslag och returnerar .
 		return explode(" ", $_GET[helpers\GetHandler::$SEARCHWORDS]);
 	}
 }

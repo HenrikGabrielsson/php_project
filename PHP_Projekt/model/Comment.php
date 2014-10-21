@@ -5,11 +5,11 @@ namespace model;
 class Comment
 {
 
-	private $id;
-	private $comment;
-	private $pollId;
-	private $userId;
-	private $commentTime;
+	private $id;			//kommentarens id
+	private $comment;		//kommentaren i text
+	private $pollId;		//undersökning där kommentaren gjordes
+	private $userId;		//kommentarskrivarens id
+	private $commentTime;	//när kommentaren gjordes
 
 	public function __construct($comment, $pollId, $userId, $commentTime, $id = 0)
 	{

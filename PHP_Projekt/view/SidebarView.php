@@ -11,6 +11,10 @@ class SidebarView
 		$this->categories = $categories;
 	}
 
+	/**
+	* @param  	LoginHandler 	ett loginhandler-objekt.
+	* @return 	string 			det som ska visas i sidebaren.
+	*/
 	public function getSidebarContent($login)
 	{
 		//om användaren är inloggad så visas en create poll-länk

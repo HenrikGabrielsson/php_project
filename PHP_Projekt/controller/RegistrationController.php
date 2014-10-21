@@ -16,13 +16,19 @@ class RegistrationController
 		$this->regView = new \view\RegistrationView();
 	}
 
-	public function getContent($login)
+	/**
+	*	Hämtar innehållet som ska visas och fyller htmlViewn med det.
+	* @param Login 	En loginhandler som berättar vissa saker om den inloggade användaren.
+	*/
+	public function getContent(\model\LoginHandler $login)
 	{
 
 		$title = $this->regView->getTitle();
 
+		//användaren vill försöka registrera sig.
 		if($this->regView->userWantsToRegister())
 		{
+			//hämta formulärdata
 			$username = $this->regView->getUsername();
 			$email = $this->regView->getEmail();
 			$pass1 = $this->regView->getPassword1();
@@ -43,7 +49,6 @@ class RegistrationController
 		$feedback = $login->getErrorList();
 
 		$body = $this->regView->getRegister($feedback);
-
 		$this->htmlView->showHTML($title, $body);
 			
 	}

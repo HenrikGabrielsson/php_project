@@ -2,6 +2,7 @@
 
 namespace view\helpers;
 
+//konstanter för Get-parametrar
 class GetHandler
 {
 	public static $LOGIN = "login";
@@ -15,10 +16,12 @@ class GetHandler
 	public static $SEARCHWORDS = "searchwords";
 	public static $LIST = "list";
 	
+	//reports lists
 	public static $POLLLIST = "poll";
 	public static $COMMENTLIST = "comment";
 	public static $USERLIST = "user";
 
+	//ta bort reports
 	public static $IGNOREPOLL = "ignorePoll";
 	public static $IGNORECOMMENT = "ignoreComment";
 	public static $IGNOREUSER = "ignoreUser";
