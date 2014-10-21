@@ -40,8 +40,8 @@ class NavigationController
     public function getPage()
     {
         //börjar med att kolla om användaren är inloggad
-        $loginController = new \controller\LoginController($this->htmlView, $this->loginHandler);
-        $loginController->checkForLogin();
+        $loginController = new \controller\LoginController($this->loginHandler);
+        $this->htmlView->setLoginBox($loginController->checkForLogin());
 
         //sen lägger vi till innehållet i sidebar.
         $this->htmlView->setSidebarContent($this->sidebarView->getSidebarContent($this->loginHandler));
@@ -50,37 +50,41 @@ class NavigationController
         switch ($this->navView->getPageController())
         {
             case \view\helpers\GetHandler::$VIEWPOLL:
-                $controller = new PollController($this->htmlView);
-                $controller->getContent($this->navView->getId(), $this->loginHandler);
+                $controller = new PollController($this->navView->getId(), $this->loginHandler);
                 break;
             case \view\helpers\GetHandler::$VIEWUSER:
-                $controller = new UserController($this->htmlView);
-                $controller->getContent($this->navView->getId(), $this->loginHandler);
+                $controller = new UserController($this->navView->getId(), $this->loginHandler);
                 break;
             case \view\helpers\GetHandler::$VIEWCATEGORY:
-                $controller = new CategoryController($this->htmlView);
-                $controller->getContent($this->navView->getId());
+                $controller = new CategoryController($this->navView->getId());
                 break;
             case \view\helpers\GetHandler::$VIEWREGISTER:
-                $controller = new RegistrationController($this->htmlView);
-                $controller->getContent($this->loginHandler);
+                $controller = new RegistrationController($this->loginHandler);
                 break;
             case \view\helpers\GetHandler::$VIEWCREATEPOLL:
-                $controller = new PollCreationController($this->htmlView);
-                $controller->getContent($this->loginHandler);
+                $controller = new PollCreationController($this->loginHandler);
                 break;
             case \view\helpers\GetHandler::$VIEWSEARCH:
-                $controller = new SearchController($this->htmlView);
-                $controller->getContent();
+                $controller = new SearchController();
                 break;
             case \view\helpers\GetHandler::$VIEWREPORT:
-                $controller = new ReportListController($this->htmlView);
-                $controller->getContent($this->loginHandler);
+                $controller = new ReportListController($this->loginHandler);
                 break;
             default:
-                $controller = new HomeController($this->htmlView);
-                $controller->getContent($this->loginHandler);
+                $controller = new HomeController($this->loginHandler);
         }
- 
+
+        //här läggs innehållet till om något skickades tillbaka.
+        $body = $controller->getBody();
+        if($body)
+        {
+            $title = $controller->getTitle();
+            $this->htmlView->showHTML($title, $body);
+        }
+        //annars error page
+        else
+        {
+            $this->htmlView->showErrorPage();
+        } 
     }
 }

@@ -10,13 +10,9 @@ class UserView
 	private $pollsCommentedIn;
 	private $comments;
 
-	public function __construct($user, $ownPolls, $pollsCommentedIn, $comments)
+	public function __construct($user)
 	{
 		$this->user = $user;
-		$this->ownPolls = $ownPolls;
-
-		$this->comments = $comments;
-		$this->pollsCommentedIn = $pollsCommentedIn;
 	}
 
 	/**
@@ -29,15 +25,22 @@ class UserView
 
 
 	/**
-	*@return string 	sidans content.
+	*@param  	array 		egna skapade undersökningar
+	*@param  	array 		undersökningar som användaren har kommenterat i 
+	*@param 	array 		egna kommentarer
+	*@return 	string 		sidans content.
 	*/
-	public function getBody()
+	public function getBody($ownPolls, $pollsCommentedIn, $comments)
 	{
+
+		$this->ownPolls = $ownPolls;
+		$this->comments = $comments;
+		$this->pollsCommentedIn = $pollsCommentedIn;
+
 		$content = 
 		'<h1>'.$this->user->getUserName().'</h2>'
 		.$this->getPollsList()
 		.$this->getCommentsList();
-
 		return $content;
 	}
 

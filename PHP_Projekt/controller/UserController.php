@@ -7,52 +7,59 @@ require_once("./model/repo/UserRepo.php");
 require_once("./model/repo/PollRepo.php");
 require_once("./model/repo/CommentRepo.php");
 
-class UserController
+require_once("./controller/IMainContentController.php");
+
+class UserController implements IMainContentController
 {
-	private $htmlView;
 	private $userView;
+
+	private $user;
+	private $login;
 	
 	private $userRepo;
 	private $pollRepo;
 	private $commentRepo;
 
-	public function __construct($htmlView)
+	/**
+	* @param Login 	En loginhandler som berättar vissa saker om den inloggade användaren.
+	* @param id     Id på den aktuella användaren.
+	*/
+	public function __construct($id, \model\LoginHandler $login)
 	{
-		$this->htmlView = $htmlView;
 		$this->userRepo = new \model\repository\UserRepo();
 		$this->pollRepo = new \model\repository\PollRepo();
 		$this->commentRepo = new \model\repository\CommentRepo();
+
+		$this->user = $this->userRepo->getUserById($id);
+		$this->login = $login;
+
+		$this->userView = new \view\UserView($this->user);
 	}
 
 	/**
 	*	Hämtar innehållet som ska visas och fyller htmlViewn med det.
-	* @param Login 	En loginhandler som berättar vissa saker om den inloggade användaren.
-	* @param id     Id på den aktuella användaren.
 	*/
-	public function getContent($id, \model\LoginHandler $login)
+	public function getBody()
 	{
-		$user = $this->userRepo->getUserById($id);
-
 		//om användaren inte hittas/ej anges
-		if($user === false)
+		if($this->user === false)
 		{
-			$this->htmlView->showErrorPage();
-			die();
+			return false;
 		}
 
 		//om den inloggade användaren kollar på sin egen sida så ser den lite annorlunda ut
-		if($id == $login->getId())
+		if($this->user->getId() == $this->login->getId())
 		{
 			//även privata polls visas
-			$ownPolls = $this->pollRepo->getAllPollsFromUser($user->getId(), false, true);
+			$ownPolls = $this->pollRepo->getAllPollsFromUser($this->user->getId(), false, true);
 		}
 		else
 		{
 			//bara publika polls
-			$ownPolls = $this->pollRepo->getAllPollsFromUser($user->getId(), false);	
+			$ownPolls = $this->pollRepo->getAllPollsFromUser($this->user->getId(), false);	
 		}
 
-		$comments = $this->commentRepo->getCommentsFromUser($user->getId(), false);
+		$comments = $this->commentRepo->getCommentsFromUser($this->user->getId(), false);
 
 		//hämta de polls som användaren har kommenterat i.
 		$pollsCommentedIn = array();
@@ -61,10 +68,11 @@ class UserController
 			$pollsCommentedIn[] = $this->pollRepo->getPollById($comment->getPollId());
 		}
 
-		$this->userView = new \view\UserView($user, $ownPolls, $pollsCommentedIn, $comments);
+		return $this->userView->getBody($ownPolls, $pollsCommentedIn, $comments);	
+	}
 
-		$title = $this->userView->getTitle();
-		$body = $this->userView->getBody();
-		$this->htmlView->showHTML($title, $body);		
+	public function getTitle()
+	{
+		return $this->userView->getTitle();
 	}
 }

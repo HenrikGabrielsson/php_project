@@ -11,7 +11,7 @@ class PollView
 	private $commentHandler;
 	private $login;
 
-	public function __construct($poll, $owner, $login, $commentHandler, $reportHandler)
+	public function __construct($poll, $login, $owner, $commentHandler, $reportHandler)
 	{
 		$this->poll = $poll;
 		$this->owner = $owner;

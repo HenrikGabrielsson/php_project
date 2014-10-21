@@ -4,30 +4,33 @@ namespace controller;
 
 require_once("./view/HomePageView.php");
 require_once("./model/repo/PollRepo.php");
+require_once("./controller/IMainContentController.php");
 
-class HomeController
+class HomeController implements IMainContentController
 {
-	private $htmlView; 
 	private $homeView;
 	private $pollRepo;
 
-	public function __construct($htmlView)
+	private $login;
+
+	public function __construct(\model\LoginHandler $login)
 	{
-		$this->htmlView = $htmlView;
+		$this->login = $login;
+
 		$this->pollRepo = new \model\repository\PollRepo();
 		$this->homeView = new \view\HomePageView($this->pollRepo->getLatestPolls(3));
-		
 	}
 
 	/**
 	*	Hämtar innehållet som ska visas och fyller htmlViewn med det.
-	* @param Login 	En loginhandler som berättar vissa saker om den inloggade användaren.
 	*/
-	public function getContent(\model\LoginHandler $login)
+	public function getBody()
 	{
-		$title = $this->homeView->getTitle();
+		return $this->homeView->getBody($this->login->getIsLoggedIn());
+	}
 
-		$body = $this->homeView->getBody($login->getIsLoggedIn());
-		$this->htmlView->showHTML($title, $body);
+	public function getTitle()
+	{
+		return $this->homeView->getTitle();
 	}
 }

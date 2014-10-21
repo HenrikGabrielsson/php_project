@@ -2,50 +2,47 @@
 
 namespace controller;
 
+require_once("./controller/IMainContentController.php");
+
 require_once("./view/CategoryView.php");
 
 require_once("./model/repo/PollRepo.php");
 require_once("./model/repo/CategoryRepo.php");
 
-class CategoryController
+class CategoryController implements IMainContentController
 {
 	//views
-	private $htmlView;
 	private $categoryView; 
 
 	//repos
 	private $categoryRepo;
 	private $pollRepo;
 
-
-	public function __construct($htmlView)
+	public function __construct($id)
 	{
-		$this->htmlView = $htmlView;
 		$this->categoryRepo = new \model\repository\CategoryRepo();
 		$this->pollRepo = new \model\repository\PollRepo();
-	}
 
-	/**
-	*@param id på den kategori som ska visas.
-	*/
-	public function getContent($id)
-	{
 		//hämta alla polls i denna kategori.
 		$polls = $this->pollRepo->getAllPollsInCategory($id);
 		$category = $this->categoryRepo->getCategoryById($id);
 
+		$this->categoryView = new \view\CategoryView($category, $polls);
+	}
+
+	//hämta innehåll till sidan
+	public function getBody()
+	{
 		//kategori valdes inte/hittades inte
 		if($category === false)
 		{
-			$this->htmlView->showErrorPage();
-			die();
+			return false;
 		}
-		
-		$this->categoryView = new \view\CategoryView($category, $polls);
+		return $this->categoryView->getBody();
+	}
 
-		//hämta titel och body och visa i htmlView.
-		$title = $this->categoryView->getTitle();
-		$body = $this->categoryView->getBody();
-		$this->htmlView->showHTML($title, $body);
+	public function getTitle()
+	{
+		return $this->categoryView->getTitle();
 	}
 }

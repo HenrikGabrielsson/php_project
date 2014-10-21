@@ -5,26 +5,25 @@ namespace controller;
 require_once("./view/RegistrationView.php");
 require_once("./view/helpers/GetHandler.php");
 
-class RegistrationController
-{
-	private $htmlView;
-	private $regView;
+require_once("./controller/IMainContentController.php");
 
-	public function __construct($htmlView)
+class RegistrationController implements IMainContentController
+{
+	private $regView;
+	private $login;
+
+	public function __construct(\model\LoginHandler $login)
 	{
-		$this->htmlView = $htmlView;
 		$this->regView = new \view\RegistrationView();
+		$this->login = $login;
 	}
 
 	/**
 	*	Hämtar innehållet som ska visas och fyller htmlViewn med det.
 	* @param Login 	En loginhandler som berättar vissa saker om den inloggade användaren.
 	*/
-	public function getContent(\model\LoginHandler $login)
+	public function getBody()
 	{
-
-		$title = $this->regView->getTitle();
-
 		//användaren vill försöka registrera sig.
 		if($this->regView->userWantsToRegister())
 		{
@@ -35,21 +34,22 @@ class RegistrationController
 			$pass2 = $this->regView->getPassword2();
 
 			//försöker registrera. Om det lyckas så visas inte formuläret, utan en sida som berättar att allt gick bra.
-			$success = $login->attemptRegister($username, $email, $pass1, $pass2);
+			$success = $this->login->attemptRegister($username, $email, $pass1, $pass2);
 
 			if($success)
 			{
-				$body = $this->regView->getSuccessPage();
-				$this->htmlView->showHTML($title, $body);
-				return;
+				return $this->regView->getSuccessPage();;
 			}
 		}
 
 		//Om en registrering misslyckas så visas formuläret igen med feedback.
-		$feedback = $login->getErrorList();
+		$feedback = $this->login->getErrorList();
 
-		$body = $this->regView->getRegister($feedback);
-		$this->htmlView->showHTML($title, $body);
-			
+		return $this->regView->getRegister($feedback);		
+	}
+
+	public function getTitle()
+	{
+		return $this->regView->getTitle();
 	}
 }

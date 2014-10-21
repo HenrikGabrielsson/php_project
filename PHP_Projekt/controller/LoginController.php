@@ -7,15 +7,12 @@ require_once("view/LoginView.php");
 class LoginController
 {
 	private $login;
-
 	private $loginView;
-	private $htmlView; 
 
-	public function __construct($htmlView, $LoginHandler)
+	public function __construct($LoginHandler)
 	{
 		$this->login = $LoginHandler;
 		$this->loginView = new \view\LoginView($this->login);
-		$this->htmlView = $htmlView;
 	}
 
 	/**
@@ -51,7 +48,7 @@ class LoginController
 		}
 
 		//skicka uppgifter till htmlView om feedback och om användaren är inloggad.
-		$this->htmlView->setLoginBox($this->loginView->createLoginBox());
+		return $this->loginView->createLoginBox();
 
 	}
 }

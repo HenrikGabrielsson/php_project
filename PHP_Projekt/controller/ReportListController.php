@@ -11,7 +11,9 @@ require_once("./model/repo/PollRepo.php");
 require_once("./model/repo/CommentRepo.php");
 require_once("./model/ReportHandler.php");
 
-class ReportListController
+require_once("./controller/IMainContentController.php");
+
+class ReportListController implements IMainContentController
 {
 	private $reportListView;
 	private $htmlView; 
@@ -22,33 +24,29 @@ class ReportListController
 	private $pollRepo;
 	private $commentRepo;
 	private $reportHandler;
+	private $login;
 
-	public function __construct($htmlView)
+	public function __construct(\model\LoginHandler $login)
 	{
 		$this->reportedPollRepo = new \model\repository\ReportedPollRepo();
 		$this->reportedCommentRepo = new \model\repository\ReportedCommentRepo();
 		$this->reportedUserRepo = new \model\repository\ReportedUserRepo();
-
 		$this->userRepo = new \model\repository\UserRepo();
 		$this->pollRepo = new \model\repository\PollRepo();
 		$this->commentRepo = new \model\repository\CommentRepo();
 		$this->reportHandler = new \model\ReportHandler();
+		$this->login = $login;
 
 		$this->reportListView = new \view\ReportListView();
-		$this->htmlView = $htmlView;
 	}
 
 	/**
 	*	Hämtar innehållet som ska visas och fyller htmlViewn med det.
-	* @param Login 	En loginhandler som berättar vissa saker om den inloggade användaren.
 	*/
-	public function getContent(\model\LoginHandler $login)	
+	public function getBody()	
 	{
-
-		$title = $this->reportListView->getTitle();
-
 		//endast Admins får komma hit.
-		if($login->getIsAdmin())
+		if($this->login->getIsAdmin())
 		{
 			//ignorera poll report
 			if($this->reportListView->getIgnorePollReport())
@@ -72,13 +70,13 @@ class ReportListController
 			if($this->reportListView->getUserToNominate())
 			{
 				$userId = $this->reportListView->getUserToNominate();
-				$this->reportHandler->nominateForDeletion($userId, $login->getId());
+				$this->reportHandler->nominateForDeletion($userId, $this->login->getId());
 			}	
 			//ta bort medlem om han/hon redan har en nominering för borttagning
 			if($this->reportListView->getUserToDelete())
 			{
 				$userId = $this->reportListView->getUserToDelete();
-				$this->reportHandler->deleteUser($userId, $login->getId());
+				$this->reportHandler->deleteUser($userId, $this->login->getId());
 			}				
 
 			//ta bort undersökningen och spara medlem i lista över rapporterade medlemmar
@@ -111,27 +109,27 @@ class ReportListController
 				case \view\helpers\GetHandler::$POLLLIST:	
 					$polls = $this->getReportedPolls($pollReports);
 					$users = $this->getReportedUsers($pollReports);
-					$body = $this->reportListView->getPollList($polls, $users, $pollReports, $feedback);
+					return $this->reportListView->getPollList($polls, $users, $pollReports, $feedback);
 					break;
 				case \view\helpers\GetHandler::$COMMENTLIST:
 					$comments = $this->getReportedComments($commentReports);
 					$users = $this->getReportedUsers($commentReports);
-					$body = $this->reportListView->getCommentList($comments, $users, $commentReports, $feedback);
+					return $this->reportListView->getCommentList($comments, $users, $commentReports, $feedback);
 					break;
 				default:
 					$users = $this->getReportedUsers($userReports);
-					$body = $this->reportListView->getUserList($users, $userReports, $feedback);
+					return $this->reportListView->getUserList($users, $userReports, $feedback);
 			}
-
 		}
 		else
 		{
-			//Access Denied för övriga
-			$this->htmlView->showDenyPage();
-			return;
+			return false;
 		}
+	}
 
-		$this->htmlView->showHTML($title, $body);
+	public function getTitle()
+	{
+		return $this->reportListView->getTitle();	
 	}
 
 	/**

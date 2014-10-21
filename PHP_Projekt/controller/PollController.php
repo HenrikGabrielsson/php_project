@@ -8,10 +8,14 @@ require_once("./model/repo/UserRepo.php");
 require_once("./model/Voter.php");
 require_once("./model/CommentHandler.php");
 require_once("./model/ReportHandler.php");
+require_once("./controller/IMainContentController.php");
 
-class PollController
+class PollController implements IMainContentController
 {
-	private $htmlView;
+	private $poll;
+	private $owner;
+	private $login;
+
 	private $pollView;
 	private $voter;
 	private $pollRepo;
@@ -19,10 +23,8 @@ class PollController
 	private $commentHandler;
 	private $reportHandler;
 
-	public function __construct($htmlView)
+	public function __construct($id, \model\LoginHandler $login)
 	{
-		$this->htmlView = $htmlView;
-
 		$this->pollRepo = new \model\repository\PollRepo();
 		$this->userRepo = new \model\repository\UserRepo();
 		
@@ -30,6 +32,12 @@ class PollController
 		$this->commentHandler = new \model\CommentHandler();
 		$this->reportHandler = new \model\ReportHandler();
 
+		//hämta aktuell poll, ägare och uppgifter om inloggningen
+		$this->login = $login;
+		$this->poll = $this->pollRepo->getPollById($id);
+		$this->owner = $this->userRepo->getUserById($this->poll->getCreator());
+
+		$this->pollView = new \view\PollView($this->poll, $this->login, $this->owner, $this->commentHandler, $this->reportHandler);
 	}
 
 	/**
@@ -37,47 +45,25 @@ class PollController
 	* @param login 	En loginhandler som berättar vissa saker om den inloggade användaren.
 	* @param id   	id på den in poll som ska visas upp.
 	*/
-	public function getContent($id, \model\LoginHandler $login)
+	public function getBody()
 	{	
-
-		//hämta aktuell poll för sidan
-		$poll = $this->pollRepo->getPollById($id);
-
 		//undersökningen valdes inte/hittades inte
-		if($poll === false)
+		if($this->poll === false)
 		{
-			$this->htmlView->showErrorPage();
-			die();
+			return false;
 		}
-
-		$owner = $this->userRepo->getUserById($poll->getCreator());
-
-		$this->pollView = new \view\PollView($poll, $owner, $login, $this->commentHandler, $this->reportHandler);
-
+	
 		//om undersökningen är privat så kan bara skaparen se den.
-		if($poll->getPublic() == false && $poll->getCreator() !== $login->getId())
+		if($this->poll->getPublic() == false && $this->owner->getId() !== $this->login->getId())
 		{
 			//om användaren röstade i en privat poll
-			if($poll->getPublic() == false && $this->pollView->userVoted())
+			if($this->pollView->userVoted())
 			{
-				$title = $this->pollView->privateVoteTitle();
-				$body = $this->pollView->PrivateVotePage();
-				$this->htmlView->showHTML($title, $body);
-				die();
+				return $this->pollView->PrivateVotePage();				
 			}
-			
-			//Access Denied för övriga
-			$this->htmlView->showDenyPage();
-			return;
-		}
 
-		//om användaren röstade i en privat poll (shared)
-		if($poll->getPublic() == false && $this->pollView->userVoted())
-		{
-			$title = $this->pollView->privateVoteTitle();
-			$body = $this->pollView->PrivateVotePage();
-			$this->htmlView->showHTML($title, $body);
-			die();
+			//övriga får inte komma åt sidan.
+			return false;
 		}
 
 		//om användaren vill se resultat eller frågan där de kan rösta
@@ -86,9 +72,7 @@ class PollController
 			if($this->pollView->userCommented())
 			{
 				$comment = $this->pollView->getComment();
-
-				$this->commentHandler->attemptCreateComment($comment, $id);
-
+				$this->commentHandler->attemptCreateComment($comment, $this->poll->getId());
 				$feedback = $this->commentHandler->getFeedbackList();
 			}
 
@@ -101,10 +85,10 @@ class PollController
 				$this->voter->addNewVote($answer,$ip);
 
 				//uppdaterna med den nya rösten
-				$poll = $this->pollRepo->getPollById($id);
+				$this->poll = $this->pollRepo->getPollById($this->poll->getId());
 
 				//uppdatera undersökningsvyn med den nya rösten.
-				$this->pollView = new \view\PollView($poll, $owner, $login, $this->commentHandler, $this->reportHandler);
+				$this->pollView = new \view\PollView($this->poll, $this->login, $this->owner, $this->commentHandler, $this->reportHandler);
 			}
 
 			//om användaren har rapporterat en undersökning
@@ -112,7 +96,7 @@ class PollController
 			{
 				$reportReason = $this->pollView->getPollReportReason();
 
-				$this->reportHandler->reportPoll($poll, $reportReason);
+				$this->reportHandler->reportPoll($this->poll, $reportReason);
 
 				$feedback = $this->reportHandler->getFeedbackList();
 			}
@@ -139,7 +123,13 @@ class PollController
 			$body = $this->pollView->getForm();
 		}
 
-		$title = $this->pollView->getTitle();
-		$this->htmlView->showHTML($title, $body);
+		
+		return $body;
 	}
+
+	public function getTitle()
+	{
+		return $this->pollView->getTitle();
+	}
+
 }

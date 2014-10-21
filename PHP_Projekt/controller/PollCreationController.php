@@ -6,16 +6,20 @@ require_once("./view/PollCreationView.php");
 require_once("./model/PollCreator.php");
 require_once("./model/repo/CategoryRepo.php");
 
-class PollCreationController
+require_once("./controller/IMainContentController.php");
+
+class PollCreationController implements IMainContentController
 {
 	private $htmlView;
 	private $pollCreationView;
 	private $pollCreator;
 	private $catRepo;
 
-	public function __construct($htmlView)
+	private $login;
+
+	public function __construct(\model\LoginHandler $login)
 	{
-		$this->htmlView = $htmlView;
+		$this->login = $login;
 		
 		$this->catRepo = new \model\repository\CategoryRepo();
 		$this->pollCreator = new \model\PollCreator();
@@ -26,15 +30,12 @@ class PollCreationController
 	*	Hämtar innehållet som ska visas och fyller htmlViewn med det.
 	* @param Login 	En loginhandler som berättar vissa saker om den inloggade användaren.
 	*/
-	public function getContent(\model\LoginHandler $login)
+	public function getBody()
 	{
-		$title = $this->pollCreationView->getTitle();
-		$body;
-
 		//om man inte är inloggad så kan man inte skapa en poll
-		if($login->getIsLoggedIn() === false)
+		if($this->login->getIsLoggedIn() === false)
 		{
-			$body = $this->pollCreationView->getNotLoggedIn();
+			return  $this->pollCreationView->getNotLoggedIn();
 		}
 
 		//användaren vill försöka skapa en undersökning
@@ -51,20 +52,22 @@ class PollCreationController
 
 			if($success)
 			{
-				$body = $this->pollCreationView->getSuccessPage();
+				return $this->pollCreationView->getSuccessPage();
 			}
 			else
 			{
 				$feedback = $this->pollCreator->getErrorList();
-				$body = $this->pollCreationView->getCreate($feedback);
+				return $this->pollCreationView->getCreate($feedback);
 			}
 		}
 		else
 		{
-			$body = $this->pollCreationView->getCreate($feedback);
+			return $this->pollCreationView->getCreate($feedback);
 		}
-		
-		$this->htmlView->showHTML($title, $body);
+	}
 
+	public function getTitle()
+	{
+		return $this->pollCreationView->getTitle();
 	}
 }
