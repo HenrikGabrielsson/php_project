@@ -3,6 +3,7 @@ html {
 }
 body {
     background:linear-gradient(#DDDDDD, #FFFFFF);
+    background-repeat: no-repeat;
     height:100%;
     font-family:"Lucida Sans Unicode";
 }
@@ -11,11 +12,20 @@ h1 {
     color: #D52A57;
 }
 
+
 input {
     display: block;
 }
 
-
+input[type="submit"], input[type="button"] {
+    display:inline-block;
+    background-color:#D52A57;
+    padding:8px;
+    border:none;
+    border-radius: 5px;
+    color:white;
+    font-family:"Lucida Sans Unicode";
+}
 
 /*Huvudelement*******************************/
 #container {
@@ -57,6 +67,14 @@ input {
     margin-top:10px;
 }
 
+#main_content h2 {
+    clear:both;
+    color:#D52A57;
+}
+
+#feedback {
+    clear:both;
+}
 
 #footer {
     float:right;
@@ -109,18 +127,46 @@ input {
 
 #loginBox {
     float:right;
+    max-width:200px;
 }
 
+.comment {
+    border: 1px solid #D52A57;
+    margin:5px 0 5px 0;
+    border-radius: 10px;
+}
+
+.comment .commentHead {
+    height:30px;
+}
+
+.comment .commentHead p {
+    display:inline;
+    float:left;
+    margin: 0 0 30px 5px;
+}
+
+.comment .commentBody {
+    float:left;
+    min-height: 50px;
+    width:100%;
+}
+
+.comment .commentBody p {
+    margin-left: 30px;
+}
 
 /*För undersökningen********************************/
 #pollForm {
-    border: 1px solid #D52A57; 
     border-radius: 15px; 
     width:500px;
 }
 
 .pollResults {
+    clear: both;
     max-width: 440px;
+    overflow: auto;
+    margin-bottom:20px;
 }
 
 .resultsList {

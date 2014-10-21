@@ -98,16 +98,16 @@ class CommentHandler
 	private function validateComment($comment)
 	{
 		//html-taggar är ok, men de ska skrivas ut normalt.
-		$comment = htmlspecialchars($comment);
+		$comment = trim(htmlspecialchars($comment));
 
 		//kommentaren får inte vara tom eller bara innehålla "blanka" tecken.
-		if (strlen(trim($comment)) == 0)
+		if (strlen($comment) == 0)
 		{
 			$this->feedbackList[] = self::SHORTCOMMENT;
 		}
 
-		//kommentaren får inte vara längre än 100 tecken;
-		else if(strlen($comment) > 100)
+		//kommentaren får inte vara längre än 1000 tecken;
+		else if(strlen($comment) > 1000)
 		{
 			$this->feedbackList[] = self::LONGCOMMENT;
 		}

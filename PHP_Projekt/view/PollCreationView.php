@@ -91,10 +91,9 @@ class PollCreationView
 	public function getCreate($feedback = null)
 	{
 		$body = 
-		'<h1>Create Poll</h1>
-
-		'.$this->makeFeedback($feedback)
-		.$this->getForm();
+		'<h1>Create Poll</h1>'.
+		$this->getForm().
+		$this->makeFeedback($feedback);
 		
 		return $body;
 	}
@@ -160,7 +159,7 @@ class PollCreationView
 		}
 
 		//fråga vilka konstanter som finns i listan och skriv ut feedback i en lista.
-		$feedback .= '<ol>';
+		$feedback .= '<div id="feedback"><ol>';
 
 		if(in_array(\model\Pollcreator::SHORTQUESTION, $feedbackArray))
         {
@@ -191,7 +190,7 @@ class PollCreationView
             $feedback .= "<li>Pick a category.</li>";
         }
 
-        return $feedback . '</ol>';
+        return $feedback . '</ol></div>';
 	}
 
 }

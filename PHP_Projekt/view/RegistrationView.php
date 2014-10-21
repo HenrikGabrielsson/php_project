@@ -114,7 +114,9 @@ class RegistrationView
 	public function makeFeedback($feedbackArray)
 	{
 
-		$feedback .= '<ol>';
+		$feedback = 
+		'<div id="feedback">
+		<ol>';
 
 		//namn-feedback
 		if(in_array(\model\LoginHandler::SHORTNAME, $feedbackArray))
@@ -154,7 +156,7 @@ class RegistrationView
             $feedback .= "<li>A user account is already tied to this email address.</li>";
         }  		
 
-        return $feedback . '</ol>';
+        return $feedback . '</ol></div>';
 
 	}
 }

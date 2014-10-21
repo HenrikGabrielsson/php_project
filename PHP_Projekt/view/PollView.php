@@ -318,8 +318,7 @@ class PollView
 			return '
 			<div id="commentForm">
 			<form action="'.$_SERVER['REQUEST_URI'].'" method="post">
-				<textarea maxlength="1000" cols="100" rows="5" name="'.helpers\PostHandler::$COMMENT.'" id="comment">'.$feedback.'
-				</textarea>
+			<textarea maxlength="1000" cols="100" rows="5" name="'.helpers\PostHandler::$COMMENT.'" id="comment"></textarea>
 				<input type="submit" value="Send Comment">
 			</form>	
 			</div>
@@ -358,9 +357,10 @@ class PollView
 				'<div class="comment">
 					<div class="commentHead">
 						<p>'.$comment->getCommentTime().'</p><p><a href="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWUSER.
-						'&'.helpers\GetHandler::$ID.'='.$comment->getUserId().'">'. $writer->getUserName().'</a>';
+						'&'.helpers\GetHandler::$ID.'='.$comment->getUserId().'">'. $writer->getUserName().'</a>
+					</div>
 
-
+					<div class="commentBody"><p>'.$comment->getComment().'</p></div>';
 				//rapporteringsfunktion för inloggade.
 				if($this->login->getIsLoggedIn())
 				{
@@ -374,13 +374,7 @@ class PollView
 						</form>
 					';
 				}
-
-				$retHTML .=
-				'</div>
-					<div class="commentBody">
-						'.$comment->getComment().'
-					</div>
-				</div>';
+				$retHTML .= '</div>';
 			}
 		}
 
@@ -443,12 +437,11 @@ class PollView
 	*/
 	public function makeFeedback($feedback)
 	{
-		$retString = '<div id="feedback">';  
+		$retString = '<div id="feedback"><ul>';  
 
 		if(is_array($feedback))
 		{
-			
-			$retString = "<ul>";
+			//felmeddelanden
 			if(in_array(\model\ReportHandler::LONGREASON, $feedback))
 	        {
 	            $retString .= "<li>The reason you wrote was too long. Maximum number of characters is 200.</li>";
@@ -478,27 +471,20 @@ class PollView
 	            $retString .= "<li>Thanks for the comment.</li>";
 	        }	        
    
-	        //rättmeddelanden
+	        //övrig feedback
 	        if(in_array(\model\ReportHandler::REPORTEDPOLL, $feedback) || in_array(\model\ReportHandler::REPORTEDCOMMENT, $feedback))
 	        {
 	            $retString .= "<li>Thanks for reporting this. We will take a look at it.</li>";
-	        }	     
-
-	        $retString .="</ul>";
-	    }
-
-	    else
-	    {
-	    	$retString .= '<p>'.$feedback.'</p>';
-
-	    	//om användaren har röstat
-	    	if($this->userVoted())
-	        {
-	        	$retString .= "<p>Thanks for the vote.</p>";
 	        }
 	    }
 
-        return $retString . '</div>';
+        if($this->userVoted())
+        {
+        	$retString .= "<li>Thanks for the vote!</li>";
+        }     
+
+
+        return $retString . '</ul></div>';
 	}
 }
 

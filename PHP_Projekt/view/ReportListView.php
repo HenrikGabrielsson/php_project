@@ -386,7 +386,7 @@ class ReportListView
 	{
 		$retString = '<div id="feedback">';  
 	
-		$retString = "<ul>";
+		$retString .= "<ul>";
 		if(in_array(\model\ReportHandler::LONGREASON, $feedback))
         {
             $retString .= "<li>The reason you wrote was too long. Maximum number of characters is 200.</li>";

@@ -106,7 +106,7 @@ class LoginView
     private function makeFeedBack()
     {
 
-        $feedback = "";
+        $feedback = '<div id="feedback">';
 
         if(in_array(\model\LoginHandler::NONAME, $this->login->getErrorList()))
         {
@@ -123,7 +123,7 @@ class LoginView
             $feedback .= "<p>Your username and/or Password was incorrect. Please, try again.</p>";
         }
 
-    	return $feedback;
+    	return $feedback . '</div>';
     }
 
 

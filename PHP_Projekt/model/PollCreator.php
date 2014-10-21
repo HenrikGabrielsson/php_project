@@ -44,6 +44,7 @@ class PollCreator
 	*/
 	public function attemptToCreate($question, $answers, $category, $public)
 	{
+
 		//validera all input.
 		$question = $this->validateQuestion($question);
 		$answers = $this->validateAnswers($answers);
@@ -66,6 +67,8 @@ class PollCreator
 		//en poll skapas om valideringen gick bra
 		$poll = new \model\Poll($question, $_SESSION[helpers\SessionHandler::$USERID], date("Y-m-d H:i:s"), $public, $category, $answer_objs);
 		
+		$this->pollRepo->add($poll);
+
 		//allt gick bra
 		return true;
 	}
