@@ -2,6 +2,8 @@
 
 namespace view;
 
+require_once("./view/helpers/PostHandler.php");
+
 class LoginView
 {
 	private $login;

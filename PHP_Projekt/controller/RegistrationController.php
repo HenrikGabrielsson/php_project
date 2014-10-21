@@ -3,7 +3,6 @@
 namespace controller;
 
 require_once("./view/RegistrationView.php");
-require_once("./view/helpers/GetHandler.php");
 
 require_once("./controller/IMainContentController.php");
 
@@ -20,7 +19,6 @@ class RegistrationController implements IMainContentController
 
 	/**
 	*	Hämtar innehållet som ska visas och fyller htmlViewn med det.
-	* @param Login 	En loginhandler som berättar vissa saker om den inloggade användaren.
 	*/
 	public function getBody()
 	{

@@ -10,7 +10,6 @@ require_once("./controller/IMainContentController.php");
 
 class PollCreationController implements IMainContentController
 {
-	private $htmlView;
 	private $pollCreationView;
 	private $pollCreator;
 	private $catRepo;
@@ -28,7 +27,6 @@ class PollCreationController implements IMainContentController
 
 	/**
 	*	Hämtar innehållet som ska visas och fyller htmlViewn med det.
-	* @param Login 	En loginhandler som berättar vissa saker om den inloggade användaren.
 	*/
 	public function getBody()
 	{

@@ -42,8 +42,6 @@ class PollController implements IMainContentController
 
 	/**
 	*	Hämtar innehållet som ska visas och fyller htmlViewn med det.
-	* @param login 	En loginhandler som berättar vissa saker om den inloggade användaren.
-	* @param id   	id på den in poll som ska visas upp.
 	*/
 	public function getBody()
 	{	
