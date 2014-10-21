@@ -21,26 +21,6 @@ class PollView
 	}
 
 	/**
-	*	@return 	string 	title på sidan när användaren inte får komma åt innehållet
-	*/
-	public function denyTitle()
-	{
-		return "Access Denied";
-	}
-
-	/**
-	*	@return 	string 	content på sidan när användaren inte får komma åt innehållet
-	*/
-	public function denyPage()
-	{
-		return 
-		'
-		<h1>Access Denied</h1>
-		<p>Sorry! You\'re not allowed to see this page.</p>
-		';
-	}
-
-	/**
 	*	@return 	int 	id på det som användaren röstade på 
 	*/
 	public function getAnswer()

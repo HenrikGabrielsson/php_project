@@ -126,7 +126,9 @@ class ReportListController
 		}
 		else
 		{
-			$body = $this->reportListView->denyPage();
+			//Access Denied för övriga
+			$this->htmlView->showDenyPage();
+			return;
 		}
 
 		$this->htmlView->showHTML($title, $body);

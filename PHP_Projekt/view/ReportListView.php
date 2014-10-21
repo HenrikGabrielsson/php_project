@@ -122,17 +122,6 @@ class ReportListView
 		return "Reported things";
 	}
 
-	/**
-	*	@return 	string	sidans innehåll om användaren inte har rätt att komma hit.
-	*/
-	public function denyPage()
-	{
-		return 
-		"<h1>Access Denied</h1>
-		<p>We're Sorry. You're not allowed to visit this page.Go play somewhere else.</p>
-		";
-	}
-
 
 	/**
 	*	@param 		array 	array med feedback

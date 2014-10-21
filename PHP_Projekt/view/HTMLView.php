@@ -102,4 +102,20 @@ class HTMLView
 
         $this->showHTML($title, $body);
     }
+
+    /**
+    *   Skapar en generisk Access Denied-page till html-sidan
+    *   Kallar på ShowHTML för att lägga till innnehåll och titel på den färdiga mallen.
+    */  
+    public function showDenyPage()
+    {
+        $title = "Access Denied";
+        $body = 
+        '
+        <h1>Access Denied</h1>
+        <p>Sorry! You\'re not allowed to see this page.</p>
+        ';
+
+        $this->ShowHTML($title, $body);
+    }
 }

@@ -65,10 +65,9 @@ class PollController
 				$this->htmlView->showHTML($title, $body);
 				die();
 			}
-
-			$title = $this->pollView->denyTitle();
-			$body = $this->pollView->denyPage();
-			$this->htmlView->showHTML($title, $body);
+			
+			//Access Denied för övriga
+			$this->htmlView->showDenyPage();
 			return;
 		}
 

@@ -147,9 +147,9 @@ input[type="submit"], input[type="button"] {
 }
 
 .comment .commentBody {
-    float:left;
     min-height: 50px;
     width:100%;
+    overflow: auto;
 }
 
 .comment .commentBody p {
