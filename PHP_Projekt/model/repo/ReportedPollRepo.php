@@ -7,8 +7,6 @@ require_once("./model/PollReport.php");
 
 class ReportedPollRepo extends \model\repository\Repository
 {
-	private $reportedPollTable = "reportedPoll";
-
 	//databasens kolumnnamn
 	private $reportedPollId = "reportedPollId";
 	private $userId = "userId";

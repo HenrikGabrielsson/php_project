@@ -8,7 +8,6 @@ require_once("./model/CommentReport.php");
 class ReportedCommentRepo extends \model\repository\Repository
 {
 
-	private $reportedCommentTable = "reportedComment";
 
 	//databasens kolumnnamn
 	private $reportedCommentId = "reportedCommentId";

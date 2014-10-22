@@ -7,8 +7,6 @@ require_once("./model/UserReport.php");
 
 class ReportedUserRepo extends \model\repository\Repository
 {
-	private $reportedUserTable = "reportedUser";
-
 	//databasens kolumnnamn
 	private $reportedUserId = "reportedUserId";
 	private $userId = "userId";

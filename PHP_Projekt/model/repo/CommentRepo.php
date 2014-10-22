@@ -8,8 +8,6 @@ require_once("./model/Comment.php");
 class CommentRepo extends \model\repository\Repository
 {
 
-	private $commentTable = "comment";
-
 	private $deleteCommentProc = "deleteComment";
 
 	//databasens kolumnnamn

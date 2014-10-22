@@ -9,11 +9,6 @@ require_once("./model/Answer.php");
 class PollRepo extends \model\repository\Repository
 {
 
-	//tabellnamn
-	private $pollTable = "poll";
-	private $answerTable = "answer";
-	private $voteTable = "vote";
-
 	//namn på stored procedures 
 	private $deletePollProc = "deletePoll";	//tar bort poll + tillhörande votes,answers, comments, och eventuella reports på alla dessa
 	private $didUserVoteProc = "didUserVote";	//kollar om en användare redan röstat i en poll. returrnerar då voteId, annars false;

@@ -8,9 +8,6 @@ require_once("./model/User.php");
 class UserRepo extends \model\repository\Repository
 {
 
-	//tabellnamn
-	private $userTable = "user";
-
 	//namn på stored procedures
 	private $deleteUserProc = "deleteUser";	//tar bort användare + dess polls och comments samt eventuella reports på dessa
 

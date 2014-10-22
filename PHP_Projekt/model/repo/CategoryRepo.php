@@ -8,8 +8,6 @@ require_once("./model/Category.php");
 class CategoryRepo extends \model\repository\Repository
 {
 
-	private $categoryTable = "category";
-
 	private $categoryId = "categoryId";
 	private $categoryName = "categoryName";
 
