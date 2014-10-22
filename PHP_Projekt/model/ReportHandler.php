@@ -54,6 +54,43 @@ class ReportHandler
 		return $this->feedbackList;
 	}	
 
+
+	//hämta alla UserReports
+	public function getAllUserReports()
+	{
+		return $this->reportedUserRepo->getAllReports();
+	}
+
+	//hämta alla PollReports
+	public function getAllPollReports()
+	{
+		return $this->reportedPollRepo->getAllReports();
+	}
+
+	//hämta alla CommentReports
+	public function getAllCommentReports()
+	{
+		return $this->reportedCommentRepo->getAllReports();
+	}
+
+	//ta bort en UserReport
+	public function deleteUserReport($id)
+	{
+		$this->reportedUserRepo->delete($id);
+	}
+
+	//ta bort en PollReport
+	public function deletePollReport($id)
+	{
+		$this->reportedPollRepo->delete($id);
+	}
+
+	//ta bort en CommentReport
+	public function deleteCommentReport($id)
+	{
+		$this->reportedCommentRepo->delete($id);
+	}
+
 	/**
 	* rapportera en kommentar
 	* @param int 	id på rapporterad kommentar
@@ -240,5 +277,74 @@ class ReportHandler
 			return false;
 		}	
 		return true;
+	}
+
+
+	/**
+	*	Hämtar alla UNIKA användare som inskickade rapporter gäller
+	* @param reports    reports som ska kollas.
+	* @return 			en array med alla user-objekt som fanns i rapporterna. inga dupliceringar.
+	*/
+	public function getReportedUsers($reports)
+	{
+		$users = array();
+		if($reports)
+		{
+			foreach ($reports as $report) 
+			{
+				//om användaren inte redan är tillagd.
+				if(array_key_exists($report->getUserId(), $users) == false)
+				{
+					$users[$report->getUserId()] = $this->userRepo->getUserById($report->getUserId());
+				}				
+			}
+			return array_values($users);
+		}
+	}
+
+
+	/**
+	*	Hämtar alla UNIKA undersökningar som inskickade rapporter gäller
+	* @param reports    reports som ska kollas.
+	* @return 			en array med alla poll-objekt som fanns i rapporterna. inga dupliceringar.
+	*/
+	public function getReportedPolls($reports)
+	{
+		$polls = array();
+
+		if($reports)
+		{
+			foreach($reports as $report)
+			{
+				//om undersökningen inte redan är tillagd.
+				if(array_key_exists($report->getPollId(), $polls) == false)
+				{
+					$polls[$report->getPollId()] = $this->pollRepo->getPollById($report->getPollId());
+				}	
+			}
+			return array_values($polls);
+		}
+	}
+
+	/**
+	*	Hämtar alla UNIKA kommentarer som inskickade rapporter gäller
+	* @param reports    reports som ska kollas.
+	* @return 			en array med alla comment-objekt som fanns i rapporterna. inga dupliceringar.
+	*/
+	public function getReportedComments($reports)
+	{
+		$comments = array();
+		if($reports)
+		{
+			foreach($reports as $report)
+			{
+				//om kommentaren inte redan är tillagd.
+				if(array_key_exists($report->getCommentId(), $comments) == false)
+				{
+					$comments[$report->getCommentId()] = $this->commentRepo->getCommentById($report->getCommentId());
+				}	
+			}
+			return array_values($comments);
+		}
 	}
 }

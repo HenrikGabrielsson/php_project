@@ -1,3 +1,5 @@
+//Paste into www.yuml.me
+
 [CategoryController]-.-^[IMainContentController]
 [CategoryController]->[PollRepo]
 [CategoryController]->[CategoryRepo]
@@ -51,12 +53,6 @@
 
 [ReportListController]-.-^[IMainContentController]
 [ReportListController]-.->[LoginHandler]
-[ReportListController]->[ReportedPollRepo]
-[ReportListController]->[ReportedCommentRepo]
-[ReportListController]->[ReportedUserRepo]
-[ReportListController]->[PollRepo]
-[ReportListController]->[CommentRepo]
-[ReportListController]->[UserRepo]
 [ReportListController]->[ReportHandler]
 [ReportListController]->[ReportListView]
 [ReportListController]-.->[PollReport]

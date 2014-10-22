@@ -3,12 +3,6 @@
 namespace controller;
 
 require_once("./view/ReportListView.php");
-require_once("./model/repo/ReportedPollRepo.php");
-require_once("./model/repo/ReportedCommentRepo.php");
-require_once("./model/repo/ReportedUserRepo.php");
-require_once("./model/repo/UserRepo.php");
-require_once("./model/repo/PollRepo.php");
-require_once("./model/repo/CommentRepo.php");
 require_once("./model/ReportHandler.php");
 
 require_once("./controller/IMainContentController.php");
@@ -17,23 +11,11 @@ class ReportListController implements IMainContentController
 {
 	private $reportListView;
 	private $htmlView; 
-	private $reportedPollRepo;
-	private $reportedCommentRepo;
-	private $reportedUserRepo;
-	private $userRepo;
-	private $pollRepo;
-	private $commentRepo;
 	private $reportHandler;
 	private $login;
 
 	public function __construct(\model\LoginHandler $login)
 	{
-		$this->reportedPollRepo = new \model\repository\ReportedPollRepo();
-		$this->reportedCommentRepo = new \model\repository\ReportedCommentRepo();
-		$this->reportedUserRepo = new \model\repository\ReportedUserRepo();
-		$this->userRepo = new \model\repository\UserRepo();
-		$this->pollRepo = new \model\repository\PollRepo();
-		$this->commentRepo = new \model\repository\CommentRepo();
 		$this->reportHandler = new \model\ReportHandler();
 		$this->login = $login;
 
@@ -51,19 +33,19 @@ class ReportListController implements IMainContentController
 			//ignorera poll report
 			if($this->reportListView->getIgnorePollReport())
 			{
-				$this->reportedPollRepo->delete($this->reportListView->getIgnorePollReport());
+				$this->reportHandler->deletePollReport($this->reportListView->getIgnorePollReport());
 			}
 
 			//ignorera user report
 			if($this->reportListView->getIgnoreUserReport())
 			{
-				$this->reportedUserRepo->delete($this->reportListView->getIgnoreUserReport());
+				$this->reportHandler->deleteUserReport($this->reportListView->getIgnoreUserReport());
 			}
 
 			//ignorera comment report
 			if($this->reportListView->getIgnoreCommentReport())
 			{
-				$this->reportedCommentRepo->delete($this->reportListView->getIgnoreCommentReport());
+				$this->reportHandler->deleteCommentReport($this->reportListView->getIgnoreCommentReport());
 			}
 
 			//nominera en user för borttagning. (ingen borttagnin sker här.)
@@ -98,26 +80,25 @@ class ReportListController implements IMainContentController
 			//hämta eventuell feedback
 			$feedback = $this->reportHandler->getFeedbackList();
 
-			$pollReports = $this->reportedPollRepo->getAllReports();
-			$commentReports = $this->reportedCommentRepo->getAllReports();
-			$userReports = $this->reportedUserRepo->getAllReports();
+			$pollReports = $this->reportHandler->getAllPollReports();
+			$commentReports = $this->reportHandler->getAllCommentReports();
+			$userReports = $this->reportHandler->getAllUserReports();
 
 			//kollar vilken lista som ska hämtas. (users/polls/comments)
-
 			switch($this->reportListView->getListRequest())
 			{
 				case \view\helpers\GetHandler::$POLLLIST:	
-					$polls = $this->getReportedPolls($pollReports);
-					$users = $this->getReportedUsers($pollReports);
+					$polls = $this->reportHandler->getReportedPolls($pollReports);
+					$users = $this->reportHandler->getReportedUsers($pollReports);
 					return $this->reportListView->getPollList($polls, $users, $pollReports, $feedback);
 					break;
 				case \view\helpers\GetHandler::$COMMENTLIST:
-					$comments = $this->getReportedComments($commentReports);
-					$users = $this->getReportedUsers($commentReports);
+					$comments = $this->reportHandler->getReportedComments($commentReports);
+					$users = $this->reportHandler->getReportedUsers($commentReports);
 					return $this->reportListView->getCommentList($comments, $users, $commentReports, $feedback);
 					break;
 				default:
-					$users = $this->getReportedUsers($userReports);
+					$users = $this->reportHandler->getReportedUsers($userReports);
 					return $this->reportListView->getUserList($users, $userReports, $feedback);
 			}
 		}
@@ -127,76 +108,10 @@ class ReportListController implements IMainContentController
 		}
 	}
 
+	//returnera titel
 	public function getTitle()
 	{
 		return $this->reportListView->getTitle();	
 	}
 
-	/**
-	*	Hämtar alla UNIKA användare som inskickade rapporter gäller
-	* @param reports    reports som ska kollas.
-	* @return 			en array med alla user-objekt som fanns i rapporterna. inga dupliceringar.
-	*/
-	private function getReportedUsers($reports)
-	{
-		$users = array();
-		if($reports)
-		{
-			foreach ($reports as $report) 
-			{
-				//om användaren inte redan är tillagd.
-				if(array_key_exists($report->getUserId(), $users) == false)
-				{
-					$users[$report->getUserId()] = $this->userRepo->getUserById($report->getUserId());
-				}				
-			}
-			return array_values($users);
-		}
-	}
-
-
-	/**
-	*	Hämtar alla UNIKA undersökningar som inskickade rapporter gäller
-	* @param reports    reports som ska kollas.
-	* @return 			en array med alla poll-objekt som fanns i rapporterna. inga dupliceringar.
-	*/
-	private function getReportedPolls($reports)
-	{
-		$polls = array();
-
-		if($reports)
-		{
-			foreach($reports as $report)
-			{
-				//om undersökningen inte redan är tillagd.
-				if(array_key_exists($report->getPollId(), $polls) == false)
-				{
-					$polls[$report->getPollId()] = $this->pollRepo->getPollById($report->getPollId());
-				}	
-			}
-			return array_values($polls);
-		}
-	}
-
-	/**
-	*	Hämtar alla UNIKA kommentarer som inskickade rapporter gäller
-	* @param reports    reports som ska kollas.
-	* @return 			en array med alla comment-objekt som fanns i rapporterna. inga dupliceringar.
-	*/
-	private function getReportedComments($reports)
-	{
-		$comments = array();
-		if($reports)
-		{
-			foreach($reports as $report)
-			{
-				//om kommentaren inte redan är tillagd.
-				if(array_key_exists($report->getCommentId(), $comments) == false)
-				{
-					$comments[$report->getCommentId()] = $this->commentRepo->getCommentById($report->getCommentId());
-				}	
-			}
-			return array_values($comments);
-		}
-	}
 }
