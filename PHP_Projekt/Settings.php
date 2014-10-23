@@ -15,6 +15,8 @@ class Settings
 
 	//the database password
 	public static $dbPassword = "tCiSetWtDead";
+
+	public static $dbName = "henrikgabrielss";
 	
 	//finish the conntection String
 	public static $connectionString = "mysql:host=henrikgabrielsson.se.mysql;dbname=henrikgabrielss";

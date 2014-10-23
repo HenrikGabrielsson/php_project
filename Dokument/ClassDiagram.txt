@@ -160,6 +160,8 @@
 
 [Voter]->[PollRepo]
 
+[UserReport]-^[BasicReport]
+
 [CategoryRepo]-^[Repository]
 [CategoryRepo]-.->[Category]
 
