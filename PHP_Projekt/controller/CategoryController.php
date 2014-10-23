@@ -29,7 +29,7 @@ class CategoryController implements IMainContentController
 		$this->category = $this->categoryRepo->getCategoryById($id);
 		$polls = $this->pollRepo->getAllPollsInCategory($id);
 
-		$this->categoryView = new \view\CategoryView($category, $polls);
+		$this->categoryView = new \view\CategoryView($this->category, $polls);
 	}
 
 	//hämta innehåll till sidan
