@@ -96,7 +96,7 @@ class HTMLView
         $body = 
         '<h1>Strange...</h1>
         <p>An error occurred when you tried to do that. Maybe the page is missing or has been deleted. 
-        It\s also possible we did something wrong on this end. Sorry about that.
+        It\'s also possible we did something wrong on this end. Sorry about that.
         </p>
         ';
 

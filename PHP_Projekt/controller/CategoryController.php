@@ -18,14 +18,16 @@ class CategoryController implements IMainContentController
 	private $categoryRepo;
 	private $pollRepo;
 
+	private $category;
+
 	public function __construct($id)
 	{
 		$this->categoryRepo = new \model\repository\CategoryRepo();
 		$this->pollRepo = new \model\repository\PollRepo();
 
-		//hämta alla polls i denna kategori.
+		//hämta kategorin och alla polls i denna kategori.
+		$this->category = $this->categoryRepo->getCategoryById($id);
 		$polls = $this->pollRepo->getAllPollsInCategory($id);
-		$category = $this->categoryRepo->getCategoryById($id);
 
 		$this->categoryView = new \view\CategoryView($category, $polls);
 	}
@@ -33,8 +35,7 @@ class CategoryController implements IMainContentController
 	//hämta innehåll till sidan
 	public function getBody()
 	{
-		//kategori valdes inte/hittades inte
-		if($category === false)
+		if($this->category == false)
 		{
 			return false;
 		}

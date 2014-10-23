@@ -35,7 +35,7 @@ class CategoryRepo extends \model\repository\Repository
 			return $category;
 		}
 
-		return $result;
+		return false;
 	}
 
 	/**
@@ -67,8 +67,10 @@ class CategoryRepo extends \model\repository\Repository
 				$catArray[] = new \model\Category($category[$this->categoryId], $category[$this->categoryName]);
 			}
 			
-		return $catArray;
+			return $catArray;
 		}
+
+		return false;
 	}
 
 }

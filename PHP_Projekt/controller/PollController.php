@@ -35,7 +35,10 @@ class PollController implements IMainContentController
 		//hämta aktuell poll, ägare och uppgifter om inloggningen
 		$this->login = $login;
 		$this->poll = $this->pollRepo->getPollById($id);
-		$this->owner = $this->userRepo->getUserById($this->poll->getCreator());
+		if($this->poll)
+		{
+			$this->owner = $this->userRepo->getUserById($this->poll->getCreator());
+		}
 
 		$this->pollView = new \view\PollView($this->poll, $this->login, $this->owner, $this->commentHandler, $this->reportHandler);
 	}
