@@ -63,9 +63,12 @@ class UserController implements IMainContentController
 
 		//hämta de polls som användaren har kommenterat i.
 		$pollsCommentedIn = array();
-		foreach($comments as $comment)
+		if($comments)
 		{
-			$pollsCommentedIn[] = $this->pollRepo->getPollById($comment->getPollId());
+			foreach($comments as $comment)
+			{
+				$pollsCommentedIn[] = $this->pollRepo->getPollById($comment->getPollId());
+			}
 		}
 
 		return $this->userView->getBody($ownPolls, $pollsCommentedIn, $comments);	

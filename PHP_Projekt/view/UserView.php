@@ -53,19 +53,23 @@ class UserView
 		'<h2>Created polls</h2>
 		<ul>';
 
-		foreach ($this->ownPolls as $poll) {
-			$pollList .= 
-			'<li>
-				<a href="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWPOLL.'&'.helpers\GetHandler::$ID.'='.$poll->getId().'">
-				'.$poll->getQuestion().'</a>
-			</li>';
+		if($this->ownPolls)
+		{
+			foreach ($this->ownPolls as $poll) 
+			{
+				$pollList .= 
+				'<li>
+					<a href="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWPOLL.'&'.helpers\GetHandler::$ID.'='.$poll->getId().'">
+					'.$poll->getQuestion().'</a>
+				</li>';
+			}
 		}
 
 		return $pollList . '</ul>';
 	}
 
 	/**
-	*	@return string 	Hämtar listan med comments som användaren skapat. 
+	*	@return string 	Hämtar listan med comments som användaren skrivit. 
 	*/
 	public function getCommentsList()
 	{
@@ -73,23 +77,26 @@ class UserView
 		'<h2>Written comments</h2>
 		<ul>';
 
-		foreach ($this->comments as $comment) 
+		if($this->comments)
 		{
-			//hämta den poll som kommentaren ligger i.
-			foreach($this->pollsCommentedIn as $poll)
+			foreach ($this->comments as $comment) 
 			{
-				if($poll && $poll->getId() === $comment->getPollId())
+				//hämta den poll som kommentaren ligger i.
+				foreach($this->pollsCommentedIn as $poll)
 				{
-					$thisPoll = $poll;
-					break;	
+					if($poll && $poll->getId() === $comment->getPollId())
+					{
+						$thisPoll = $poll;
+						break;	
+					}
 				}
-			}
-			$commentList .=
-			'<li>In <a href="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWPOLL.'&'.helpers\GetHandler::$ID.'='.$thisPoll->getId().'">'.$thisPoll->getQuestion().'</a>
-				<p>At '.$comment->getCommentTime(). $this->user->getUserName().' wrote:</p>
-				<p>'.$comment->getComment().'</p>
-			</li>'; 
+				$commentList .=
+				'<li>In <a href="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWPOLL.'&'.helpers\GetHandler::$ID.'='.$thisPoll->getId().'">'.$thisPoll->getQuestion().'</a>
+					<p>At '.$comment->getCommentTime(). $this->user->getUserName().' wrote:</p>
+					<p>'.$comment->getComment().'</p>
+				</li>'; 
 
+			}
 		}
 
 		return $commentList.'</ul>';
