@@ -55,9 +55,8 @@
 [ReportListController]-.->[LoginHandler]
 [ReportListController]->[ReportHandler]
 [ReportListController]->[ReportListView]
-[ReportListController]-.->[PollReport]
+[ReportListController]-.->[BasicReport]
 [ReportListController]-.->[UserReport]
-[ReportListController]-.->[CommentReport]
 [ReportListController]-.->[GetHandler]
 
 [SearchController]-.-^[IMainContentController]
@@ -112,11 +111,11 @@
 [ReportListView]-.->[GetHandler]
 [ReportListView]-.->[PostHandler]
 [ReportListView]-.->[Poll]
-[ReportListView]-.->[PollReport]
 [ReportListView]-.->[Comment]
 [ReportListView]-.->[CommentHandler]
 [ReportListView]-.->[User]
 [ReportListView]-.->[UserReport]
+[ReportListView]-.->[BasicReport]
 [ReportListView]-.->[ReportHandler]
 
 [SearchView]-.->[GetHandler]
@@ -147,15 +146,12 @@
 [PollCreator]-.->[SessionHandler]
 [PollCreator]-.->[Category]
 
-[ReportHandler]->[ReportedUserRepo]
-[ReportHandler]->[ReportedPollRepo]
-[ReportHandler]->[ReportedCommentRepo]
+[ReportHandler]->[ReportRepo]
 [ReportHandler]->[UserRepo]
 [ReportHandler]->[PollRepo]
 [ReportHandler]->[CommentRepo]
 [ReportHandler]-.->[UserReport]
-[ReportHandler]-.->[CommentReport]
-[ReportHandler]-.->[PollReport]
+[ReportHandler]-.->[BasicReport]
 [ReportHandler]-.->[Poll]
 [ReportHandler]-.->[Comment]
 
@@ -174,14 +170,9 @@
 [PollRepo]-.->[Poll]
 [PollRepo]-.->[Answer]
 
-[ReportedCommentRepo]-^[Repository]
-[ReportedCommentRepo]-.->[CommentReport]
-
-[ReportedPollRepo]-^[Repository]
-[ReportedPollRepo]-.->[PollReport]
-
-[ReportedUserRepo]-^[Repository]
-[ReportedUserRepo]-.->[UserReport]
+[ReportRepo]-^[Repository]
+[ReportRepo]-.->[BasicReport]
+[ReportRepo]-.->[UserReport]
 
 [UserRepo]-^[Repository]
 [UserRepo]-.->[User]
