@@ -14,9 +14,7 @@ abstract class Repository
     protected $voteTable = "vote";
     protected $categoryTable = "category";
     protected $commentTable = "comment";    
-    protected $reportedCommentTable = "reportedComment";
-    protected $reportedPollTable = "reportedPoll";
-    protected $reportedUserTable = "reportedUser";
+    protected $reportTable = "report";
     protected $userTable = "user";
         
     public function connect()
@@ -34,8 +32,6 @@ abstract class Repository
             }
         }
     }
-    
-    
 }
 
 

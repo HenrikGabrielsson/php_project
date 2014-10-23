@@ -2,21 +2,17 @@
 
 namespace model;
 
-require_once("./model/repo/ReportedCommentRepo.php");
-require_once("./model/repo/ReportedPollRepo.php");
-require_once("./model/repo/ReportedUserRepo.php");
+require_once("./model/repo/ReportRepo.php");
 
 require_once("./model/repo/PollRepo.php");
 require_once("./model/repo/CommentRepo.php");
 require_once("./model/repo/UserRepo.php");
-require_once("./model/PollReport.php");
-require_once("./model/CommentReport.php");
+require_once("./model/BasicReport.php");
+require_once("./model/UserReport.php");
 
 class ReportHandler
 {
-	private $reportedPollRepo;
-	private $reportedCommentRepo;
-	private $reportedUserRepo;
+	private $reportRepo;
 	private $pollRepo;
 	private $commentRepo;
 	private $userRepo;
@@ -30,19 +26,15 @@ class ReportHandler
 
 	//success
 	const REPORTEDPOLL = "reportedPoll";
-	const REPORTEDCOMMENT = "reportedComment";
+	const REPORTEDCOMMENT = "reportComment";
 	const USERNOMINATED = "userNominated";
-	const USERDELETED = "userDeleted";
-	const POLLDELETED = "pollDeleted";
-	const COMMENTDELETED = "commentDeleted";
+	const DELETED = "deleted";
 
 	private $feedbackList = array();
 
 	public function __construct()
 	{
-		$this->reportedPollRepo = new repository\ReportedPollRepo();
-		$this->reportedCommentRepo = new repository\ReportedCommentRepo();
-		$this->reportedUserRepo = new repository\ReportedUserRepo();
+		$this->reportRepo = new repository\ReportRepo();
 		$this->pollRepo = new repository\PollRepo();
 		$this->commentRepo = new repository\CommentRepo();
 		$this->userRepo = new repository\UserRepo();
@@ -58,43 +50,31 @@ class ReportHandler
 	//hämta alla UserReports
 	public function getAllUserReports()
 	{
-		return $this->reportedUserRepo->getAllReports();
+		return $this->reportRepo->getReportsByType(repository\ReportRepo::USERTYPE);
 	}
 
 	//hämta alla PollReports
 	public function getAllPollReports()
 	{
-		return $this->reportedPollRepo->getAllReports();
+		return $this->reportRepo->getReportsByType(repository\ReportRepo::POLLTYPE);
 	}
 
 	//hämta alla CommentReports
 	public function getAllCommentReports()
 	{
-		return $this->reportedCommentRepo->getAllReports();
+		return $this->reportRepo->getReportsByType(repository\ReportRepo::COMMENTTYPE);
 	}
 
-	//ta bort en UserReport
-	public function deleteUserReport($id)
+	//ta bort en Report
+	public function deleteReport($id)
 	{
-		$this->reportedUserRepo->delete($id);
-	}
-
-	//ta bort en PollReport
-	public function deletePollReport($id)
-	{
-		$this->reportedPollRepo->delete($id);
-	}
-
-	//ta bort en CommentReport
-	public function deleteCommentReport($id)
-	{
-		$this->reportedCommentRepo->delete($id);
+		$this->reportRepo->delete($id);
 	}
 
 	/**
 	* rapportera en kommentar
-	* @param int 	id på rapporterad kommentar
-	* @param int 	anledning till rapportering
+	* @param Comment	id på rapporterad kommentar
+	* @param string		anledning till rapportering
 	*/
 	public function reportComment($comment, $reason)
 	{
@@ -106,16 +86,15 @@ class ReportHandler
 		//spara rapport om validering gick igenom
 		if($validComment && $validReason)
 		{
-			$report = new CommentReport($comment->getUserId(), $comment->getId(), $reason);
-			$this->reportedCommentRepo->add($report);
+			$this->report($comment->getUserId(), $comment->getId(), $reason, repository\ReportRepo::COMMENTTYPE);
 			$this->feedbackList[] = self::REPORTEDCOMMENT;
 		}
 	}
 
 	/**
 	* rapportera en poll
-	* @param int 	id på rapporterad poll
-	* @param int 	anledning till rapportering
+	* @param Poll		id på rapporterad poll
+	* @param string		anledning till rapportering
 	*/	
 	public function reportPoll($poll, $reason)
 	{
@@ -127,90 +106,55 @@ class ReportHandler
 		//spara rapport om validering gick igenom
 		if($validPoll && $validReason)
 		{
-			$report = new PollReport($poll->getCreator(), $poll->getId(), $reason);
-			$this->reportedPollRepo->add($report);
+			$this->report($poll->getCreator(), $poll->getId(), $reason, repository\ReportRepo::POLLTYPE);
 			$this->feedbackList[] = self::REPORTEDPOLL;
 		}
 	}
 
-	/**
-	*	När man vill ta bort en poll
-	* 	@param int 		id på poll
-	* 	@param string 	anledning
-	*/
-	public function pollDeleted($pollId, $reason)
-	{
-		$reports = $this->reportedPollRepo->getAllReports();
 
+	//skapa en ny BasicReport
+	private function report($userId, $objectId, $reason, $type)
+	{
+		$report = new BasicReport($userId, $objectId, $reason, $type);
+		$this->reportRepo->add($report);
+	}
+
+
+	/**
+	*	När man vill ta bort ett objekt
+	* 	@param int			id till report som ska bort.
+	* 	@param string 		anledning
+	*/
+	public function deleteObject($reportId, $reason)
+	{
+		//om anledningen inte var valid
 		if(!$this->validateReason($reason, true))
 		{
 			return;
 		}
 
-		$poll = $this->pollRepo->getPollById($pollId);
+		//hämta rapporten
+		$report = $this->reportRepo->getReportById($reportId);
 
-		//lägg till rapport på medlem
-		$userReport = new userReport($poll->getCreator(), "poll", $reason);
-		
-		$this->reportedUserRepo->add($userReport);
-
-		//ta bort poll
-		$this->pollRepo->delete($pollId);
-
-		$this->feedbackList[] = self::POLLDELETED;
-		
-	}
-
-	/**
-	*	När man vill ta bort en comment
-	* 	@param int 		id på comment
-	* 	@param string 	anledning
-	*/
-	public function commentDeleted($commentId, $reason)
-	{
-		$reports = $this->reportedCommentRepo->getAllReports();
-
-		if(!$this->validateReason($reason, true))
-		{
-			return;
+		//ta bort poll och dess rapporter (tas bort med stored procedure i db)
+		if($report->getType() === repository\ReportRepo::POLLTYPE)
+		{	
+			$this->pollRepo->delete($report->getObjectId());
 		}
 
-		$comment = $this->commentRepo->getCommentById($commentId);
-
-		//lägg till rapport på medlem
-		$userReport = new userReport($comment->getUserId(), "comment", $reason);
-		$this->reportedUserRepo->add($userReport);		
-
-		//ta bort comment
-		$this->commentRepo->delete($commentId);
-
-		$this->feedbackList[] = self::COMMENTDELETED;
-	}
-
-	/**
-	*	När man vill ta bort en user
-	* 	@param int 		id på user
-	* 	@param int 		id på admin som gör det 
-	*/
-	public function deleteUser($userId, $adminId)
-	{
-
-		$reports = $this->reportedUserRepo->getAllReportsOnUser($userId);
-
-		foreach($reports as $report)
+		//ta bort comment och dess rapporter (tas bort med stored procedure i db)
+		else if($report->getType() === repository\ReportRepo::COMMENTTYPE)
 		{
-				//Det får inte vara samma som tar bort användaren som nominerade den för borttagning
-				if($report->getNomination() == $adminId)
-				{
-					$this->feedbackList[] = self::SAMEADMIN;
-					return;
-				}
+			$this->commentRepo->delete($report->getObjectId());
 		}
-		
-		//die!!
-		$this->userRepo->delete($userId);
-		$this->feedbackList[] = self::USERDELETED;
+
+		//skapa ny userReport	
+		$userReport = new userReport($report->getUserId(), $report->getObjectId(), $reason, repository\ReportRepo::USERTYPE);		
+		$this->reportRepo->add($userReport);
+
+		$this->feedbackList[] = self::DELETED;		
 	}
+
 
 	/**
 	*	När man nominera en user till att bli borttagen
@@ -219,18 +163,37 @@ class ReportHandler
 	*/
 	public function nominateForDeletion($userId, $adminId)
 	{
-		$reports = $this->reportedUserRepo->getAllReports();
-
-		//uppdatera alla reports
-		foreach($reports as $report)
-		{
-			if($report->getUserId() == $userId)
-			{
-				$this->reportedUserRepo->nominateForDeletion($report->getId(), $adminId);
-			}
-		}
+		//uppdatera alla rapporter med detta användarid av typen User. Spara adminId.
+		$this->reportRepo->nominateForDeletion($userId, $adminId);
 		$this->feedbackList[] = self::USERNOMINATED;
 	}
+
+
+	/**
+	*	När man vill ta bort en user
+	* 	@param int 		id på user
+	* 	@param int 		id på admin som vill ta bort användaren
+	*/
+	public function deleteUser($userId, $adminId)
+	{
+		$reports = $this->getAllUserReports();
+
+		foreach($reports as $report)
+		{
+				//Det får inte vara samma som tar bort användaren som nominerade den för borttagning
+				if($report->getUserId() == $userId && $report->getNomination() == $adminId)
+				{
+					$this->feedbackList[] = self::SAMEADMIN;
+					return;
+				}
+		}
+		
+		//die!!
+		$this->userRepo->delete($userId);
+		$this->feedbackList[] = self::DELETED;
+	}
+
+
 
 	/**
 	*validera anledningen
@@ -282,8 +245,8 @@ class ReportHandler
 
 	/**
 	*	Hämtar alla UNIKA användare som inskickade rapporter gäller
-	* @param reports    reports som ska kollas.
-	* @return 			en array med alla user-objekt som fanns i rapporterna. inga dupliceringar.
+	* @param 	reports    reports som ska kollas.
+	* @return 			   en array med alla user-objekt som fanns i rapporterna. inga dupliceringar.
 	*/
 	public function getReportedUsers($reports)
 	{
@@ -317,9 +280,9 @@ class ReportHandler
 			foreach($reports as $report)
 			{
 				//om undersökningen inte redan är tillagd.
-				if(array_key_exists($report->getPollId(), $polls) == false)
+				if(array_key_exists($report->getObjectId(), $polls) == false)
 				{
-					$polls[$report->getPollId()] = $this->pollRepo->getPollById($report->getPollId());
+					$polls[$report->getObjectId()] = $this->pollRepo->getPollById($report->getObjectId());
 				}	
 			}
 			return array_values($polls);
@@ -339,9 +302,9 @@ class ReportHandler
 			foreach($reports as $report)
 			{
 				//om kommentaren inte redan är tillagd.
-				if(array_key_exists($report->getCommentId(), $comments) == false)
+				if(array_key_exists($report->getObjectId(), $comments) == false)
 				{
-					$comments[$report->getCommentId()] = $this->commentRepo->getCommentById($report->getCommentId());
+					$comments[$report->getObjectId()] = $this->commentRepo->getCommentById($report->getObjectId());
 				}	
 			}
 			return array_values($comments);

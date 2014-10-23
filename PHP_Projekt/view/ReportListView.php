@@ -14,42 +14,21 @@ class ReportListView
 	}
 
 	/**
-	*	@return 	int/bool 	hämtar id på poll som användare vill ta bort. false om det inte är valt.
-	*/
-	public function getPollToDelete()
-	{
-		if(isset($_POST[helpers\PostHandler::$DELETEPOLL_POLLID]))
-		{
-			return $_POST[helpers\PostHandler::$DELETEPOLL_POLLID];	
-		}
-		return false;
-	}
-
-
-	/**
 	*	@return 	string 	anledning till borttagning av poll
 	*/
-	public function getDeletePollReason()
+	public function getDeleteReason()
 	{
-		return $_POST[helpers\PostHandler::$DELETEPOLL_REASON];
-	}
-
-	/**
-	*	@return 	string 	anledning till borttagning av comment
-	*/
-	public function getDeleteCommentReason()
-	{
-		return $_POST[helpers\PostHandler::$DELETECOMMENT_REASON];
+		return $_POST[helpers\PostHandler::$DELETE_REASON];
 	}
 
 	/**
 	*	@return 	int/bool 	hämtar id på comment som användare vill ta bort. false om det inte är valt.
 	*/
-	public function getCommentToDelete()
+	public function getObjectToDelete()
 	{
-		if(isset($_POST[helpers\PostHandler::$DELETECOMMENT_COMMENTID]))
+		if(isset($_POST[helpers\PostHandler::$DELETEOBJECT_REPORTID]))
 		{
-			return $_POST[helpers\PostHandler::$DELETECOMMENT_COMMENTID];	
+			return $_POST[helpers\PostHandler::$DELETEOBJECT_REPORTID];	
 		}
 		return false;		
 	}
@@ -79,37 +58,13 @@ class ReportListView
 	}
 
 	/**
-	*	@return 	int/bool 	hämtar id på userreport som användare vill ta bort. false om det inte är valt.
+	*	@return 	int/bool 	hämtar id på report som användare vill ta bort. false om det inte är valt.
 	*/
-	public function getIgnoreUserReport()
+	public function getIgnoreReport()
 	{
-		if(isset($_GET[helpers\GetHandler::$IGNOREUSER]))
+		if(isset($_GET[helpers\GetHandler::$IGNORE]))
 		{
-			return $_GET[helpers\GetHandler::$IGNOREUSER];	
-		}
-		return false;		
-	}
-
-	/**
-	*	@return 	int/bool 	hämtar id på pollreport som användare vill ta bort. false om det inte är valt.
-	*/
-	public function getIgnorePollReport()
-	{
-		if(isset($_GET[helpers\GetHandler::$IGNOREPOLL]))
-		{
-			return $_GET[helpers\GetHandler::$IGNOREPOLL];	
-		}
-		return false;		
-	}
-
-	/**
-	*	@return 	int/bool 	hämtar id på commentreport som användare vill ta bort. false om det inte är valt.
-	*/
-	public function getIgnoreCommentReport()
-	{
-		if(isset($_GET[helpers\GetHandler::$IGNORECOMMENT]))
-		{
-			return $_GET[helpers\GetHandler::$IGNORECOMMENT];	
+			return $_GET[helpers\GetHandler::$IGNORE];	
 		}
 		return false;		
 	}
@@ -167,7 +122,7 @@ class ReportListView
 				$thisPoll;
 				foreach($polls as $poll)
 				{
-					if($poll->getId() == $report->getPollId())
+					if($poll->getId() == $report->getObjectId())
 					{
 						$thisPoll = $poll;
 						break;
@@ -188,11 +143,11 @@ class ReportListView
 				//här lägger vi till nästa rad i tabellen.
 				$table .= 
 				'<tr>
-					<td><a href="'.$_SERVER['REQUEST_URI'].'&'.helpers\GetHandler::$IGNOREPOLL.'='.$report->getId().'">Ignore this report</a></td> <td>'.$thisPoll->getQuestion().'</td> <td>'.$report->getCommentFromReporter().'</td> <td>'.$thisUser->getUserName().'</td> 
+					<td><a href="'.$_SERVER['REQUEST_URI'].'&'.helpers\GetHandler::$IGNORE.'='.$report->getId().'">Ignore this report</a></td> <td>'.$thisPoll->getQuestion().'</td> <td>'.$report->getComment().'</td> <td>'.$thisUser->getUserName().'</td> 
 					<td>
 						<form action="'.$_SERVER['REQUEST_URI'].'" method="post">
-							<input type="hidden" value='.$thisPoll->getId().' name="'.helpers\PostHandler::$DELETEPOLL_POLLID.'">
-							<input type="text" placeholder="Why are you deleting this?." name="'.helpers\PostHandler::$DELETEPOLL_REASON.'">
+							<input type="hidden" value='.$report->getId().' name="'.helpers\PostHandler::$DELETEOBJECT_REPORTID.'">
+							<input type="text" placeholder="Why are you deleting this?." name="'.helpers\PostHandler::$DELETE_REASON.'">
 							<input type="submit" value="Delete">
 						</form>
 					</td>
@@ -238,7 +193,7 @@ class ReportListView
 				$thisComment;
 				foreach($comments as $comment)
 				{
-					if($comment->getId() == $report->getCommentId())
+					if($comment->getId() == $report->getObjectId())
 					{
 						$thisComment = $comment;
 						break;
@@ -259,11 +214,11 @@ class ReportListView
 				//här lägger vi till nästa rad i tabellen.
 				$table .= 
 				'<tr>
-					<td><a href="'.$_SERVER['REQUEST_URI'].'&'.helpers\GetHandler::$IGNORECOMMENT.'='.$report->getId().'">Ignore this report</a></td><td>'.$thisComment->getComment().'</td> <td>'.$report->getCommentFromReporter().'</td> <td>'.$thisUser->getUserName().'</td> 
+					<td><a href="'.$_SERVER['REQUEST_URI'].'&'.helpers\GetHandler::$IGNORE.'='.$report->getId().'">Ignore this report</a></td><td>'.$thisComment->getComment().'</td> <td>'.$report->getComment().'</td> <td>'.$thisUser->getUserName().'</td> 
 					<td>
 						<form action="'.$_SERVER['REQUEST_URI'].'" method="post">
-							<input type="hidden" value='.$thisComment->getId().' name="'.helpers\PostHandler::$DELETECOMMENT_COMMENTID.'">
-							<input type="text" placeholder="Why are you deleting this?." name="'.helpers\PostHandler::$DELETECOMMENT_REASON.'">
+							<input type="hidden" value='.$report->getId().' name="'.helpers\PostHandler::$DELETEOBJECT_REPORTID.'">
+							<input type="text" placeholder="Why are you deleting this?." name="'.helpers\PostHandler::$DELETE_REASON.'">
 							<input type="submit" value="Delete">
 						</form>
 					</td>
@@ -333,7 +288,7 @@ class ReportListView
 				{
 					$reportedTable .=
 					'<tr>
-						<td><a href="'.$_SERVER['REQUEST_URI'].'&'.helpers\GetHandler::$IGNOREUSER.'='.$report->getId().'">Ignore this report</a></td><td>'.$thisUser->getUserName().'</td> <td>'.$report->getCommentFromAdmin().'</td> <td>'.$report->getType().'</td> 
+						<td><a href="'.$_SERVER['REQUEST_URI'].'&'.helpers\GetHandler::$IGNORE.'='.$report->getId().'">Ignore this report</a></td><td>'.$thisUser->getUserName().'</td> <td>'.$report->getComment().'</td> <td>'.$report->getType().'</td> 
 						<td>
 							<form action="'.$_SERVER['REQUEST_URI'].'" method="post">
 								<input type="hidden" value='.$thisUser->getId().' name="'.helpers\PostHandler::$NOMINATEUSER_USERID.'">
@@ -348,7 +303,7 @@ class ReportListView
 				{
 					$nominatedTable .=
 					'<tr>
-						<td><a href="'.$_SERVER['REQUEST_URI'].'&'.helpers\GetHandler::$IGNOREUSER.'='.$report->getId().'">Ignore this report</a></td><td>'.$thisUser->getUserName().'</td> <td>'.$report->getCommentFromAdmin().'</td> <td>'.$report->getType().'</td> 
+						<td><a href="'.$_SERVER['REQUEST_URI'].'&'.helpers\GetHandler::$IGNORE.'='.$report->getId().'">Ignore this report</a></td><td>'.$thisUser->getUserName().'</td> <td>'.$report->getComment().'</td> <td>'.$report->getType().'</td> 
 						<td>
 							<form action="'.$_SERVER['REQUEST_URI'].'" method="post">
 								<input type="hidden" value='.$thisUser->getId().' name="'.helpers\PostHandler::$DELETEUSER_USERID.'">
@@ -390,7 +345,7 @@ class ReportListView
         }
      	if(in_array(\model\ReportHandler::NOPOLL, $feedback))
         {
-            $retString .= "<li>This poll doesn't exist..</li>";
+            $retString .= "<li>This poll doesn't exist.</li>";
         }
 		if(in_array(\model\ReportHandler::SAMEADMIN, $feedback))
         {
@@ -398,17 +353,9 @@ class ReportListView
         }
 
      	//inte fel utan rättmeddelandwen
-     	if(in_array(\model\ReportHandler::POLLDELETED, $feedback))
+     	if(in_array(\model\ReportHandler::DELETED, $feedback))
         {
-            $retString .= "<li>The poll has been deleted.Thanks for the help.</li>";
-        }
-     	if(in_array(\model\ReportHandler::COMMENTDELETED, $feedback))
-        {
-            $retString .= "<li>The comment has been deleted.Thanks for the help.</li>";
-        }	
-     	if(in_array(\model\ReportHandler::USERDELETED, $feedback))
-        {
-            $retString .= "<li>The user has been deleted.Thanks for the help.</li>";
+            $retString .= "<li>Deletion finished. Thanks for the help.</li>";
         }	
      	if(in_array(\model\ReportHandler::USERNOMINATED, $feedback))
         {
@@ -416,7 +363,5 @@ class ReportListView
         }	
 
         return $retString . "</div>";
-	}
-
-	
+	}	
 }

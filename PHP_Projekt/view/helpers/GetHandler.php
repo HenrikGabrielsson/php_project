@@ -22,10 +22,7 @@ class GetHandler
 	public static $USERLIST = "user";
 
 	//ta bort reports
-	public static $IGNOREPOLL = "ignorePoll";
-	public static $IGNORECOMMENT = "ignoreComment";
-	public static $IGNOREUSER = "ignoreUser";
-
+	public static $IGNORE = "ignore";
 
 	//olika "views"
 	public static $VIEWREGISTER = "register";

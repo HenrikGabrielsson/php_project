@@ -10,7 +10,6 @@ require_once("./controller/IMainContentController.php");
 class ReportListController implements IMainContentController
 {
 	private $reportListView;
-	private $htmlView; 
 	private $reportHandler;
 	private $login;
 
@@ -30,22 +29,10 @@ class ReportListController implements IMainContentController
 		//endast Admins får komma hit.
 		if($this->login->getIsAdmin())
 		{
-			//ignorera poll report
-			if($this->reportListView->getIgnorePollReport())
+			//ignorera en report
+			if($this->reportListView->getIgnoreReport())
 			{
-				$this->reportHandler->deletePollReport($this->reportListView->getIgnorePollReport());
-			}
-
-			//ignorera user report
-			if($this->reportListView->getIgnoreUserReport())
-			{
-				$this->reportHandler->deleteUserReport($this->reportListView->getIgnoreUserReport());
-			}
-
-			//ignorera comment report
-			if($this->reportListView->getIgnoreCommentReport())
-			{
-				$this->reportHandler->deleteCommentReport($this->reportListView->getIgnoreCommentReport());
+				$this->reportHandler->deleteReport($this->reportListView->getIgnoreReport());
 			}
 
 			//nominera en user för borttagning. (ingen borttagnin sker här.)
@@ -54,6 +41,7 @@ class ReportListController implements IMainContentController
 				$userId = $this->reportListView->getUserToNominate();
 				$this->reportHandler->nominateForDeletion($userId, $this->login->getId());
 			}	
+
 			//ta bort medlem om han/hon redan har en nominering för borttagning
 			if($this->reportListView->getUserToDelete())
 			{
@@ -61,20 +49,12 @@ class ReportListController implements IMainContentController
 				$this->reportHandler->deleteUser($userId, $this->login->getId());
 			}				
 
-			//ta bort undersökningen och spara medlem i lista över rapporterade medlemmar
-			if($this->reportListView->getPollToDelete())
+			//ta bort ett objekt och spara medlem i lista över rapporterade medlemmar
+			if($this->reportListView->getObjectToDelete())
 			{
-				$pollId = $this->reportListView->getPollToDelete();
-				$reason = $this->reportListView->getDeletePollReason();
-				$this->reportHandler->pollDeleted($pollId, $reason);
-			}
-
-			//ta bort kommentaren och spara medlem i lista över rapporterade medlemmar
-			if($this->reportListView->getCommentToDelete())
-			{
-				$commentId = $this->reportListView->getCommentToDelete();
-				$reason = $this->reportListView->getDeleteCommentReason();
-				$this->reportHandler->commentDeleted($commentId, $reason);
+				$reportId = $this->reportListView->getObjectToDelete();
+				$reason = $this->reportListView->getDeleteReason();
+				$this->reportHandler->deleteObject($reportId, $reason);
 			}
 
 			//hämta eventuell feedback
@@ -88,17 +68,17 @@ class ReportListController implements IMainContentController
 			switch($this->reportListView->getListRequest())
 			{
 				case \view\helpers\GetHandler::$POLLLIST:	
-					$polls = $this->reportHandler->getPollsWithReports($pollReports);
-					$users = $this->reportHandler->getUsersWithReports($pollReports);
+					$polls = $this->reportHandler->getReportedPolls($pollReports);
+					$users = $this->reportHandler->getReportedUsers($pollReports);
 					return $this->reportListView->getPollList($polls, $users, $pollReports, $feedback);
 					break;
 				case \view\helpers\GetHandler::$COMMENTLIST:
-					$comments = $this->reportHandler->getCommentsWithReports($commentReports);
-					$users = $this->reportHandler->getUsersWithReports($commentReports);
+					$comments = $this->reportHandler->getReportedComments($commentReports);
+					$users = $this->reportHandler->getReportedUsers($commentReports);
 					return $this->reportListView->getCommentList($comments, $users, $commentReports, $feedback);
 					break;
 				default:
-					$users = $this->reportHandler->getUsersWithReports($userReports);
+					$users = $this->reportHandler->getReportedUsers($userReports);
 					return $this->reportListView->getUserList($users, $userReports, $feedback);
 			}
 		}
