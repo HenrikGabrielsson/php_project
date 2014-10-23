@@ -95,7 +95,8 @@ class HTMLView
         $title = "We couldn't find the page!";
         $body = 
         '<h1>Strange...</h1>
-        <p>We couldn\'t find the page you were looking for. Check the URL for errors and try again. It\'s also possible that the page has been deleted. Sorry about that.
+        <p>An error occurred when you tried to do that. Maybe the page is missing or has been deleted. 
+        It\s also possible we did something wrong on this end. Sorry about that.
         </p>
         ';
 

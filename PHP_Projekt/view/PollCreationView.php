@@ -111,6 +111,7 @@ class PollCreationView
 			$categories .= '<option value="'.$category->getId().'">'.$category->getCategoryName().'</option>';
 		}
 
+
 		//skapar alla svarsfält.
 		$answerFields = '';
 		for($i = 1; $i <= 10; $i++)
@@ -126,16 +127,23 @@ class PollCreationView
 
 		<label for="createQuestion">Question: </label><input maxlength="100" type="text" name="'.helpers\PostHandler::$CREATEQUESTION.'" id="createQuestion">
 	
+
+
 		<fieldset id="answers_fieldset">
+		<p>Write down 2-10 alternatives that the voter can vote for.</p>
 		'.$answerFields.'
 		</fieldset>
 
-		<select name="'.helpers\PostHandler::$CREATECATEGORY.'">
+		<label for="pickCategory">Category: </label>
+		<select id="pickCategory" name="'.helpers\PostHandler::$CREATECATEGORY.'">
 			'.$categories.'
 		</select>
 
+		<fieldset id="public_Private">
+		<p>If you choose to make your poll public, voters can only access the poll where you share it yourself. Only you will be able to access the results.</p>
 		<label for="privateRadio">Private: </label><input id="privateRadio" type="radio" name="'.helpers\PostHandler::$CREATEPUBLIC.'" value="0">
 		<label for="publicRadio">Public: </label><input id="publicRadio" type="radio" name="'.helpers\PostHandler::$CREATEPUBLIC.'" value="1" checked>
+		</fieldset>
 
 		<input type="submit" value="Create!">
 		</form>
@@ -163,7 +171,7 @@ class PollCreationView
 
 		if(in_array(\model\Pollcreator::SHORTQUESTION, $feedbackArray))
         {
-            $feedback .= "<li>You must write a quesion.</li>";
+            $feedback .= "<li>You must write a question.</li>";
         }	
 		if(in_array(\model\Pollcreator::LONGQUESTION, $feedbackArray))
         {

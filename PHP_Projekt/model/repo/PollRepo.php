@@ -33,7 +33,7 @@ class PollRepo extends \model\repository\Repository
 	//funktion för att lägga till en undersökning i databasen
 	public function add(\model\Poll $poll)
 	{
-
+		
 		$sql = "INSERT INTO ".$this->pollTable."(".$this->creator.", ".$this->question.", ".$this->creationDate.", ".$this->public.", ".$this->category.")
 		VALUES (?,?,?,?,?);";
 		$params = array($poll->getCreator(), $poll->getQuestion(), $poll->getCreationDate(), $poll->getPublic(), $poll->getCategory());

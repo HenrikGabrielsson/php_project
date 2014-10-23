@@ -88,17 +88,17 @@ class ReportListController implements IMainContentController
 			switch($this->reportListView->getListRequest())
 			{
 				case \view\helpers\GetHandler::$POLLLIST:	
-					$polls = $this->reportHandler->getReportedPolls($pollReports);
-					$users = $this->reportHandler->getReportedUsers($pollReports);
+					$polls = $this->reportHandler->getPollsWithReports($pollReports);
+					$users = $this->reportHandler->getUsersWithReports($pollReports);
 					return $this->reportListView->getPollList($polls, $users, $pollReports, $feedback);
 					break;
 				case \view\helpers\GetHandler::$COMMENTLIST:
-					$comments = $this->reportHandler->getReportedComments($commentReports);
-					$users = $this->reportHandler->getReportedUsers($commentReports);
+					$comments = $this->reportHandler->getCommentsWithReports($commentReports);
+					$users = $this->reportHandler->getUsersWithReports($commentReports);
 					return $this->reportListView->getCommentList($comments, $users, $commentReports, $feedback);
 					break;
 				default:
-					$users = $this->reportHandler->getReportedUsers($userReports);
+					$users = $this->reportHandler->getUsersWithReports($userReports);
 					return $this->reportListView->getUserList($users, $userReports, $feedback);
 			}
 		}

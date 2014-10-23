@@ -39,52 +39,62 @@ class NavigationController
     //kollar url och anropar sedan en lämplig controller 
     public function getPage()
     {
-        //börjar med att kolla om användaren är inloggad
-        $loginController = new \controller\LoginController($this->loginHandler);
-        $this->htmlView->setLoginBox($loginController->checkForLogin());
-
-        //sen lägger vi till innehållet i sidebar.
-        $this->htmlView->setSidebarContent($this->sidebarView->getSidebarContent($this->loginHandler));
-
-        //sedan anropas den konstruktor som lägger till innehåll i title och body.
-        switch ($this->navView->getPageController())
+        try
         {
-            case \view\helpers\GetHandler::$VIEWPOLL:
-                $controller = new PollController($this->navView->getId(), $this->loginHandler);
-                break;
-            case \view\helpers\GetHandler::$VIEWUSER:
-                $controller = new UserController($this->navView->getId(), $this->loginHandler);
-                break;
-            case \view\helpers\GetHandler::$VIEWCATEGORY:
-                $controller = new CategoryController($this->navView->getId());
-                break;
-            case \view\helpers\GetHandler::$VIEWREGISTER:
-                $controller = new RegistrationController($this->loginHandler);
-                break;
-            case \view\helpers\GetHandler::$VIEWCREATEPOLL:
-                $controller = new PollCreationController($this->loginHandler);
-                break;
-            case \view\helpers\GetHandler::$VIEWSEARCH:
-                $controller = new SearchController();
-                break;
-            case \view\helpers\GetHandler::$VIEWREPORT:
-                $controller = new ReportListController($this->loginHandler);
-                break;
-            default:
-                $controller = new HomeController($this->loginHandler);
-        }
 
-        //här läggs innehållet till om något skickades tillbaka.
-        $body = $controller->getBody();
-        if($body)
-        {
-            $title = $controller->getTitle();
-            $this->htmlView->showHTML($title, $body);
+
+            //börjar med att kolla om användaren är inloggad
+            $loginController = new \controller\LoginController($this->loginHandler);
+            $this->htmlView->setLoginBox($loginController->checkForLogin());
+
+            //sen lägger vi till innehållet i sidebar.
+            $this->htmlView->setSidebarContent($this->sidebarView->getSidebarContent($this->loginHandler));
+
+            //sedan anropas den konstruktor som lägger till innehåll i title och body.
+            switch ($this->navView->getPageController())
+            {
+                case \view\helpers\GetHandler::$VIEWPOLL:
+                    $controller = new PollController($this->navView->getId(), $this->loginHandler);
+                    break;
+                case \view\helpers\GetHandler::$VIEWUSER:
+                    $controller = new UserController($this->navView->getId(), $this->loginHandler);
+                    break;
+                case \view\helpers\GetHandler::$VIEWCATEGORY:
+                    $controller = new CategoryController($this->navView->getId());
+                    break;
+                case \view\helpers\GetHandler::$VIEWREGISTER:
+                    $controller = new RegistrationController($this->loginHandler);
+                    break;
+                case \view\helpers\GetHandler::$VIEWCREATEPOLL:
+                    $controller = new PollCreationController($this->loginHandler);
+                    break;
+                case \view\helpers\GetHandler::$VIEWSEARCH:
+                    $controller = new SearchController();
+                    break;
+                case \view\helpers\GetHandler::$VIEWREPORT:
+                    $controller = new ReportListController($this->loginHandler);
+                    break;
+                default:
+                    $controller = new HomeController($this->loginHandler);
+            }
+
+            //här läggs innehållet till om något skickades tillbaka.
+            $body = $controller->getBody();
+            if($body)
+            {
+                $title = $controller->getTitle();
+                $this->htmlView->showHTML($title, $body);
+            }
+            //annars error page
+            else
+            {
+                $this->htmlView->showErrorPage();
+            } 
         }
-        //annars error page
-        else
+        catch (\Exception $e)
         {
             $this->htmlView->showErrorPage();
-        } 
+        }
+
     }
 }

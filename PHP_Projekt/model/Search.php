@@ -22,28 +22,31 @@ class Search
 		$allPolls = $this->pollRepo->getAllPublicPolls();
 		$matchingPolls = array();
 
-		//kolla igenom alla polls och hämta ut de som matchar
-		foreach ($allPolls as $poll) 
+		//kolla igenom alla polls och hämta ut de som matchar (om de finns några)
+		if($allPolls)
 		{
-			$match = false;
-			foreach($searchArr as $word)
+			foreach ($allPolls as $poll) 
 			{
-				//om ordet inte finns i frågan så breakar denna loopen.
-				if(stripos($poll->getQuestion(), $word) === false)
+				$match = false;
+				foreach($searchArr as $word)
 				{
-					$match = false;
-					break;
+					//om ordet inte finns i frågan så breakar denna loopen.
+					if(stripos($poll->getQuestion(), $word) === false)
+					{
+						$match = false;
+						break;
+					}
+					else
+					{
+						$match = true;
+					}
 				}
-				else
-				{
-					$match = true;
-				}
-			}
 
-			//om ALLA orden fanns i frågan så läggs den till i listan med undersökningar som ska returneras.
-			if($match)
-			{
-				$matchingPolls[] = $poll;
+				//om ALLA orden fanns i frågan så läggs den till i listan med undersökningar som ska returneras.
+				if($match)
+				{
+					$matchingPolls[] = $poll;
+				}
 			}
 		}
 

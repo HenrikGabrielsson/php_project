@@ -56,15 +56,18 @@ class HomePageView
 		<h2>Recent polls</h2>
 		<div id="recentPolls">';
 		
-		foreach($this->recentPolls as $poll)
+		if($this->recentPolls)
 		{
-			$body .= 
-			'<li>
-				<a href="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWPOLL.'&'.helpers\GetHandler::$ID.'='.$poll->getId().'">
-				'.$poll->getQuestion().'</a>
-			</li>';			
+			foreach($this->recentPolls as $poll)
+			{
+				$body .= 
+				'<li>
+					<a href="?'.helpers\GetHandler::$VIEW.'='.helpers\GetHandler::$VIEWPOLL.'&'.helpers\GetHandler::$ID.'='.$poll->getId().'">
+					'.$poll->getQuestion().'</a>
+				</li>';			
+			}
+			$body .= "</div>";
 		}
-		$body .= "</div>";
 					
 		return $body;
 

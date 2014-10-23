@@ -127,12 +127,11 @@ class UserRepo extends \model\repository\Repository
 	//lägg till ny användare
 	public function add(\model\User $user)
 	{
-		
 		$sql = "INSERT INTO ".$this->userTable."(".$this->userName.",".$this->email.",".$this->dateAdded.",".$this->admin.",".$this->password.",".$this->salt.") VALUES(?,?,?,?,?,?)";
 		$params = array($user->getUserName(), $user->getEmail(), $user->getDateAdded(), $user->getAdmin(), $user->getPassword(), $user->getSalt());
 
 		$this->connect();
-		
+	
 		$query = $this->dbConnection->prepare($sql);
 		$result = $query->execute($params);
 				
