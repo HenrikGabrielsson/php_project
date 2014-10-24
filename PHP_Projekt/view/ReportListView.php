@@ -238,6 +238,10 @@ class ReportListView
 		return $this->getContentHead($feedback).$bodyContent;
 	}
 
+
+	//Borde eventuellt slå ihop delar av dessa tre funktioner eftersom mycket kod är duplicerad
+	//Skapa tabeller som ger bättre översikt kanske?
+
 	/**
 	*	Visar två tabeller med alla rapporterade users så en admin kan bestämma vad som ska göras med dom.
 	*	@param 		array 	alla users som nämns

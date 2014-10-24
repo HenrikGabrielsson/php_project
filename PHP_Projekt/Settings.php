@@ -14,7 +14,7 @@ class Settings
 	public static $dbUserName = "henrikgabrielss";
 
 	//the database password
-	public static $dbPassword = "tCiSetWtDead";
+	public static $dbPassword = "";
 
 	public static $dbName = "henrikgabrielss";
 	
